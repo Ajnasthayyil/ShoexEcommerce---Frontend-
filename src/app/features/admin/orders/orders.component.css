@@ -1,0 +1,13 @@
+canvas {
+  transition: all 0.3s ease;
+}
+
+canvas:hover {
+  transform: scale(1.03);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

@@ -1,0 +1,137 @@
+<div class="flex justify-center items-center min-h-screen bg-gray-50 px-4 py-24">
+  <div
+    class="bg-white shadow-2xl rounded-2xl p-10 w-full max-w-xl border border-gray-200"
+  >
+    <!-- Page Title -->
+    <h2
+      class="text-3xl font-extrabold text-center mb-10 text-black uppercase tracking-wide"
+    >
+      Checkout
+    </h2>
+
+    <!-- Cart Items Review -->
+    <div class="mb-10">
+      <h3
+        class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2"
+      >
+        <i class="fa-solid fa-shopping-cart text-red-500"></i>
+        {{ isBuyNow ? 'Review Your Order' : 'Review Your Cart' }}
+      </h3>
+
+
+
+      <div class="space-y-4">
+        <div
+          class="flex items-center justify-between bg-gray-50 border border-gray-300 rounded-xl p-4 shadow-sm"
+          *ngFor="let item of cartItems"
+        >
+
+
+          <!-- Product Image -->
+          <img
+            [src]="item.product.imageUrl"
+            alt="{{ item.product.name }}"
+            class="w-16 h-16 object-cover rounded-lg border border-gray-200"
+          />
+
+          <!-- Product Info -->
+          <div class="flex-1 ml-4">
+            <h4 class="text-lg font-semibold text-gray-900">{{ item.product.name }}</h4>
+            <p class="text-sm text-gray-600">₹{{ item.product.price }} x {{ item.quantity }}</p>
+            <p class="text-sm font-medium text-gray-800">Total: ₹{{ item.product.price * item.quantity }}</p>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Delivery Address -->
+    <div *ngIf="address" class="mb-10">
+      <h3
+        class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2"
+      >
+        <i class="fa-solid fa-location-dot text-red-500"></i>
+        Delivery Address 
+      </h3>
+      <div
+        class="bg-gray-50 border border-gray-300 rounded-xl p-5 shadow-sm space-y-1"
+      >
+        <p class="text-lg font-semibold text-gray-900">{{ address.name }}</p>
+        <p class="text-gray-700">{{ address.street }}, {{ address.city }}</p>
+        <p class="text-gray-700">{{ address.state }} - {{ address.pincode }}</p>
+        <p class="text-gray-500 text-sm flex items-center gap-1">
+          <i class="fa-solid fa-phone text-red-500"></i> {{ address.phone }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Payment Method -->
+    <div class="mb-10">
+      <h3
+        class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2"
+      >
+        <i class="fa-solid fa-credit-card text-red-500"></i>
+        Select Payment Method
+      </h3>
+      <div class="flex flex-col gap-3">
+        <label
+          class="flex items-center gap-3 bg-white border border-gray-300 rounded-lg px-4 py-3 cursor-pointer hover:border-red-500 hover:bg-red-50 transition"
+        >
+          <input
+            type="radio"
+            name="payment"
+            [(ngModel)]="paymentMethod"
+            value="Credit Card"
+            class="accent-red-600 scale-125"
+          />
+          <span class="text-gray-800">Credit Card</span>
+        </label>
+
+        <label
+          class="flex items-center gap-3 bg-white border border-gray-300 rounded-lg px-4 py-3 cursor-pointer hover:border-red-500 hover:bg-red-50 transition"
+        >
+          <input
+            type="radio"
+            name="payment"
+            [(ngModel)]="paymentMethod"
+            value="UPI"
+            class="accent-red-600 scale-125"
+          />
+          <span class="text-gray-800">UPI</span>
+        </label>
+
+        <label
+          class="flex items-center gap-3 bg-white border border-gray-300 rounded-lg px-4 py-3 cursor-pointer hover:border-red-500 hover:bg-red-50 transition"
+        >
+          <input
+            type="radio"
+            name="payment"
+            [(ngModel)]="paymentMethod"
+            value="Cash on Delivery"
+            class="accent-red-600 scale-125"
+          />
+          <span class="text-gray-800">Cash on Delivery</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Checkout Summary -->
+    <div class="border-t border-gray-200 pt-6">
+      <h3
+        class="text-xl font-bold mb-5 flex justify-between items-center text-gray-900"
+      >
+        <span>Total:</span>
+        <span class="text-green-600">₹{{ totalAmount }}</span>
+      </h3>
+
+      <button
+        (click)="placeOrder()"
+        class="w-full py-3 bg-red-600 hover:bg-red-700 transition-transform transform hover:scale-[1.03] text-white font-semibold rounded-full shadow-lg flex items-center justify-center gap-2"
+      >
+        <i class="fa-solid fa-bag-shopping"></i>
+        Pay Now
+      </button>
+    </div>
+  </div>
+</div>

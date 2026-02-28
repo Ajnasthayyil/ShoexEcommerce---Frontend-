@@ -1,0 +1,93 @@
+<div class="relative flex justify-center items-center min-h-screen overflow-hidden">
+
+  <!-- Background Video -->
+  <video
+    autoplay
+    loop
+    muted
+    playsinline 
+    class="absolute top-0 left-0 w-full h-full object-cover"
+  >
+    <source src="assets\video\vdo4.mp4" type="video/mp4" />
+  </video>
+
+  <!-- Overlay for readability -->
+  <div class="absolute inset-0 bg-black/50 bg-blend-overlay"></div>
+
+  <!-- Login Card -->
+  <div
+    class="relative z-10 w-[380px] bg-white/15 backdrop-blur-xl p-8 rounded-2xl shadow-2xl animate-fadeIn border border-white/10"
+  >
+    <h1 class="text-3xl font-extrabold text-center text-white uppercase tracking-wide mb-2">
+      Login
+    </h1>
+
+    <p class="text-center text-gray-200 text-sm mt-1 mb-6">
+      Welcome back
+    </p>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <!-- Username -->
+      <div class="relative mb-6">
+        <input
+          type="text"
+          formControlName="username"
+          class="peer w-full bg-transparent border-b-2 border-gray-400 text-white py-2 px-2 focus:border-yellow-400 outline-none"
+          required
+        />
+        <label
+          class="absolute left-2 top-2 text-gray-300 text-sm pointer-events-none transition-all
+                 peer-focus:-top-3 peer-focus:text-xs peer-focus:text-yellow-400
+                 peer-valid:-top-3 peer-valid:text-xs peer-valid:text-yellow-400">
+          Username
+        </label>
+
+        <p
+          *ngIf="loginForm.controls['username'].invalid && loginForm.controls['username'].touched"
+          class="text-red-400 text-xs mt-1"
+        >
+          Username required
+        </p>
+      </div>
+
+      <!-- Password -->
+      <div class="relative mb-8">
+        <input
+          type="password"
+          formControlName="password"
+          class="peer w-full bg-transparent border-b-2 border-gray-400 text-white py-2 px-2 focus:border-yellow-400 outline-none"
+          required
+        />
+        <label
+          class="absolute left-2 top-2 text-gray-300 text-sm pointer-events-none transition-all
+                 peer-focus:-top-3 peer-focus:text-xs peer-focus:text-yellow-400
+                 peer-valid:-top-3 peer-valid:text-xs peer-valid:text-yellow-400">
+          Password
+        </label>
+
+        <p
+          *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched"
+          class="text-red-400 text-xs mt-1"
+        >
+          Password required
+        </p>
+      </div>
+
+      <!-- Login Button -->
+      <button
+        type="submit"
+        [disabled]="loginForm.invalid"
+        class="w-full bg-gradient-to-r from-red-600 to-orange-500 text-white py-2 rounded-xl font-semibold hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-xl disabled:opacity-70"
+      >
+        Login Now
+      </button>
+    </form>
+
+    <div class="text-center mt-4">
+      <a routerLink="/auth/register" class="text-yellow-200 text-sm hover:underline">
+        Register new user?
+      </a>
+    </div>
+  </div>
+</div>

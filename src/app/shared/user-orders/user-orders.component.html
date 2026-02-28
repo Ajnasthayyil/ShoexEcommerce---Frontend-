@@ -1,0 +1,82 @@
+<div class="min-h-screen bg-gray-50 py-20 px-6">
+  <div *ngIf="orders.length; else noOrders" class="max-w-4xl mx-auto">
+    <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-10">
+      My Orders <i class="fa-solid fa-bag-shopping text-red-600"></i>
+    </h2>
+
+    <div
+      *ngFor="let item of orders"
+      class="order-card bg-white rounded-2xl shadow-md border border-gray-100 p-5 mb-10"
+    >
+      <!-- Product Info -->
+      <div class="flex items-center mb-6">
+        <img
+          [src]="item.product.imageUrl"
+          alt="{{ item.product.name }}"
+          class="w-24 h-24 object-cover rounded-xl border border-gray-200"
+        />
+        <div class="ml-6">
+          <h3 class="text-lg font-semibold text-gray-900">{{ item.product.name }}</h3>
+          <p class="text-gray-600 mt-1">₹{{ item.product.price }}</p>
+          <p class="text-gray-500 text-sm mt-1">Quantity: {{ item.quantity }}</p>
+        </div>
+      </div>
+
+      <!-- Cancel Button -->
+      <div class="flex justify-end mb-4" *ngIf="canCancel(item)">
+        <button
+          (click)="cancelOrder(item)"
+          class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold shadow transition"
+        >
+          Cancel Order
+        </button>
+      </div>
+
+      <!-- Order Status Bar -->
+      <div class="flex items-center justify-between w-full">
+        <ng-container *ngFor="let step of orderSteps; let i = index">
+          <div class="flex-1 flex items-center">
+            <div
+              class="w-6 h-6 rounded-full border-2 flex items-center justify-center"
+              [ngClass]="{
+                'bg-green-500 border-green-500 text-white': i <= getStatusIndex(item.status),
+                'bg-gray-200 border-gray-300': i > getStatusIndex(item.status)
+              }"
+            >
+            <i *ngIf="i <= getStatusIndex(item.status || 'pending')" class="fas fa-check text-white text-xs"></i>
+            </div>
+            <span class="text-xs ml-2 mr-4">{{ step.name }}</span>
+
+            <div
+              *ngIf="i < orderSteps.length - 1"
+              class="flex-1 h-1"
+              [ngClass]="{
+                'bg-green-500': i < getStatusIndex(item.status),
+                'bg-gray-300': i >= getStatusIndex(item.status)
+              }"
+            ></div>
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- Optional Status Timestamp -->
+      <p class="text-sm text-gray-500 mt-4">
+        Status: <span class="font-semibold">{{ item.status | titlecase }}</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- No Orders Template -->
+  <ng-template #noOrders>
+    <div class="flex flex-col items-center justify-center min-h-[60vh] text-gray-600">
+      <h2 class="text-2xl font-semibold mb-3">You have no orders yet !!</h2>
+      <p class="text-sm mb-6">Start shopping and your orders will appear here.</p>
+      <a
+        routerLink="/products"
+        class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-full font-semibold shadow transition"
+      >
+        Browse Products
+      </a>
+    </div>
+  </ng-template>
+</div>

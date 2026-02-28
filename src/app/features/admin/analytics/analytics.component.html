@@ -1,0 +1,90 @@
+<div class="min-h-screen bg-gray-50 rounded-2xl p-6 md:p-8 animate-fadeIn">
+  <!-- Header & Controls -->
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+    <div>
+      <h2
+        class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-orange-500 tracking-tight">
+        Sales Analytics
+      </h2>
+      <p class="text-sm text-gray-500 font-medium mt-1">
+        Analyzing {{ selectedPeriod === 'day' ? 'Daily' : 'Monthly' }} performance trends.
+      </p>
+    </div>
+
+    <!-- Toggle Buttons -->
+    <div class="flex bg-white rounded-xl shadow-sm border border-gray-100 p-1">
+      <button class="px-6 py-2 rounded-lg font-semibold text-sm transition-all duration-300"
+        [ngClass]="selectedPeriod === 'day' ? 'bg-gradient-to-r from-red-500 to-orange-500 text-white shadow-md transform scale-[1.02]' : 'bg-transparent text-gray-500 hover:text-gray-900 hover:bg-gray-50'"
+        (click)="setPeriod('day')">
+        Daily
+      </button>
+      <button class="px-6 py-2 rounded-lg font-semibold text-sm transition-all duration-300"
+        [ngClass]="selectedPeriod === 'month' ? 'bg-gradient-to-r from-red-500 to-orange-500 text-white shadow-md transform scale-[1.02]' : 'bg-transparent text-gray-500 hover:text-gray-900 hover:bg-gray-50'"
+        (click)="setPeriod('month')">
+        Monthly
+      </button>
+    </div>
+  </div>
+
+  <!-- KPI Summary Cards for Selected Period -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <!-- Period Revenue -->
+    <div
+      class="relative bg-white p-6 rounded-2xl shadow-xl border-l-4 border-red-500 transform transition duration-300 hover:scale-[1.02] hover:shadow-2xl overflow-hidden group flex items-center">
+      <div
+        class="p-4 rounded-full bg-red-50 text-red-500 mr-4 group-hover:bg-red-500 group-hover:text-white transition-colors duration-300">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+        </svg>
+      </div>
+      <div>
+        <h3 class="font-bold text-gray-400 text-xs uppercase tracking-widest mb-1">{{ selectedPeriod === 'day' ? 'Daily'
+          : 'Monthly' }} Revenue</h3>
+        <div class="text-3xl font-black text-gray-800">{{ periodRevenue | currency:'INR':'symbol':'1.0-0' }}</div>
+      </div>
+    </div>
+
+    <!-- Period Sales -->
+    <div
+      class="relative bg-white p-6 rounded-2xl shadow-xl border-l-4 border-orange-500 transform transition duration-300 hover:scale-[1.02] hover:shadow-2xl overflow-hidden group flex items-center">
+      <div
+        class="p-4 rounded-full bg-orange-50 text-orange-500 mr-4 group-hover:bg-orange-500 group-hover:text-white transition-colors duration-300">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+        </svg>
+      </div>
+      <div>
+        <h3 class="font-bold text-gray-400 text-xs uppercase tracking-widest mb-1">{{ selectedPeriod === 'day' ? 'Daily'
+          : 'Monthly' }} Units Sold</h3>
+        <div class="text-3xl font-black text-gray-800">{{ periodSales }} Items</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart Container -->
+  <div class="bg-white p-6 md:p-8 rounded-2xl shadow-xl border border-gray-100">
+    <div class="flex items-center gap-2 mb-6">
+      <div class="w-2 h-6 bg-gradient-to-b from-red-500 to-orange-500 rounded-full"></div>
+      <h3 class="text-xl font-bold text-gray-800">
+        Performance Overview
+      </h3>
+    </div>
+
+    <div class="w-full h-96 relative">
+      <canvas *ngIf="chartLabels.length > 0" baseChart [data]="{ labels: chartLabels, datasets: chartDatasets }"
+        [options]="chartOptions" [type]="'line'"></canvas>
+
+      <!-- Empty State -->
+      <div *ngIf="chartLabels.length === 0"
+        class="absolute inset-0 flex flex-col items-center justify-center text-gray-400">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mb-4 text-gray-300" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+        <p class="font-medium text-lg">No data available for this period.</p>
+      </div>
+    </div>
+  </div>
+</div>

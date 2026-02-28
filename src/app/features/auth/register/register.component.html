@@ -1,0 +1,139 @@
+<div class="relative flex justify-center items-center min-h-screen overflow-hidden">
+
+  <!-- Background Video -->
+  <video
+    autoplay
+    loop
+    muted
+    playsinline 
+    class="absolute top-0 left-0 w-full h-full object-cover"
+  >
+    <source src="assets\video\vdo4.mp4" type="video/mp4" />
+  </video>
+
+  <!-- Overlay for readability -->
+  <div class="absolute inset-0 bg-black/50 bg-blend-overlay"></div>
+  <div class="w-[420px] bg-white/15 backdrop-blur-xl p-8 rounded-2xl shadow-2xl animate-fadeIn border border-white/10">
+
+    <h2 class="text-3xl font-extrabold text-center text-white uppercase tracking-wide">
+      Create Account
+    </h2>
+
+    <p class="text-center text-gray-200 text-sm mt-1 mb-6">
+      Join Our ShoeX Hub Community
+    </p>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+
+      <!-- Full Name -->
+      <div class="relative mb-6">
+        <input type="text" formControlName="fullName"
+          class="peer w-full bg-transparent border-b-2 border-gray-400 text-white py-2 px-2 focus:border-yellow-400 outline-none"
+          required>
+        <label
+          class="absolute left-2 top-2 text-gray-300 text-sm pointer-events-none transition-all
+                 peer-focus:-top-3 peer-focus:text-xs peer-focus:text-yellow-400
+                 peer-valid:-top-3 peer-valid:text-xs peer-valid:text-yellow-400">
+          Full Name
+        </label>
+        <p *ngIf="registerForm.controls['fullName'].invalid && registerForm.controls['fullName'].touched"
+           class="text-red-400 text-xs mt-1">
+          <span *ngIf="registerForm.controls['fullName'].errors?.['required']">Name is required</span>
+          <span *ngIf="registerForm.controls['fullName'].errors?.['minlength']">Name must be at least 2 characters</span>
+          <span *ngIf="registerForm.controls['fullName'].errors?.['maxlength']">Name must be less than 50 characters</span>
+        </p>
+      </div>
+
+      <!-- Email -->
+      <div class="relative mb-6">
+        <input type="email" formControlName="email"
+          class="peer w-full bg-transparent border-b-2 border-gray-400 text-white py-2 px-2 focus:border-yellow-400 outline-none"
+          required>
+        <label
+          class="absolute left-2 top-2 text-gray-300 text-sm pointer-events-none transition-all
+                 peer-focus:-top-3 peer-focus:text-xs peer-focus:text-yellow-400
+                 peer-valid:-top-3 peer-valid:text-xs peer-valid:text-yellow-400">
+          Email
+        </label>
+        <p *ngIf="registerForm.controls['email'].invalid && registerForm.controls['email'].touched"
+           class="text-red-400 text-xs mt-1">
+          <span *ngIf="registerForm.controls['email'].errors?.['required']">Email is required</span>
+          <span *ngIf="registerForm.controls['email'].errors?.['email']">Please enter a valid email</span>
+        </p>
+      </div>
+
+      <!-- Mobile -->
+      <div class="relative mb-6">
+        <input type="tel" formControlName="mobile"
+          class="peer w-full bg-transparent border-b-2 border-gray-400 text-white py-2 px-2 focus:border-yellow-400 outline-none"
+          required>
+        <label
+          class="absolute left-2 top-2 text-gray-300 text-sm pointer-events-none transition-all
+                 peer-focus:-top-3 peer-focus:text-xs peer-focus:text-yellow-400
+                 peer-valid:-top-3 peer-valid:text-xs peer-valid:text-yellow-400">
+          Mobile Number
+        </label>
+        <p *ngIf="registerForm.controls['mobile'].invalid && registerForm.controls['mobile'].touched"
+           class="text-red-400 text-xs mt-1">
+          <span *ngIf="registerForm.controls['mobile'].errors?.['required']">Mobile number is required</span>
+          <span *ngIf="registerForm.controls['mobile'].errors?.['pattern']">Please enter a valid 10-digit mobile number</span>
+        </p>
+      </div>
+
+      <!-- Username -->
+      <div class="relative mb-6">
+        <input type="text" formControlName="username"
+          class="peer w-full bg-transparent border-b-2 border-gray-400 text-white py-2 px-2 focus:border-yellow-400 outline-none"
+          required>
+        <label
+          class="absolute left-2 top-2 text-gray-300 text-sm pointer-events-none transition-all
+                 peer-focus:-top-3 peer-focus:text-xs peer-focus:text-yellow-400
+                 peer-valid:-top-3 peer-valid:text-xs peer-valid:text-yellow-400">
+          Username
+        </label>
+        <p *ngIf="registerForm.controls['username'].invalid && registerForm.controls['username'].touched"
+           class="text-red-400 text-xs mt-1">
+          <span *ngIf="registerForm.controls['username'].errors?.['required']">Username is required</span>
+          <span *ngIf="registerForm.controls['username'].errors?.['pattern']">Username must contain only letters and numbers</span>
+          <span *ngIf="registerForm.controls['username'].errors?.['minlength']">Username must be at least 3 characters</span>
+          <span *ngIf="registerForm.controls['username'].errors?.['maxlength']">Username must be less than 20 characters</span>
+          <span *ngIf="registerForm.controls['username'].errors?.['usernameExists']">Username already exists</span>
+        </p>
+      </div>
+
+      <!-- Password -->
+      <div class="relative mb-6">
+        <input type="password" formControlName="password"
+          class="peer w-full bg-transparent border-b-2 border-gray-400 text-white py-2 px-2 focus:border-yellow-400 outline-none"
+          required>
+        <label
+          class="absolute left-2 top-2 text-gray-300 text-sm pointer-events-none transition-all
+                 peer-focus:-top-3 peer-focus:text-xs peer-focus:text-yellow-400
+                 peer-valid:-top-3 peer-valid:text-xs peer-valid:text-yellow-400">
+          Password
+        </label>
+        <p *ngIf="registerForm.controls['password'].invalid && registerForm.controls['password'].touched"
+           class="text-red-400 text-xs mt-1">
+          <span *ngIf="registerForm.controls['password'].errors?.['required']">Password is required</span>
+          <span *ngIf="registerForm.controls['password'].errors?.['minlength']">Password must be at least 6 characters</span>
+          <span *ngIf="registerForm.controls['password'].errors?.['pattern']">Password must contain at least one lowercase letter, one uppercase letter, and one number</span>
+        </p>
+      </div>
+
+
+
+      <button type="submit" [disabled]="registerForm.invalid"
+        class="w-full bg-red-600 text-white py-2 rounded-xl font-semibold hover:opacity-90 hover:-translate-y-1 transition disabled:opacity-70">
+        Sign Up
+      </button>
+    </form>
+
+    <div class="text-center mt-4">
+      <a routerLink="/auth/login" class="text-white text-sm hover:underline text-yellow-200">
+        Already have an account? Login
+      </a>
+    </div>
+
+  </div>
+</div>

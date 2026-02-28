@@ -1,0 +1,142 @@
+<header
+  class="fixed top-4 left-1/2 -translate-x-1/2 w-[92%] md:w-[85%]
+         bg-white/60 backdrop-blur-md border border-gray-200/50
+         shadow-lg rounded-full z-50 transition-all duration-300"
+>
+  <div class="flex items-center justify-between px-6 py-3 md:px-10">
+    
+    <!-- Logo -->
+    <a
+      routerLink="/home"
+      class="text-2xl font-extrabold tracking-wide bg-gradient-to-r from-red-600 to-orange-500 bg-clip-text text-transparent hover:scale-105 transition-transform duration-300"
+    >
+      ShoeX
+    </a>
+
+    <!-- Nav Links -->
+    <nav class="hidden md:flex items-center space-x-8">
+      <a
+        routerLink="/home"
+        class="relative text-gray-700 font-medium hover:text-red-600 transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-red-500 hover:after:w-full after:transition-all after:duration-300"
+      >
+        Home
+      </a>
+      <a
+        routerLink="/about"
+        class="relative text-gray-700 font-medium hover:text-red-600 transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-red-500 hover:after:w-full after:transition-all after:duration-300"
+      >
+        About
+      </a>
+      <a
+        routerLink="/products"
+        class="relative text-gray-700 font-medium hover:text-red-600 transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-red-500 hover:after:w-full after:transition-all after:duration-300"
+      >
+        Products
+      </a>
+      <a
+        routerLink="/contact"
+        class="relative text-gray-700 font-medium hover:text-red-600 transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-red-500 hover:after:w-full after:transition-all after:duration-300"
+      >
+        Contact
+      </a>
+    </nav>
+
+    <!-- Icons + Buttons -->
+    <div class="flex items-center space-x-4 md:space-x-6">
+      
+      <!-- Wishlist -->
+      <button (click)="onWishlistClick()" class="relative group">
+        <i class="fa-solid fa-heart text-[18px] text-gray-700 group-hover:text-red-600 transition-transform duration-300 group-hover:scale-110"></i>
+        <span
+          *ngIf="wishlistItemCount > 0"
+          class="absolute -top-1 -right-2 bg-red-600 text-white text-[10px] px-1.5 rounded-full"
+        >
+          {{ wishlistItemCount }}
+        </span>
+      </button>
+
+      <!-- Cart -->
+      <button (click)="onCartClick()" class="relative group">
+        <i class="fa-solid fa-cart-shopping text-[18px] text-gray-700 group-hover:text-red-600 transition-transform duration-300 group-hover:scale-110"></i>
+        <span
+          *ngIf="cartItemCount > 0"
+          class="absolute -top-1 -right-2 bg-red-600 text-white text-[10px] px-1.5 rounded-full"
+        >
+          {{ cartItemCount }}
+        </span>
+      </button>
+
+      <!-- User Profile -->
+      <a
+        *ngIf="isLoggedIn"
+        routerLink="/profile"
+        class="flex items-center justify-center group"
+        title="My Profile"
+      >
+        <i class="fa-solid fa-user text-[18px] text-gray-700 group-hover:text-red-600 transition-transform duration-300 group-hover:scale-110"></i>
+      </a>
+
+      <!-- Login / Logout -->
+      <a
+        *ngIf="!isLoggedIn"
+        routerLink="/auth/login"
+        class="bg-gradient-to-r from-red-600 to-orange-500 text-white px-4 py-1.5 font-semibold text-xs rounded-full shadow-sm hover:shadow-md hover:scale-105 transition-transform duration-300"
+      >
+        Login
+      </a>
+
+      <button
+        *ngIf="isLoggedIn"
+        (click)="logout()"
+        class="bg-gradient-to-r from-red-600 to-orange-500 text-white px-4 py-1.5 font-semibold text-xs rounded-full shadow-sm hover:shadow-md hover:scale-105 transition-transform duration-300"
+      >
+        Logout
+      </button>
+
+      <!-- Mobile Menu Button -->
+      <button
+        (click)="toggleMenu()"
+        class="md:hidden text-gray-700 hover:text-red-600 focus:outline-none transition-transform duration-300 hover:scale-110"
+      >
+        <i class="fa-solid fa-bars text-lg"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div
+    *ngIf="isMenuOpen"
+    class="md:hidden bg-white/80 backdrop-blur-md border-t border-gray-200 shadow-lg rounded-b-3xl animate-slide-down"
+  >
+    <nav class="flex flex-col px-6 py-4 space-y-3">
+      <a
+        routerLink="/home"
+        (click)="toggleMenu()"
+        class="text-gray-700 font-medium hover:text-red-600 transition"
+      >Home</a>
+      <a
+        routerLink="/about"
+        (click)="toggleMenu()"
+        class="text-gray-700 font-medium hover:text-red-600 transition"
+      >About</a>
+      <a
+        routerLink="/products"
+        (click)="toggleMenu()"
+        class="text-gray-700 font-medium hover:text-red-600 transition"
+      >Products</a>
+      <a
+        routerLink="/contact"
+        (click)="toggleMenu()"
+        class="text-gray-700 font-medium hover:text-red-600 transition"
+      >Contact</a>
+      <a
+        *ngIf="isLoggedIn"
+        routerLink="/profile"
+        (click)="toggleMenu()"
+        class="text-gray-700 font-medium hover:text-red-600 transition"
+      >
+        My Profile
+      </a>
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,109 @@
+can <div class="flex justify-center items-center min-h-screen bg-white to-black px-4 py-16">
+  <div class="bg-white/10 backdrop-blur-lg border border-white/10 shadow-2xl rounded-2xl p-8 w-full max-w-md text-white">
+    
+    <!-- Header -->
+    <h2 class="text-4xl font-extrabold text-center mt-2 mb-10 text-black">
+      Add Delivery Address
+    </h2>
+
+    <!-- Address Form -->
+    <form (submit)="saveAddress()" class="space-y-4">
+      <div>
+        <input
+          type="text"
+          [(ngModel)]="name"
+          name="name"
+          placeholder="Full Name"
+          required
+          (input)="validateName()"
+          [class]="nameError ? 'border-red-500 bg-red-50/10' : 'border-gray-600 bg-white/10'"
+          class="w-full px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:outline-none"/>
+        <div *ngIf="nameError" class="mt-1 text-red-400 text-sm font-semibold flex items-center gap-1">
+          <i class="fa-solid fa-exclamation-triangle"></i> {{ nameError }}
+        </div>
+      </div>
+      <div>
+        <input
+          type="text"
+          [(ngModel)]="phone"
+          name="phone"
+          placeholder="Phone Number"
+          required
+          (input)="validatePhone()"
+          [class]="phoneError ? 'border-red-500 bg-red-50/10' : 'border-gray-600 bg-white/10'"
+          class="w-full px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:outline-none"/>
+        <div *ngIf="phoneError" class="mt-1 text-red-400 text-sm font-semibold flex items-center gap-1">
+          <i class="fa-solid fa-exclamation-triangle"></i> {{ phoneError }}
+        </div>
+      </div>
+
+      <div>
+        <input
+          type="text"
+          [(ngModel)]="street"
+          name="street"
+          placeholder="Street / Apartment"
+          required
+          (input)="validateStreet()"
+          [class]="streetError ? 'border-red-500 bg-red-50/10' : 'border-gray-600 bg-white/10'"
+          class="w-full px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:outline-none"/>
+        <div *ngIf="streetError" class="mt-1 text-red-400 text-sm font-semibold flex items-center gap-1">
+          <i class="fa-solid fa-exclamation-triangle"></i> {{ streetError }}
+        </div>
+      </div>
+
+      <div>
+        <input
+          type="text"
+          [(ngModel)]="city"
+          name="city"
+          placeholder="City"
+          required
+          (input)="validateCity()"
+          [class]="cityError ? 'border-red-500 bg-red-50/10' : 'border-gray-600 bg-white/10'"
+          class="w-full px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:outline-none"/>
+        <div *ngIf="cityError" class="mt-1 text-red-400 text-sm font-semibold flex items-center gap-1">
+          <i class="fa-solid fa-exclamation-triangle"></i> {{ cityError }}
+        </div>
+      </div>
+
+      <div>
+        <input
+          type="text"
+          [(ngModel)]="pincode"
+          name="pincode"
+          placeholder="Pincode"
+          required
+          (input)="validatePincode()"
+          [class]="pincodeError ? 'border-red-500 bg-red-50/10' : 'border-gray-600 bg-white/10'"
+          class="w-full px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:outline-none"/>
+        <div *ngIf="pincodeError" class="mt-1 text-red-400 text-sm font-semibold flex items-center gap-1">
+          <i class="fa-solid fa-exclamation-triangle"></i> {{ pincodeError }}
+        </div>
+      </div>
+
+      <div>
+        <input
+          type="text"
+          [(ngModel)]="state"
+          name="state"
+          placeholder="State"
+          required
+          (input)="validateState()"
+          [class]="stateError ? 'border-red-500 bg-red-50/10' : 'border-gray-600 bg-white/10'"
+          class="w-full px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:outline-none"/>
+        <div *ngIf="stateError" class="mt-1 text-red-400 text-sm font-semibold flex items-center gap-1">
+          <i class="fa-solid fa-exclamation-triangle"></i> {{ stateError }}
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="w-full py-3 bg-red-600 hover:bg-red-700 transition-transform transform hover:scale-[1.03] text-white font-semibold rounded-lg shadow-lg flex items-center justify-center gap-2">
+        <i class="fa-solid fa-location-dot"></i>
+        Deliver Here
+      </button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,276 @@
+<!-- Hero Section -->
+<section class="relative h-screen overflow-hidden">
+ <div class="absolute inset-0">
+  <!-- Background Video -->
+  <video autoplay loop muted playsinline class="w-full h-full object-cover opacity-70">
+    <source src="assets\video\vdo3.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Dark Overlay for Readability -->
+  <div class="absolute inset-0 bg-black/50"></div>
+</div>
+
+
+  <div class="relative z-10 flex flex-col items-center justify-center h-full text-white px-4">
+    <h1 class="text-5xl md:text-7xl font-bold mb-4 drop-shadow-lg">Step into Your Style</h1>
+    <p class="text-xl md:text-2xl mb-8 drop-shadow-md">
+      Premium Branded Sneakers. Unleash Your Confident Walk.
+    </p>
+    <a
+      routerLink="/products"
+      class="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-full font-semibold transition-shadow shadow-lg"
+    >
+      Shop Now
+    </a>
+  </div>
+</section>
+
+
+<!-- offer banner -->
+
+<!-- Marquee Section -->
+<div class="relative bg-gradient-to-r from-yellow-50 via-white to-yellow-50 text-black py-4 overflow-hidden shadow-lg">
+  <div class="marquee whitespace-nowrap text-sm font-bold tracking-wide flex items-center gap-10">
+    <span class="uppercase">⚡ Big Sale Alert: Up To <span class="text-yellow-500 font-extrabold">50% OFF</span> on Sneakers 👟</span>
+    <span class="uppercase">⏳ Hurry Limited Time Sale!</span>
+    <span class="uppercase">🚚 Free Delivery Over <span class="text-yellow-500">₹999</span></span>
+    <span class="uppercase">🆕 Latest Drops In Stock. Cop Your Style!</span>
+    <span class="uppercase">⏳ Hurry Limited Time Sale!</span>
+  </div>
+</div>
+
+<style>
+  @keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+
+  .marquee {
+    display: inline-flex;
+    animation: marquee 20s linear infinite;
+  }
+</style>
+
+
+
+<!--About Section-->
+
+<section class="bg-gray-100 pt-24 pb-16 px-6 md:px-16">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center">
+
+      <!-- Image -->
+      <div class="relative">
+        <img 
+          src="https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg"
+          alt="Sneakers"
+          class="rounded-2xl shadow-lg w-full object-cover max-w-sm"/>
+      </div>
+
+      
+
+      <!-- Text Content -->
+      <div>
+        <h2 class="text-4xl font-semibold text-gray-900 mb-4">
+          We Are <span class="text-red-600">ShoeX Hub</span>
+        </h2>
+        
+        <p class="text-gray-700 leading-relaxed mb-4">
+          Step into a world where style meets comfort. SheoX Hub is built for those who dare to move, chase dreams, 
+          and make bold choices every single day. Our mission is to deliver premium footwear that speaks your personality.
+        </p>
+
+        <p class="text-gray-700 leading-relaxed mb-6">
+          From iconic classics to modern street style, we craft products that elevate your confidence and redefine fashion.
+        </p>
+
+        <div class="space-y-3">
+          <p class="flex items-center gap-3 text-gray-800">
+            <i class="fa-solid fa-shield-halved text-red-600"></i>
+            Top-notch Quality
+          </p>
+          <p class="flex items-center gap-3 text-gray-800">
+            <i class="fa-solid fa-fire text-red-600"></i>
+            Trendy & Stylish Always
+          </p>
+          <p class="flex items-center gap-3 text-gray-800">
+            <i class="fa-solid fa-feather text-red-600"></i>
+            100% Comfort Guarantee
+          </p>
+          <p class="flex items-center gap-3 text-gray-800">
+            <i class="fa-solid fa-truck-fast text-red-600"></i>
+            Fast & Free Shipping Over ₹999
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+<section class="py-12 bg-gray-50 overflow-hidden">
+  <div class="max-w-7xl mx-auto text-center px-6">
+    <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-10">
+      Trusted By Top Companies
+    </h2>
+
+    <div class="relative w-full overflow-hidden">
+      <!-- Animated Logos -->
+      <div class="flex items-center gap-16 animate-scroll">
+        <!-- Logos (repeated for seamless loop) -->
+        <div class="w-28 h-16 flex items-center justify-center bg-white rounded-xl shadow-sm">
+          <img src="assets/logo/fila.jpg" alt="Fila" class="h-10 object-contain grayscale hover:grayscale-0 opacity-80 hover:opacity-100 transition">
+        </div>
+        <div class="w-28 h-16 flex items-center justify-center bg-white rounded-xl shadow-sm">
+          <img src="assets/logo/vans.jpg" alt="Vans" class="h-10 object-contain grayscale hover:grayscale-0 opacity-80 hover:opacity-100 transition">
+        </div>
+        <div class="w-28 h-16 flex items-center justify-center bg-white rounded-xl shadow-sm">
+          <img src="assets/logo/adidas.jpg" alt="Adidas" class="h-10 object-contain grayscale hover:grayscale-0 opacity-80 hover:opacity-100 transition">
+        </div>
+        <div class="w-28 h-16 flex items-center justify-center bg-white rounded-xl shadow-sm">
+          <img src="assets/logo/underarmour.jpg" alt="Under Armour" class="h-10 object-contain grayscale hover:grayscale-0 opacity-80 hover:opacity-100 transition">
+        </div>
+        <div class="w-28 h-16 flex items-center justify-center bg-white rounded-xl shadow-sm">
+          <img src="assets/logo/reebok.jpg" alt="Reebok" class="h-10 object-contain grayscale hover:grayscale-0 opacity-80 hover:opacity-100 transition">
+        </div>
+        <div class="w-28 h-16 flex items-center justify-center bg-white rounded-xl shadow-sm">
+          <img src="assets/logo/puma.jpg" alt="Puma" class="h-10 object-contain grayscale hover:grayscale-0 opacity-80 hover:opacity-100 transition">
+        </div>
+
+        <!-- Repeat same logos for looping effect -->
+        <div class="w-28 h-16 flex items-center justify-center bg-white rounded-xl shadow-sm">
+          <img src="assets/logo/fila.jpg" alt="Fila" class="h-10 object-contain grayscale opacity-80 transition">
+        </div>
+        <div class="w-28 h-16 flex items-center justify-center bg-white rounded-xl shadow-sm">
+          <img src="assets/logo/vans.jpg" alt="Vans" class="h-10 object-contain grayscale opacity-80 transition">
+        </div>
+        <div class="w-28 h-16 flex items-center justify-center bg-white rounded-xl shadow-sm">
+          <img src="assets/logo/adidas.jpg" alt="Adidas" class="h-10 object-contain grayscale opacity-80 transition">
+        </div>
+        <div class="w-28 h-16 flex items-center justify-center bg-white rounded-xl shadow-sm">
+          <img src="assets/logo/underarmour.jpg" alt="Under Armour" class="h-10 object-contain grayscale opacity-80 transition">
+        </div>
+        <div class="w-28 h-16 flex items-center justify-center bg-white rounded-xl shadow-sm">
+          <img src="assets/logo/reebok.jpg" alt="Reebok" class="h-10 object-contain grayscale opacity-80 transition">
+        </div>
+        <div class="w-28 h-16 flex items-center justify-center bg-white rounded-xl shadow-sm">
+          <img src="assets/logo/puma.jpg" alt="Puma" class="h-10 object-contain grayscale opacity-80 transition">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="max-w-7xl mx-auto px-6 py-12">
+  <!-- Header Section -->
+  <div class="flex justify-between items-center mb-8">
+    <h2 class="text-3xl font-bold text-gray-900">Best Shoes Collection</h2>
+    <a routerLink="/products">
+      <button
+        class="flex items-center gap-2 px-5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-full transition">
+        Explore More
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+          stroke-width="2" stroke="currentColor" class="w-4 h-4">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+        </svg>
+      </button>
+    </a>
+  </div>
+
+  <!-- Image Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <!-- Left Image -->
+    <div
+      class="md:col-span-1 overflow-hidden rounded-2xl shadow-lg group cursor-pointer">
+      <img src="assets/products/product2.avif" alt="Basketball Shoe"
+        class="w-full h-full object-cover transform transition duration-500 group-hover:scale-110 group-hover:brightness-90">
+    </div>
+
+    <!-- Middle Image with Overlay -->
+    <div
+      class="relative overflow-hidden rounded-2xl shadow-lg group cursor-pointer">
+      <img src="assets/products/product8.jpg" alt="Sign Up Offer"
+        class="w-full h-full object-cover brightness-75 transform transition duration-500 group-hover:scale-110 group-hover:brightness-90">
+      <div
+        class="absolute inset-0 flex flex-col items-center justify-center text-center text-white font-bold text-2xl transition duration-500 group-hover:scale-105">
+        <p>SIGN UP & GET</p>
+        <p class="text-3xl">25% OFF</p>
+      </div>
+    </div>
+
+    <!-- Right Top and Bottom Grid -->
+    <div class="grid grid-rows-2 gap-6">
+      <div
+        class="overflow-hidden rounded-2xl shadow-lg group cursor-pointer">
+        <img src="assets/products/product6.avif" alt="Running Shoe"
+          class="w-full h-full object-cover transform transition duration-500 group-hover:scale-110 group-hover:brightness-90">
+      </div>
+      <div
+        class="overflow-hidden rounded-2xl shadow-lg group cursor-pointer">
+        <img src="assets/products/product8.avif" alt="Casual Shoe"
+          class="w-full h-full object-cover transform transition duration-500 group-hover:scale-110 group-hover:brightness-90">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Product Grid Wrapper -->
+<section class="mb-20 px-6 md:px-12 lg:px-20">
+  <div class="p-8 bg-gradient-to-b from-white to-gray-50 rounded-3xl shadow-sm">
+    <!-- Heading Row -->
+    <div class="flex items-center justify-between mb-10">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900">
+        New Arrival
+      </h2>
+      <a
+        routerLink="/products"
+        class="text-sm font-semibold text-gray-600 hover:text-red-500 transition-all duration-300"
+      >
+        ALL PRODUCTS →
+      </a>
+    </div>
+
+    <!-- Product Grid -->
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 place-items-center"
+    >
+      <div
+        *ngFor="let product of products"
+        (click)="viewDetails(product.id)"
+        class="group relative bg-white border border-gray-100 rounded-2xl shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-pointer w-full max-w-xs overflow-hidden"
+      >
+        <!-- Product Image -->
+        <div class="relative overflow-hidden">
+          <img
+            [src]="product.imageUrl"
+            [alt]="product.name"
+            class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        </div>
+
+        <!-- Info Section -->
+        <div class="p-5 text-center relative h-24">
+          <!-- Default Text -->
+          <div
+            class="transition-all duration-300 group-hover:opacity-0 group-hover:translate-y-2"
+          >
+            <h3 class="text-lg font-semibold text-gray-900 truncate">
+              {{ product.name }}
+            </h3>
+            <p class="text-sm text-gray-500">
+              {{ product.brand }}
+            </p>
+          </div>
+
+          <!-- Hover Text -->
+          <div
+            class="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300"
+          >
+            <p class="text-red-600 font-semibold text-base">View Details</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

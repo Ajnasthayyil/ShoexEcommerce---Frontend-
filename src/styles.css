@@ -1,0 +1,131 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+section {
+  position: relative;
+}
+
+/* Common style for slides */
+.bg-cover {
+  animation-duration: 12s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+}
+
+/* Slide 1 */
+.animate-slide1 {
+  animation-name: slider1;
+  
+}
+
+/* Slide 2 */
+.animate-slide2 {
+  animation-name: slider2;
+}
+
+/* Slide 3 */
+.animate-slide3 {
+  animation-name: slider3;
+  
+}
+
+/* Keyframes */
+@keyframes slider1 {
+  0%, 8% { opacity: 1 }
+  33% { opacity: 0 }
+  100% { opacity: 0 }
+}
+
+@keyframes slider2 {
+  0%, 33% { opacity: 0 }
+  41%, 66% { opacity: 1 }
+  100% { opacity: 0 }
+}
+
+@keyframes slider3 {
+  0%, 66% { opacity: 0 }
+  74%, 100% { opacity: 1 }
+}
+
+
+/* logo animation */
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  display: flex;
+  width: calc(200%); 
+  animation: scroll 20s linear infinite;
+}
+
+/* toster message style  */
+.toast-top-right {
+  top: 12px;
+  right: 12px;
+  z-index: 9999 !important; 
+}
+
+/*  Customize Toastr Colors */
+
+.toast-success {
+  background-color: #43813c !important; /* green for success */
+  color: #e3e6e5 !important;
+}
+
+.toast-error {
+  background-color: #b42d2d !important; /* red for error */
+  color: #d1cccc !important;
+}
+
+.toast-info {
+  background-color: #145783 !important; /* blue for info */
+  color: #d1cccc !important;
+}
+
+.toast-warning {
+  background-color: #d5c40a !important; /* yellow for warning */
+  color: #78350f !important;
+}
+
+body { @apply bg-gray-50; }
+
+@keyframes marquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+.animate-marquee {
+  display: inline-block;
+  animation: marquee 15s linear infinite;
+}
+*{
+}

@@ -1,0 +1,21 @@
+/* Horizontal scroll animation for orders */
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-scroll {
+  display: flex;
+  animation: scroll 20s linear infinite;
+}
+
+/* Ensure each order box has a minimum width */
+.animate-scroll > div {
+  min-width: 200px; 
+  margin-right: 1rem;
+}
+
+/* Product image styling */
+.animate-scroll img {
+  border-radius: 0.5rem;
+}
