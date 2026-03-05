@@ -31,6 +31,10 @@ export class CartComponent implements OnInit {
     // ✅ Single subscription is enough
     this.cartService.cartItems$.subscribe(items => {
       this.cartItems = items;
+      // Auto-select all items by default if none are selected yet
+      if (this.selectedItems.size === 0 && items.length > 0) {
+        items.forEach(item => this.selectedItems.add(item.product.id));
+      }
       console.log('Cart items now:', this.cartItems);
     });
   }
@@ -39,6 +43,7 @@ export class CartComponent implements OnInit {
   removeItem(item: CartItem) {
     if (item.cartItemId) {
       this.cartService.removeFromCart(item.cartItemId);
+      this.selectedItems.delete(item.product.id);
       this.toastService.success('Product successfully removed from cart');
     } else {
       this.toastService.error('Error removing item: Invalid cart item id');

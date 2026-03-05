@@ -1,109 +1,228 @@
-can <div class="flex justify-center items-center min-h-screen bg-white to-black px-4 py-16">
-  <div class="bg-white/10 backdrop-blur-lg border border-white/10 shadow-2xl rounded-2xl p-8 w-full max-w-md text-white">
-    
-    <!-- Header -->
-    <h2 class="text-4xl font-extrabold text-center mt-2 mb-10 text-black">
-      Add Delivery Address
-    </h2>
+<div class="min-h-screen bg-white text-gray-900 pb-32 pt-32 animate-fadeIn">
 
-    <!-- Address Form -->
-    <form (submit)="saveAddress()" class="space-y-4">
-      <div>
-        <input
-          type="text"
-          [(ngModel)]="name"
-          name="name"
-          placeholder="Full Name"
-          required
-          (input)="validateName()"
-          [class]="nameError ? 'border-red-500 bg-red-50/10' : 'border-gray-600 bg-white/10'"
-          class="w-full px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:outline-none"/>
-        <div *ngIf="nameError" class="mt-1 text-red-400 text-sm font-semibold flex items-center gap-1">
-          <i class="fa-solid fa-exclamation-triangle"></i> {{ nameError }}
-        </div>
-      </div>
-      <div>
-        <input
-          type="text"
-          [(ngModel)]="phone"
-          name="phone"
-          placeholder="Phone Number"
-          required
-          (input)="validatePhone()"
-          [class]="phoneError ? 'border-red-500 bg-red-50/10' : 'border-gray-600 bg-white/10'"
-          class="w-full px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:outline-none"/>
-        <div *ngIf="phoneError" class="mt-1 text-red-400 text-sm font-semibold flex items-center gap-1">
-          <i class="fa-solid fa-exclamation-triangle"></i> {{ phoneError }}
-        </div>
+  <div class="max-w-5xl mx-auto px-6">
+
+    <!-- Hero Header -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 relative">
+      <div class="absolute -top-24 -left-20 w-96 h-96 bg-red-500/5 rounded-full blur-3xl -z-10"></div>
+
+      <div class="space-y-4">
+        <h2 class="text-xs font-black text-red-600 uppercase tracking-[0.4em] animate-fadeInUp">Checkout Journey</h2>
+        <h1 class="text-4xl md:text-6xl font-black text-gray-900 tracking-tighter animate-slideInUp">
+          Delivery <span
+            class="bg-clip-text text-transparent bg-gradient-to-r from-red-600 to-orange-500">Destinations</span>
+        </h1>
+        <p class="text-gray-400 font-bold text-lg leading-relaxed max-w-xl animate-fadeIn"
+          style="animation-delay: 0.2s">
+          Select your preferred delivery point or add a new one to complete your order.
+        </p>
       </div>
 
-      <div>
-        <input
-          type="text"
-          [(ngModel)]="street"
-          name="street"
-          placeholder="Street / Apartment"
-          required
-          (input)="validateStreet()"
-          [class]="streetError ? 'border-red-500 bg-red-50/10' : 'border-gray-600 bg-white/10'"
-          class="w-full px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:outline-none"/>
-        <div *ngIf="streetError" class="mt-1 text-red-400 text-sm font-semibold flex items-center gap-1">
-          <i class="fa-solid fa-exclamation-triangle"></i> {{ streetError }}
+      <button (click)="continueToCheckout()"
+        class="group relative overflow-hidden px-10 py-5 bg-gray-900 rounded-[2rem] font-black uppercase tracking-[0.2em] text-[10px] text-white shadow-2xl transition-all active:scale-95 flex items-center gap-3 animate-fadeIn"
+        style="animation-delay: 0.3s">
+        <div
+          class="absolute inset-0 bg-gradient-to-r from-red-600 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
         </div>
-      </div>
-
-      <div>
-        <input
-          type="text"
-          [(ngModel)]="city"
-          name="city"
-          placeholder="City"
-          required
-          (input)="validateCity()"
-          [class]="cityError ? 'border-red-500 bg-red-50/10' : 'border-gray-600 bg-white/10'"
-          class="w-full px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:outline-none"/>
-        <div *ngIf="cityError" class="mt-1 text-red-400 text-sm font-semibold flex items-center gap-1">
-          <i class="fa-solid fa-exclamation-triangle"></i> {{ cityError }}
-        </div>
-      </div>
-
-      <div>
-        <input
-          type="text"
-          [(ngModel)]="pincode"
-          name="pincode"
-          placeholder="Pincode"
-          required
-          (input)="validatePincode()"
-          [class]="pincodeError ? 'border-red-500 bg-red-50/10' : 'border-gray-600 bg-white/10'"
-          class="w-full px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:outline-none"/>
-        <div *ngIf="pincodeError" class="mt-1 text-red-400 text-sm font-semibold flex items-center gap-1">
-          <i class="fa-solid fa-exclamation-triangle"></i> {{ pincodeError }}
-        </div>
-      </div>
-
-      <div>
-        <input
-          type="text"
-          [(ngModel)]="state"
-          name="state"
-          placeholder="State"
-          required
-          (input)="validateState()"
-          [class]="stateError ? 'border-red-500 bg-red-50/10' : 'border-gray-600 bg-white/10'"
-          class="w-full px-4 py-3 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:outline-none"/>
-        <div *ngIf="stateError" class="mt-1 text-red-400 text-sm font-semibold flex items-center gap-1">
-          <i class="fa-solid fa-exclamation-triangle"></i> {{ stateError }}
-        </div>
-      </div>
-
-      <!-- Submit Button -->
-      <button
-        type="submit"
-        class="w-full py-3 bg-red-600 hover:bg-red-700 transition-transform transform hover:scale-[1.03] text-white font-semibold rounded-lg shadow-lg flex items-center justify-center gap-2">
-        <i class="fa-solid fa-location-dot"></i>
-        Deliver Here
+        <span class="relative z-10">Proceed to Checkout</span>
+        <i class="fa-solid fa-arrow-right relative z-10 transition-transform group-hover:translate-x-2"></i>
       </button>
-    </form>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoadingList" class="flex flex-col items-center justify-center py-24 animate-pulse">
+      <div class="w-20 h-20 border-4 border-gray-100 border-t-red-600 rounded-full animate-spin mb-6"></div>
+      <p class="text-xs font-black uppercase tracking-widest text-gray-400">Retrieving secure addresses...</p>
+    </div>
+
+    <!-- Saved Addresses Grid -->
+    <div *ngIf="!isLoadingList && addresses.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
+      <div *ngFor="let addr of addresses"
+        class="group relative p-8 bg-gray-50/50 rounded-[2.5rem] border border-gray-100 hover:border-gray-200 hover:bg-white hover:shadow-2xl hover:shadow-gray-200/50 transition-all duration-500 animate-fadeInUp"
+        [ngClass]="{'border-red-500/20 bg-red-50/30': addr.isDefault}">
+
+        <!-- Default Badge -->
+        <div *ngIf="addr.isDefault"
+          class="absolute top-6 right-6 px-4 py-2 bg-gray-900 text-[9px] font-black tracking-widest text-white rounded-full shadow-lg z-10">
+          DEFAULT
+        </div>
+
+        <div class="relative z-10 h-full flex flex-col">
+          <div class="mb-6 flex items-center gap-4">
+            <div
+              class="w-12 h-12 bg-white rounded-2xl shadow-sm flex items-center justify-center text-gray-400 group-hover:text-red-600 transition-colors duration-500">
+              <i class="fa-solid fa-user-circle text-xl"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-black text-gray-900 leading-none mb-1 uppercase">{{ addr.fullName }}</h3>
+              <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                <i class="fa-solid fa-phone text-[8px]"></i> +91 {{ addr.phoneNumber }}
+              </p>
+            </div>
+          </div>
+
+          <div class="flex-grow space-y-2 mb-8 ml-1">
+            <p class="text-gray-500 font-bold leading-relaxed">{{ addr.street }}</p>
+            <p class="text-gray-900 font-black tracking-tight text-lg">
+              {{ addr.city }}, {{ addr.state }} - {{ addr.pincode }}
+            </p>
+          </div>
+
+          <div class="flex items-center justify-between pt-6 border-t border-gray-100/50">
+            <button *ngIf="!addr.isDefault" (click)="setDefaultAddress(addr.id)"
+              class="text-[10px] font-black uppercase tracking-widest text-red-600 hover:text-red-700 transition-colors pt-2 border-b-2 border-transparent hover:border-red-100">
+              Set as Default
+            </button>
+            <span *ngIf="addr.isDefault"
+              class="text-[10px] font-black uppercase tracking-widest text-green-500 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+              Active Target
+            </span>
+
+            <div class="flex gap-4">
+              <button (click)="editAddress(addr)"
+                class="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-900 hover:shadow-lg transition-all active:scale-95 shadow-sm">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button>
+              <button (click)="deleteAddress(addr.id)"
+                class="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-gray-400 hover:text-red-600 hover:shadow-lg transition-all active:scale-95 shadow-sm">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Premium Empty State -->
+    <div *ngIf="!isLoadingList && addresses.length === 0"
+      class="text-center py-24 bg-gray-50/50 rounded-[3rem] border-2 border-dashed border-gray-100 mb-24 animate-fadeIn">
+      <div
+        class="w-32 h-32 bg-white rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-gray-200/50">
+        <i class="fa-solid fa-map-location-dot text-5xl text-gray-200"></i>
+      </div>
+      <h3 class="text-2xl font-black text-gray-900 uppercase tracking-tight mb-4">No Destinations Found</h3>
+      <p class="text-gray-400 font-bold max-w-sm mx-auto leading-relaxed">Your delivery list is currently empty. Use the
+        form below to add your first premium shipping address.</p>
+    </div>
+
+    <!-- High-Fidelity Address Form -->
+    <div
+      class="bg-white p-10 rounded-[3.5rem] shadow-2xl shadow-gray-200/50 border-2 border-gray-200 relative animate-slideInUp"
+      style="animation-delay: 0.4s">
+      <div class="absolute top-0 right-0 p-12 overflow-hidden rounded-[3.5rem] pointer-events-none opacity-5">
+        <i class="fa-solid" [ngClass]="isEditing ? 'fa-pen-to-square' : 'fa-house-circle-check'"
+          class="text-[15rem] rotate-12 text-gray-400"></i>
+      </div>
+
+      <div class="relative mb-12 flex justify-between items-center">
+        <div>
+          <h3 class="text-3xl font-black text-gray-900 tracking-tight uppercase mb-2">
+            {{ isEditing ? 'Refine Address' : 'New Destination' }}
+          </h3>
+          <p class="text-gray-400 font-bold">Please ensure all shipping details are precise for high-priority delivery.
+          </p>
+        </div>
+        <button *ngIf="isEditing" (click)="cancelEdit()"
+          class="px-6 py-2 bg-gray-50 text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-red-600 rounded-full transition-all active:scale-95 border border-gray-100">
+          Cancel Edit
+        </button>
+      </div>
+
+      <form [formGroup]="addressForm" (ngSubmit)="onSubmitAddress()" class="relative z-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+
+          <!-- Full Name -->
+          <div class="space-y-3">
+            <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-2">Recipient Full
+              Name</label>
+            <div class="relative group">
+              <input type="text" formControlName="fullName" placeholder="e.g. Johnathan Smith"
+                class="w-full py-5 pl-6 pr-6 bg-gray-50 border-2 border-transparent rounded-2xl font-bold text-gray-900 focus:bg-white focus:border-red-500/20 focus:ring-4 focus:ring-red-500/5 transition-all outline-none"
+                [ngClass]="{'border-red-500/20 ring-4 ring-red-500/5 bg-white': f['fullName'].invalid && f['fullName'].touched}" />
+            </div>
+          </div>
+
+          <!-- Phone -->
+          <div class="space-y-3">
+            <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-2">Contact Number</label>
+            <div class="relative group">
+              <span class="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 font-black">+91</span>
+              <input type="tel" formControlName="phoneNumber" placeholder="9876543210" maxlength="10"
+                class="w-full py-5 pl-16 pr-6 bg-gray-50 border-2 border-transparent rounded-2xl font-bold text-gray-900 focus:bg-white focus:border-red-500/20 focus:ring-4 focus:ring-red-500/5 transition-all outline-none"
+                [ngClass]="{'border-red-500/20 ring-4 ring-red-500/5 bg-white': f['phoneNumber'].invalid && f['phoneNumber'].touched}" />
+            </div>
+          </div>
+
+          <!-- Street -->
+          <div class="md:col-span-2 space-y-3">
+            <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-2">Avenue / Street /
+              Apartment</label>
+            <div class="relative group">
+              <input type="text" formControlName="street" placeholder="e.g. 52nd Luxury Avenue, Suite 402"
+                class="w-full py-5 pl-6 pr-6 bg-gray-50 border-2 border-transparent rounded-2xl font-bold text-gray-900 focus:bg-white focus:border-red-500/20 focus:ring-4 focus:ring-red-500/5 transition-all outline-none"
+                [ngClass]="{'border-red-500/20 ring-4 ring-red-500/5 bg-white': f['street'].invalid && f['street'].touched}" />
+            </div>
+          </div>
+
+          <!-- City -->
+          <div class="space-y-3">
+            <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-2">City</label>
+            <div class="relative group">
+              <input type="text" formControlName="city" placeholder="e.g. Metropolitan"
+                class="w-full py-5 pl-6 pr-6 bg-gray-50 border-2 border-transparent rounded-2xl font-bold text-gray-900 focus:bg-white focus:border-red-500/20 focus:ring-4 focus:ring-red-500/5 transition-all outline-none"
+                [ngClass]="{'border-red-500/20 ring-4 ring-red-500/5 bg-white': f['city'].invalid && f['city'].touched}" />
+            </div>
+          </div>
+
+          <!-- State -->
+          <div class="space-y-3">
+            <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-2">State / Province</label>
+            <div class="relative group">
+              <input type="text" formControlName="state" placeholder="e.g. Coastline Region"
+                class="w-full py-5 pl-6 pr-6 bg-gray-50 border-2 border-transparent rounded-2xl font-bold text-gray-900 focus:bg-white focus:border-red-500/20 focus:ring-4 focus:ring-red-500/5 transition-all outline-none"
+                [ngClass]="{'border-red-500/20 ring-4 ring-red-500/5 bg-white': f['state'].invalid && f['state'].touched}" />
+            </div>
+          </div>
+
+          <!-- Pincode -->
+          <div class="space-y-3">
+            <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-2">Postal Index Code</label>
+            <div class="relative group">
+              <input type="text" formControlName="pincode" placeholder="6 Digits" maxlength="6"
+                class="w-full py-5 pl-6 pr-6 bg-gray-50 border-2 border-transparent rounded-2xl font-bold text-gray-900 focus:bg-white focus:border-red-500/20 focus:ring-4 focus:ring-red-500/5 transition-all outline-none"
+                [ngClass]="{'border-red-500/20 ring-4 ring-red-500/5 bg-white': f['pincode'].invalid && f['pincode'].touched}" />
+            </div>
+          </div>
+
+          <!-- Is Default Checkbox -->
+          <div class="flex items-center md:col-span-2 pt-4">
+            <label class="relative flex items-center cursor-pointer group">
+              <input type="checkbox" formControlName="isDefault" class="sr-only peer">
+              <div
+                class="w-14 h-7 bg-gray-100 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:after:w-6 after:w-6 after:transition-all peer-checked:bg-red-600">
+              </div>
+              <span
+                class="ml-4 text-[10px] font-black uppercase tracking-widest text-gray-400 group-hover:text-gray-900 transition-colors">Set
+                as Prime Delivery Point</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Form Submit -->
+        <div class="flex justify-end pt-8 border-t border-gray-100">
+          <button type="submit" [disabled]="isSubmitting"
+            class="group relative overflow-hidden px-12 py-6 bg-gray-900 disabled:bg-gray-200 rounded-[2.5rem] font-black uppercase tracking-[0.3em] text-[10px] text-white shadow-2xl transition-all active:scale-95 flex items-center gap-4">
+            <div
+              class="absolute inset-0 bg-gradient-to-r from-red-600 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            </div>
+            <i class="fa-solid fa-spinner fa-spin relative z-10" *ngIf="isSubmitting"></i>
+            <span class="relative z-10">{{ isEditing ? 'Seal Changes' : 'Secure Address' }}</span>
+            <i class="fa-solid relative z-10" [ngClass]="isEditing ? 'fa-check-double' : 'fa-shield-heart'"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+
   </div>
 </div>

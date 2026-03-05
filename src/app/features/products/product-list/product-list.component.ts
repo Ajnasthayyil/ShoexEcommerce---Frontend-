@@ -6,6 +6,7 @@ import { CartService } from 'src/app/core/services/cart.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ProductService } from 'src/app/core/services/product.service';
 import { WishlistService } from 'src/app/core/services/wishlist.service';
+import { SizeService, Size } from 'src/app/core/services/size.service';
 
 @Component({
   selector: 'app-product-list',
@@ -21,6 +22,7 @@ export class ProductListComponent implements OnInit {
   searchQuery: string = '';
   wishlistIds: Set<number> = new Set();
   isAddingToCart: boolean = false;
+  sizesLookup: Map<number, string> = new Map();
 
   constructor(
     private route: ActivatedRoute,
@@ -29,17 +31,21 @@ export class ProductListComponent implements OnInit {
     private cartService: CartService,
     private authService: AuthService,
     private productService: ProductService,
-    private wishlistService: WishlistService
-  ) {}
+    private wishlistService: WishlistService,
+    private sizeService: SizeService
+  ) { }
 
   ngOnInit(): void {
-    this.productService.getProducts().subscribe(products => {
-      this.products = products;
-      this.filteredProducts = [...this.products];
-      this.route.queryParams.subscribe(params => {
-        this.searchQuery = params['search']?.toLowerCase() || '';
-        this.applyFilters();
-      });
+    // First fetch sizes dictionary so we can map them when product loads
+    this.sizeService.getAll().subscribe({
+      next: (sizes) => {
+        sizes.forEach((s: Size) => this.sizesLookup.set(Number(s.id), s.name));
+        this.loadProducts();
+      },
+      error: (err) => {
+        console.error('Failed to load sizes', err);
+        this.loadProducts(); // load anyway just in case
+      }
     });
 
     // Subscribe to wishlist changes for reactive UI updates
@@ -48,9 +54,47 @@ export class ProductListComponent implements OnInit {
     });
   }
 
+  private loadProducts(): void {
+    this.productService.getProducts().subscribe(products => {
+      this.products = products;
+
+      // Map numeric size IDs to physical text sizes for all loaded products
+      this.products.forEach(product => {
+        if (product.sizeIds) {
+          product.mappedSizes = product.sizeIds.map(sizeId => {
+            const numId = Number(sizeId);
+            return {
+              id: numId,
+              name: this.sizesLookup.get(numId) || numId.toString()
+            };
+          }).sort((a, b) => a.id - b.id);
+        }
+      });
+
+      this.filteredProducts = [...this.products];
+      this.route.queryParams.subscribe(params => {
+        this.searchQuery = params['search']?.toLowerCase() || '';
+        this.applyFilters();
+      });
+    });
+  }
+
   applyFilters() {
     this.filteredProducts = this.products.filter(product => {
-      const genderMatch = this.selectedGender ? product.gender === this.selectedGender : true;
+      let genderMatch = true;
+      if (this.selectedGender) {
+        const productGender = (product.gender || '').toLowerCase();
+        const selected = this.selectedGender.toLowerCase();
+
+        // Handle alias matching (Men -> Male, Women -> Female)
+        if (selected === 'men') {
+          genderMatch = productGender === 'men' || productGender === 'male';
+        } else if (selected === 'women') {
+          genderMatch = productGender === 'women' || productGender === 'female';
+        } else {
+          genderMatch = productGender === selected;
+        }
+      }
 
       let priceMatch = true;
       switch (this.selectedPriceRange) {
@@ -67,7 +111,7 @@ export class ProductListComponent implements OnInit {
 
       const searchMatch = this.searchQuery
         ? product.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-          product.brand.toLowerCase().includes(this.searchQuery.toLowerCase())
+        product.brand.toLowerCase().includes(this.searchQuery.toLowerCase())
         : true;
 
       return genderMatch && priceMatch && searchMatch;
@@ -106,45 +150,29 @@ export class ProductListComponent implements OnInit {
     }
   }
 
-  addToCart(item: Product): void {
-    if (!this.authService.isLoggedIn()) {
-      this.toastr.warning('User not logged in');
-      this.router.navigate(['/auth/login']);
-      return;
-    }
-    if (this.isAddingToCart) return; // Prevent multiple clicks
-    this.isAddingToCart = true;
-    this.cartService.addToCart(item);
-    this.toastr.success(`${item.name} added to cart!`);
-    setTimeout(() => {
-      this.isAddingToCart = false;
-    }, 1000); // Reset after 1 second
-  }
-
   isInWishlist(item: Product): boolean {
     return this.wishlistIds.has(item.id);
   }
 
-// pagination for product list
+  // pagination for product list
 
-currentPage: number = 1;
-itemsPerPage: number = 8; // show 8 per page
+  currentPage: number = 1;
+  itemsPerPage: number = 8; // show 8 per page
 
-get totalPages(): number {
-  return Math.ceil(this.filteredProducts.length / this.itemsPerPage);
-}
-
-get paginatedProducts(): Product[] {
-  const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-  const endIndex = startIndex + this.itemsPerPage;
-  return this.filteredProducts.slice(startIndex, endIndex);
-}
-
-changePage(page: number) {
-  if (page >= 1 && page <= this.totalPages) {
-    this.currentPage = page;
-    window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top on page change
+  get totalPages(): number {
+    return Math.ceil(this.filteredProducts.length / this.itemsPerPage);
   }
-}
 
+  get paginatedProducts(): Product[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.filteredProducts.slice(startIndex, endIndex);
+  }
+
+  changePage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top on page change
+    }
+  }
 }

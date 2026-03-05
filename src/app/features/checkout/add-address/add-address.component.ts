@@ -1,130 +1,175 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AddressService, AddressDto, AddAddressDto } from 'src/app/core/services/address.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-address',
   templateUrl: './add-address.component.html'
 })
-export class AddAddressComponent {
-  name: string = '';
-  phone: string = '';
-  street: string = '';
-  city: string = '';
-  pincode: string = '';
-  state: string = '';
-  nameError: string = '';
-  phoneError: string = '';
-  streetError: string = '';
-  cityError: string = '';
-  pincodeError: string = '';
-  stateError: string = '';
+export class AddAddressComponent implements OnInit {
+  addresses: AddressDto[] = [];
+  addressForm!: FormGroup;
 
-  constructor(private router: Router) {}
+  isEditing = false;
+  editingId: number | null = null;
 
-  saveAddress() {
-    this.clearErrors();
-    let isValid = true;
+  isLoadingList = false;
+  isSubmitting = false;
 
-    if (!this.name.trim()) {
-      this.nameError = 'Please enter your full name.';
-      isValid = false;
-    }
-    if (!this.phone.trim() || !/^\d{10}$/.test(this.phone.trim())) {
-      this.phoneError = 'Please enter a valid 10-digit phone number.';
-      isValid = false;
-    }
-    if (!this.street.trim()) {
-      this.streetError = 'Please enter your street address.';
-      isValid = false;
-    }
-    if (!this.city.trim()) {
-      this.cityError = 'Please enter your city.';
-      isValid = false;
-    }
-    if (!this.pincode.trim() || !/^\d{6}$/.test(this.pincode.trim())) {
-      this.pincodeError = 'Please enter a valid 6-digit pincode.';
-      isValid = false;
-    }
-    if (!this.state.trim()) {
-      this.stateError = 'Please enter your state.';
-      isValid = false;
-    }
+  constructor(
+    private fb: FormBuilder,
+    private addressService: AddressService,
+    private toastr: ToastrService,
+    private router: Router
+  ) { }
 
-    if (!isValid) {
+  ngOnInit() {
+    this.initForm();
+    this.loadAddresses();
+  }
+
+  initForm() {
+    // Exact strict regex patterns requested by C# backend
+    const startsWithLetter = '^[A-Za-z][A-Za-z0-9\\s,.-]*$';
+
+    this.addressForm = this.fb.group({
+      fullName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100), Validators.pattern(startsWithLetter)]],
+      phoneNumber: ['', [Validators.required, Validators.pattern('^[6-9]\\d{9}$')]],
+      street: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(200), Validators.pattern(startsWithLetter)]],
+      city: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50), Validators.pattern(startsWithLetter)]],
+      state: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50), Validators.pattern(startsWithLetter)]],
+      pincode: ['', [Validators.required, Validators.pattern('^\\d{6}$')]],
+      isDefault: [false]
+    });
+  }
+
+  loadAddresses() {
+    this.isLoadingList = true;
+    this.addressService.getAddresses().subscribe({
+      next: (res) => {
+        // Handle varying possible nested API array returns flexibly
+        this.addresses = res.data || res || [];
+        this.isLoadingList = false;
+      },
+      error: (err) => {
+        this.toastr.error('Failed to load saved addresses', 'Error');
+        this.isLoadingList = false;
+      }
+    });
+  }
+
+  // Getters for form controls to simplify HTML template access
+  get f() { return this.addressForm.controls; }
+
+  onSubmitAddress() {
+    if (this.addressForm.invalid) {
+      this.addressForm.markAllAsTouched();
       return;
     }
 
-    const address = {
-      name: this.name.trim(),
-      phone: this.phone.trim(),
-      street: this.street.trim(),
-      city: this.city.trim(),
-      pincode: this.pincode.trim(),
-      state: this.state.trim()
-    };
+    this.isSubmitting = true;
+    const dto: AddAddressDto = this.addressForm.value;
 
-    localStorage.setItem('userAddress', JSON.stringify(address));
-    this.router.navigate(['/checkout']);
-  }
-
-  clearErrors() {
-    this.nameError = '';
-    this.phoneError = '';
-    this.streetError = '';
-    this.cityError = '';
-    this.pincodeError = '';
-    this.stateError = '';
-  }
-
-  validateName() {
-    if (!this.name.trim()) {
-      this.nameError = 'Please enter your full name.';
+    if (this.isEditing && this.editingId) {
+      this.addressService.updateAddress(this.editingId, dto).subscribe({
+        next: () => {
+          this.toastr.success('Address updated successfully!', 'Address Saved');
+          this.resetForm();
+          this.loadAddresses();
+          this.isSubmitting = false;
+        },
+        error: (err) => {
+          this.toastr.error(err.error?.message || err.error || 'Failed to update address', 'Update Error');
+          this.isSubmitting = false;
+        }
+      });
     } else {
-      this.nameError = '';
+      this.addressService.addAddress(dto).subscribe({
+        next: () => {
+          this.toastr.success('New address added successfully!', 'Address Saved');
+          this.resetForm();
+          this.loadAddresses();
+          this.isSubmitting = false;
+        },
+        error: (err) => {
+          this.toastr.error(err.error?.message || err.error || 'Failed to capture new address', 'Add Error');
+          this.isSubmitting = false;
+        }
+      });
     }
   }
 
-  validatePhone() {
-    if (!this.phone.trim() || !/^\d{10}$/.test(this.phone.trim())) {
-      this.phoneError = 'Please enter a valid 10-digit phone number.';
-    } else {
-      this.phoneError = '';
+  editAddress(address: AddressDto) {
+    this.isEditing = true;
+    this.editingId = address.id;
+    this.addressForm.patchValue({
+      fullName: address.fullName,
+      phoneNumber: address.phoneNumber,
+      street: address.street,
+      city: address.city,
+      state: address.state,
+      pincode: address.pincode,
+      isDefault: address.isDefault
+    });
+
+    // Smooth scroll back to form input area
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  cancelEdit() {
+    this.resetForm();
+  }
+
+  resetForm() {
+    this.isEditing = false;
+    this.editingId = null;
+    this.addressForm.reset({ isDefault: false });
+  }
+
+  deleteAddress(id: number) {
+    if (confirm('Are you sure you want to permanently delete this address?')) {
+      this.addressService.deleteAddress(id).subscribe({
+        next: () => {
+          this.toastr.success('Address removed from your profile', 'Deleted');
+          this.loadAddresses();
+        },
+        error: (err) => {
+          this.toastr.error(err.error?.message || 'Failed to delete address', 'Error');
+        }
+      });
     }
   }
 
-  validateStreet() {
-    if (!this.street.trim()) {
-      this.streetError = 'Please enter your street address.';
-    } else {
-      this.streetError = '';
-    }
+  setDefaultAddress(id: number) {
+    this.addressService.setDefaultAddress(id).subscribe({
+      next: () => {
+        this.toastr.success('Default delivery address updated!', 'Success');
+        this.loadAddresses();
+      },
+      error: (err) => {
+        this.toastr.error(err.error?.message || 'Failed to update default address', 'Error');
+      }
+    });
   }
 
-  validateCity() {
-    if (!this.city.trim()) {
-      this.cityError = 'Please enter your city.';
-    } else {
-      this.cityError = '';
-    }
-  }
+  continueToCheckout() {
+    const defaultAddress = this.addresses.find(a => a.isDefault);
 
-  validatePincode() {
-    if (!this.pincode.trim() || !/^\d{6}$/.test(this.pincode.trim())) {
-      this.pincodeError = 'Please enter a valid 6-digit pincode.';
+    if (defaultAddress) {
+      localStorage.setItem('selectedAddressId', defaultAddress.id.toString());
+      this.router.navigate(['/checkout']);
+    } else if (this.addresses.length > 0) {
+      // If none set to default, safely pick the first one from their list
+      localStorage.setItem('selectedAddressId', this.addresses[0].id.toString());
+      this.toastr.info('Using your first available address for checkout.', 'Note');
+      this.router.navigate(['/checkout']);
     } else {
-      this.pincodeError = '';
-    }
-  }
-
-  validateState() {
-    if (!this.state.trim()) {
-      this.stateError = 'Please enter your state.';
-    } else {
-      this.stateError = '';
+      this.toastr.warning('Please add and save a delivery address before continuing to checkout.', 'Address Required');
     }
   }
 }
-
 
 
 

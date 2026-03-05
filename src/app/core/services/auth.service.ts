@@ -25,11 +25,40 @@ export class AuthService {
         if (!res?.isSuccess) {
           return throwError(() => new Error(res?.message || 'Login failed'));
         }
+
+        const token = res.data?.accessToken || res.data?.token;
+
         // IMPORTANT: send cookies here too
-        return this.http.get<any>(`${this.apiUrl}/Auth/my-profile`, opts);
+        return this.http.get<any>(`${this.apiUrl}/Auth/my-profile`, opts).pipe(
+          map(profileRes => {
+            const profile = profileRes.data || profileRes;
+            if (token) {
+              profile.token = token;
+              // Decode token to extract human-readable role
+              try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                // The role claim key depends on the backend generation, often URLs
+                const roleKey = Object.keys(payload).find(k => k.endsWith('role'));
+                if (roleKey && payload[roleKey]) {
+                  profile.role = payload[roleKey];
+                } else {
+                  // Fallback based on RoleId mapping
+                  profile.role = profile.roleId === 1 ? 'Admin' : 'User';
+                }
+              } catch (e) {
+                profile.role = profile.roleId === 1 ? 'Admin' : 'User';
+              }
+            } else {
+              profile.role = profile.roleId === 1 ? 'Admin' : 'User';
+            }
+            return profile;
+          })
+        );
       }),
-      map(profileRes => profileRes.data || profileRes),
-      catchError(err => throwError(() => err))
+      catchError(err => {
+        const msg = err.error?.message || err.message || 'Login failed';
+        return throwError(() => new Error(msg));
+      })
     );
   }
 
@@ -74,6 +103,69 @@ export class AuthService {
         return res;
       }),
       catchError(err => throwError(() => err))
+    );
+  }
+
+  updateProfile(formData: FormData): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/Auth/update-profile`, formData, { withCredentials: true }).pipe(
+      map(res => {
+        if (!res.isSuccess) {
+          throw new Error(res.message || 'Failed to update profile');
+        }
+        return res;
+      }),
+      catchError(err => throwError(() => err))
+    );
+  }
+
+  forgotPassword(formData: FormData): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/Auth/forgot-password`, formData).pipe(
+      map(res => {
+        if (!res.isSuccess && !res.message) {
+          throw new Error('Failed to send OTP');
+        } else if (!res.isSuccess) {
+          throw new Error(res.message);
+        }
+        return res;
+      }),
+      catchError(err => {
+        const msg = err.error?.message || err.message || 'Failed to send OTP';
+        return throwError(() => new Error(msg));
+      })
+    );
+  }
+
+  verifyOtp(dto: { email: string; otp: string }): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/Auth/verify-otp`, dto).pipe(
+      map(res => {
+        if (!res.isSuccess && !res.message) {
+          throw new Error('Failed to verify OTP');
+        } else if (!res.isSuccess) {
+          throw new Error(res.message);
+        }
+        return res;
+      }),
+      catchError(err => {
+        const msg = err.error?.message || err.message || 'Failed to verify OTP';
+        return throwError(() => new Error(msg));
+      })
+    );
+  }
+
+  resetPassword(dto: { email: string; otp: string; resetToken: string; newPassword: string }): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/Auth/reset-password`, dto).pipe(
+      map(res => {
+        if (!res.isSuccess && !res.message) {
+          throw new Error('Failed to reset password');
+        } else if (!res.isSuccess) {
+          throw new Error(res.message);
+        }
+        return res;
+      }),
+      catchError(err => {
+        const msg = err.error?.message || err.message || 'Failed to reset password';
+        return throwError(() => new Error(msg));
+      })
     );
   }
 

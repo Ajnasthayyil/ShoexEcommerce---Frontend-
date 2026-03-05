@@ -1,82 +1,228 @@
-<div class="min-h-screen bg-gray-50 py-20 px-6">
-  <div *ngIf="orders.length; else noOrders" class="max-w-4xl mx-auto">
-    <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-10">
-      My Orders <i class="fa-solid fa-bag-shopping text-red-600"></i>
+<div class="min-h-screen bg-gray-50/50 py-16 px-6 animate-fadeIn">
+
+  <!-- Page Header -->
+  <div class="max-w-4xl mx-auto text-center mb-12">
+    <h2 class="text-4xl font-extrabold text-gray-900 mb-2">
+      Order History <span class="text-red-600 ml-1">#</span>
     </h2>
-
-    <div
-      *ngFor="let item of orders"
-      class="order-card bg-white rounded-2xl shadow-md border border-gray-100 p-5 mb-10"
-    >
-      <!-- Product Info -->
-      <div class="flex items-center mb-6">
-        <img
-          [src]="item.product.imageUrl"
-          alt="{{ item.product.name }}"
-          class="w-24 h-24 object-cover rounded-xl border border-gray-200"
-        />
-        <div class="ml-6">
-          <h3 class="text-lg font-semibold text-gray-900">{{ item.product.name }}</h3>
-          <p class="text-gray-600 mt-1">₹{{ item.product.price }}</p>
-          <p class="text-gray-500 text-sm mt-1">Quantity: {{ item.quantity }}</p>
-        </div>
-      </div>
-
-      <!-- Cancel Button -->
-      <div class="flex justify-end mb-4" *ngIf="canCancel(item)">
-        <button
-          (click)="cancelOrder(item)"
-          class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold shadow transition"
-        >
-          Cancel Order
-        </button>
-      </div>
-
-      <!-- Order Status Bar -->
-      <div class="flex items-center justify-between w-full">
-        <ng-container *ngFor="let step of orderSteps; let i = index">
-          <div class="flex-1 flex items-center">
-            <div
-              class="w-6 h-6 rounded-full border-2 flex items-center justify-center"
-              [ngClass]="{
-                'bg-green-500 border-green-500 text-white': i <= getStatusIndex(item.status),
-                'bg-gray-200 border-gray-300': i > getStatusIndex(item.status)
-              }"
-            >
-            <i *ngIf="i <= getStatusIndex(item.status || 'pending')" class="fas fa-check text-white text-xs"></i>
-            </div>
-            <span class="text-xs ml-2 mr-4">{{ step.name }}</span>
-
-            <div
-              *ngIf="i < orderSteps.length - 1"
-              class="flex-1 h-1"
-              [ngClass]="{
-                'bg-green-500': i < getStatusIndex(item.status),
-                'bg-gray-300': i >= getStatusIndex(item.status)
-              }"
-            ></div>
-          </div>
-        </ng-container>
-      </div>
-
-      <!-- Optional Status Timestamp -->
-      <p class="text-sm text-gray-500 mt-4">
-        Status: <span class="font-semibold">{{ item.status | titlecase }}</span>
-      </p>
-    </div>
+    <p class="text-gray-500 font-medium">Track and manage your recent purchases</p>
   </div>
 
-  <!-- No Orders Template -->
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="flex flex-col justify-center items-center py-24 gap-4">
+    <div class="w-12 h-12 border-4 border-red-100 border-t-red-600 rounded-full animate-spin"></div>
+    <p class="text-gray-500 font-semibold animate-pulse">Fetching your orders...</p>
+  </div>
+
+  <!-- Loaded State -->
+  <ng-container *ngIf="!isLoading">
+
+    <!-- Orders Available View -->
+    <div *ngIf="orders.length > 0; else noOrders" class="max-w-4xl mx-auto space-y-10">
+
+      <!-- Individual Order Card -->
+      <div *ngFor="let order of orders"
+        class="group bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8 hover:shadow-xl hover:shadow-red-500/5 transition-all duration-500 relative overflow-hidden">
+
+        <!-- Decorative accent -->
+        <div
+          class="absolute top-0 right-0 w-32 h-32 bg-red-50 rounded-full -translate-y-1/2 translate-x-1/2 opacity-40 group-hover:scale-110 transition-transform duration-700">
+        </div>
+
+        <!-- Order Header (ID, Date, Total, Cancel logic) -->
+        <div
+          class="flex flex-col md:flex-row justify-between items-start md:items-center pb-6 mb-8 border-b border-gray-50 relative">
+          <div>
+            <div class="flex items-center gap-3 mb-1">
+              <h3 class="text-xl font-bold text-gray-900">Order #{{ order.orderId }}</h3>
+              <span
+                class="px-3 py-1 bg-gray-100 text-gray-600 text-[10px] font-bold uppercase tracking-widest rounded-full">
+                {{ order.createdOn | date:'MMM d, y' }}
+              </span>
+            </div>
+            <p class="text-sm text-gray-400 font-medium">Payment Method: <span class="text-gray-600">{{
+                order.paymentMethod || 'Credit Card' }}</span></p>
+          </div>
+
+          <div class="mt-6 md:mt-0 flex flex-col items-end gap-3 text-right">
+            <div class="flex flex-col">
+              <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Grand Total</span>
+              <p class="text-3xl font-black tracking-tight text-gray-900">₹{{ order.totalAmount }}</p>
+            </div>
+            <button *ngIf="canCancel(order)" (click)="cancelOrder(order)"
+              class="group/btn flex items-center gap-2 text-xs font-bold text-red-500 hover:text-white transition-all uppercase border border-red-100 hover:bg-red-500 hover:border-red-500 rounded-xl px-4 py-2 bg-red-50/50">
+              <i class="fa-solid fa-ban group-hover/btn:rotate-90 transition-transform"></i>
+              Cancel Order
+            </button>
+          </div>
+        </div>
+
+        <!-- Order Items List -->
+        <div class="grid grid-cols-1 gap-6 mb-10">
+          <div *ngFor="let item of order.items"
+            class="flex items-center gap-6 p-4 rounded-2xl hover:bg-gray-50/80 transition-colors border border-transparent hover:border-gray-100 group/item">
+            <div class="relative overflow-hidden rounded-2xl shadow-sm border border-gray-100">
+              <img [src]="item.productImageUrl" alt="{{ item.productName }}"
+                class="w-24 h-24 object-cover transform transition-transform duration-500 group-hover/item:scale-110" />
+              <div
+                class="absolute top-1 right-1 bg-white/90 backdrop-blur-sm shadow-sm px-2 py-0.5 rounded-lg text-[10px] font-bold text-red-600">
+                x{{ item.quantity }}
+              </div>
+            </div>
+
+            <div class="flex-1">
+              <h4
+                class="font-bold text-gray-900 text-lg decoration-red-500 decoration-2 group-hover/item:underline underline-offset-4 transition-all">
+                {{ item.productName }}</h4>
+              <div class="flex items-center gap-4 mt-2">
+                <span class="flex items-center gap-1.5 text-xs font-bold text-gray-400 uppercase tracking-wider">
+                  Size <span class="bg-gray-900 text-white px-2 py-0.5 rounded-md text-[10px]">{{ item.sizeName
+                    }}</span>
+                </span>
+                <span class="w-1 h-1 bg-gray-200 rounded-full"></span>
+                <span class="text-sm font-bold text-gray-600">₹{{ item.unitPrice }}</span>
+              </div>
+            </div>
+
+            <div class="text-right hidden sm:block">
+              <p class="text-xl font-black text-gray-900">₹{{ item.totalPrice }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modern Status Tracker -->
+        <div class="bg-gray-50/80 rounded-[2rem] p-8 border border-gray-100 shadow-inner relative overflow-hidden">
+
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+            <p class="text-xs font-black text-gray-400 uppercase tracking-[0.2em]">Fulfillment Progress</p>
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full animate-pulse"
+                [ngClass]="{'bg-red-500': order.status?.toLowerCase() === 'cancelled', 'bg-green-500': order.status?.toLowerCase() === 'delivered', 'bg-blue-500': order.status?.toLowerCase() !== 'cancelled' && order.status?.toLowerCase() !== 'delivered'}"></span>
+              <span class="text-sm font-black uppercase tracking-widest"
+                [ngClass]="{'text-red-500': order.status?.toLowerCase() === 'cancelled', 'text-green-600': order.status?.toLowerCase() === 'delivered', 'text-blue-600': order.status?.toLowerCase() !== 'cancelled' && order.status?.toLowerCase() !== 'delivered'}">
+                {{ order.status | titlecase }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Progress Timeline -->
+          <div *ngIf="order.status?.toLowerCase() !== 'cancelled'"
+            class="relative pt-2 pb-8 px-2 overflow-x-auto custom-scrollbar">
+            <div class="min-w-[500px] flex items-center justify-between relative">
+
+              <!-- Background Rail -->
+              <div class="absolute top-[15px] left-0 right-0 h-1 bg-gray-200 rounded-full"></div>
+
+              <!-- Active Progress Line -->
+              <div
+                class="absolute top-[15px] left-0 h-1 bg-gradient-to-r from-green-400 to-green-600 rounded-full transition-all duration-1000 shadow-[0_0_10px_rgba(34,197,94,0.3)]"
+                [style.width.%]="(getStatusIndex(order.status) / (orderSteps.length - 2)) * 100"></div>
+
+              <ng-container *ngFor="let step of orderSteps; let i = index">
+                <!-- Skip cancelled step in linear view -->
+                <div *ngIf="step.key !== 'cancelled'"
+                  class="flex-1 flex flex-col items-center relative z-10 group/step">
+
+                  <!-- Connection Point -->
+                  <div
+                    class="w-8 h-8 rounded-full border-4 flex items-center justify-center bg-white transition-all duration-500 shadow-sm relative group-hover/step:scale-110"
+                    [ngClass]="{'border-green-500 bg-green-500 text-white': i <= getStatusIndex(order.status), 'border-gray-200 text-gray-300': i > getStatusIndex(order.status)}">
+
+                    <i *ngIf="i <= getStatusIndex(order.status)" class="fas fa-check text-[10px]"></i>
+                    <div *ngIf="i > getStatusIndex(order.status)" class="w-1.5 h-1.5 rounded-full bg-gray-300"></div>
+
+                    <!-- Tooltip -->
+                    <div
+                      class="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-gray-900 text-white text-[10px] font-bold rounded-lg opacity-0 group-hover/step:opacity-100 transition-opacity whitespace-nowrap shadow-xl border border-white/10 pointer-events-none">
+                      {{ step.name }}
+                      <div
+                        class="absolute top-full left-1/2 -translate-x-1/2 border-x-4 border-x-transparent border-t-4 border-t-gray-900">
+                      </div>
+                    </div>
+                  </div>
+
+                  <span
+                    class="text-[9px] font-black mt-3 uppercase tracking-widest text-center transition-colors duration-300"
+                    [ngClass]="{'text-green-700': i <= getStatusIndex(order.status), 'text-gray-400': i > getStatusIndex(order.status)}">
+                    {{ step.name }}
+                  </span>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+
+          <!-- Cancelled State Visual -->
+          <div *ngIf="order.status?.toLowerCase() === 'cancelled'"
+            class="flex flex-col items-center justify-center py-6 bg-red-50/50 rounded-2xl border border-red-100">
+            <div class="w-12 h-12 bg-red-100 text-red-500 rounded-full flex items-center justify-center mb-3">
+              <i class="fa-solid fa-circle-xmark text-2xl"></i>
+            </div>
+            <p class="text-red-700 font-bold">This order was cancelled and is no longer active.</p>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </ng-container>
+
+  <!-- Empty State -->
   <ng-template #noOrders>
-    <div class="flex flex-col items-center justify-center min-h-[60vh] text-gray-600">
-      <h2 class="text-2xl font-semibold mb-3">You have no orders yet !!</h2>
-      <p class="text-sm mb-6">Start shopping and your orders will appear here.</p>
-      <a
-        routerLink="/products"
-        class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-full font-semibold shadow transition"
-      >
+    <div
+      class="flex flex-col items-center justify-center py-32 text-center bg-white rounded-[3rem] shadow-sm border border-gray-100 p-16 max-w-2xl mx-auto animate-fadeIn relative overflow-hidden">
+
+      <div
+        class="absolute top-0 right-0 w-64 h-64 bg-red-50 rounded-full blur-3xl opacity-20 -translate-y-1/2 translate-x-1/2">
+      </div>
+
+      <div class="w-32 h-32 bg-gray-50 rounded-full flex items-center justify-center mb-8 shadow-inner relative group">
+        <i
+          class="fa-solid fa-box-open text-5xl text-gray-300 group-hover:scale-110 transition-transform duration-500"></i>
+        <div
+          class="absolute -top-2 -right-2 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center font-bold text-xs animate-bounce">
+          !</div>
+      </div>
+
+      <h2 class="text-3xl font-black text-gray-900 mb-3 tracking-tight">Your cart feels lonely...</h2>
+      <p class="text-gray-500 mb-10 max-w-sm leading-relaxed font-medium">Looks like you haven't made your first
+        purchase. Explore our collection and find something you love!</p>
+
+      <a routerLink="/products"
+        class="group bg-gray-900 hover:bg-red-600 active:scale-95 text-white px-10 py-4 rounded-2xl font-black shadow-2xl transition-all flex items-center gap-3 tracking-widest uppercase text-xs">
         Browse Products
+        <i class="fa-solid fa-arrow-right text-sm group-hover:translate-x-2 transition-transform"></i>
       </a>
     </div>
   </ng-template>
+
+  <!-- Premium Confirmation Modal -->
+  <div *ngIf="orderToCancel"
+    class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-gray-900/80 backdrop-blur-md transition-all duration-300">
+    <div
+      class="bg-white rounded-[2.5rem] shadow-2xl max-w-md w-full p-10 transform scale-100 opacity-100 border border-white/20 animate-slideInUp">
+
+      <div class="flex items-center justify-center w-20 h-20 rounded-full bg-red-50 mx-auto mb-8 animate-pulse">
+        <i class="fa-solid fa-triangle-exclamation text-red-500 text-3xl"></i>
+      </div>
+
+      <h3 class="text-2xl font-black text-center text-gray-900 mb-3 uppercase tracking-tight">Cancel Order?</h3>
+      <p class="text-center text-gray-500 font-medium mb-10 leading-relaxed">
+        Are you sure you want to cancel <span class="text-gray-900 font-black">Order #{{ orderToCancel.orderId
+          }}</span>?
+        This action is permanent and cannot be reversed.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4">
+        <button (click)="closeCancelModal()"
+          class="flex-1 order-2 sm:order-1 px-6 py-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-black rounded-2xl transition-all uppercase text-[10px] tracking-[0.2em]">
+          No, Go Back
+        </button>
+        <button (click)="confirmCancel()"
+          class="flex-1 order-1 sm:order-2 px-6 py-4 bg-red-600 hover:bg-red-700 text-white font-black rounded-2xl shadow-xl shadow-red-500/20 transition-all uppercase text-[10px] tracking-[0.2em] transform active:scale-95">
+          Yes, Cancel
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

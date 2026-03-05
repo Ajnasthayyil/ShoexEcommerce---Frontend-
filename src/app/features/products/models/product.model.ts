@@ -10,6 +10,9 @@ export interface Product {
   wished?: boolean;
   availableSizes: string[];
   sizeIds?: number[];
+  sizes?: { id: number, name: string }[];
+  mappedSizes?: { id: number, name: string }[];
+  sizeStocks?: { [key: number]: number };
   gender: string;
   genderId?: number;
   isActive?: boolean;

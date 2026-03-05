@@ -1,119 +1,144 @@
-<div class="min-h-screen bg-white rounded-2xl shadow-md p-6">
-  <h2 class="text-2xl font-bold text-red-600 mb-6">
-    Orders Management
-  </h2>
+<div class="min-h-screen bg-white rounded-3xl shadow-lg p-8 relative animate-fadeIn">
 
-  <!-- Orders Table Card -->
+  <!-- Header (Sticky) -->
+  <div class="flex justify-between items-center mb-4 border-b border-gray-200 pb-4 bg-white z-20 sticky top-0">
+    <h2 class="text-2xl font-bold text-red-600 flex items-center gap-2">
+      <i class="fa-solid fa-cart-shopping"></i>
+      Orders Management
+    </h2>
+
+    <div class="flex gap-4">
+    </div>
+  </div>
+
+  <!-- Filters and Search -->
+  <div class="mb-6 flex flex-wrap gap-4 items-center bg-gray-50 p-4 rounded-2xl border border-gray-100 shadow-sm">
+    <div class="flex-1 min-w-[200px]">
+      <label class="block text-sm font-medium text-gray-700 mb-1 pl-1">Search Orders</label>
+      <div class="relative">
+        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        <input type="text" [(ngModel)]="searchText" (input)="applyFilters()"
+          placeholder="Search by ID, Customer or Product..."
+          class="w-full border border-gray-300 pl-10 pr-4 py-2 rounded-xl focus:ring-2 focus:ring-red-200 outline-none transition bg-white shadow-inner" />
+      </div>
+    </div>
+
+    <div class="min-w-[180px]">
+      <label class="block text-sm font-medium text-gray-700 mb-1 pl-1">Status Filter</label>
+      <select [(ngModel)]="selectedStatus" (change)="applyFilters()"
+        class="w-full border border-gray-300 px-4 py-2 rounded-xl focus:ring-2 focus:ring-red-200 outline-none transition bg-white cursor-pointer shadow-inner">
+        <option value="">All Statuses</option>
+        <option *ngFor="let status of pieChartLabels" [value]="status">{{ status }}</option>
+      </select>
+    </div>
+
+    <div class="self-end pb-0.5">
+      <button (click)="clearFilters()"
+        class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-5 py-2 rounded-xl font-medium transition shadow-sm flex items-center gap-2">
+        <i class="fa-solid fa-filter-circle-xmark"></i>
+        Reset
+      </button>
+    </div>
+  </div>
+
+  <!-- Scrollable Table Container -->
   <div
-    class="bg-white rounded-2xl shadow-xl p-6 mb-10 overflow-x-auto border border-red-100 transition-transform transform hover:scale-[1.01]">
-    <table class="min-w-full border border-gray-200 rounded-lg">
-      <thead class="bg-gradient-to-r from-red-100 to-orange-100 text-red-700 uppercase text-sm font-semibold">
+    class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 overflow-y-auto max-h-[65vh] mb-10 custom-scrollbar">
+    <table class="min-w-full">
+      <thead
+        class="bg-gradient-to-r from-red-100 to-orange-100 text-red-700 uppercase text-xs font-bold sticky top-0 z-10">
         <tr>
-          <th class="py-3 px-4 text-left">Order ID</th>
-          <th class="py-3 px-4 text-left">Customer</th>
-          <th class="py-3 px-4 text-left">Product</th>
-          <th class="py-3 px-4 text-left">Price</th>
-          <th class="py-3 px-4 text-left">Quantity</th>
-          <th class="py-3 px-4 text-left">Total</th>
-          <th class="py-3 px-4 text-left">Status</th>
-          <th class="py-3 px-4 text-left">Action</th>
+          <th class="py-4 px-4 text-left cursor-pointer rounded-tl-xl" (click)="sortBy('orderId')">
+            Order ID <span class="text-xs" *ngIf="sortField === 'orderId'">{{ sortDir === 'asc' ? '↑' : '↓' }}</span>
+          </th>
+          <th class="py-4 px-4 text-left cursor-pointer" (click)="sortBy('customerName')">
+            Customer <span class="text-xs" *ngIf="sortField === 'customerName'">{{ sortDir === 'asc' ? '↑' : '↓'
+              }}</span>
+          </th>
+          <th class="py-4 px-4 text-left cursor-pointer" (click)="sortBy('productName')">
+            Product <span class="text-xs" *ngIf="sortField === 'productName'">{{ sortDir === 'asc' ? '↑' : '↓' }}</span>
+          </th>
+          <th class="py-4 px-4 text-left">Price</th>
+          <th class="py-4 px-4 text-left">Qty</th>
+          <th class="py-4 px-4 text-left cursor-pointer" (click)="sortBy('total')">
+            Total <span class="text-xs" *ngIf="sortField === 'total'">{{ sortDir === 'asc' ? '↑' : '↓' }}</span>
+          </th>
+          <th class="py-4 px-4 text-left">Status</th>
+          <th class="py-4 px-4 text-center rounded-tr-xl">Action</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let order of orders" class="border-t hover:bg-red-50 transition-all duration-300">
-          <td class="py-3 px-4 font-medium">{{ order.orderId }}</td>
-          <td class="py-3 px-4">{{ order.customerName }}</td>
-          <td class="py-3 px-4">{{ order.productName }}</td>
-          <td class="py-3 px-4">{{ order.price | currency: 'INR' }}</td>
-          <td class="py-3 px-4">{{ order.quantity }}</td>
-          <td class="py-3 px-4 font-semibold">
-            {{ order.total | currency: 'INR' }}
+        <tr *ngFor="let order of filteredOrders"
+          class="border-t border-gray-50 hover:bg-red-50/40 transition-all duration-200 group">
+          <td class="py-4 px-4 font-bold text-gray-900">#{{ order.orderId }}</td>
+          <td class="py-4 px-4 font-medium text-gray-700">{{ order.customerName }}</td>
+          <td class="py-4 px-4 text-gray-600 text-sm italic">{{ order.productName }}</td>
+          <td class="py-4 px-4 text-gray-600">{{ order.price | currency : "INR" }}</td>
+          <td class="py-4 px-4"><span class="bg-gray-100 px-2 py-0.5 rounded font-mono">{{ order.quantity }}</span></td>
+          <td class="py-4 px-4 font-bold text-gray-900 border-r border-gray-50">{{ order.total | currency : "INR" }}
           </td>
-          <td class="py-3 px-4">
-            <div class="relative">
+          <td class="py-4 px-4 min-w-[160px]">
+            <div class="relative group/select">
               <select [(ngModel)]="order.status"
-                class="appearance-none border border-red-200 px-3 py-1.5 pr-8 rounded-lg bg-red-50 text-red-900 font-medium focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-200 cursor-pointer shadow-sm w-full">
-                <option value="Ordered" class="bg-white">Ordered</option>
-                <option value="Packed" class="bg-white">Packed</option>
-                <option value="Shipped" class="bg-white">Shipped</option>
-                <option value="Delivered" class="bg-white">Delivered</option>
-                <option value="Cancelled" class="bg-white">Cancelled</option>
+                class="appearance-none border border-gray-200 w-full px-3 py-1.5 pr-8 rounded-lg bg-gray-50 text-gray-800 text-sm font-semibold focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all cursor-pointer shadow-sm hover:border-red-300">
+                <option value="Ordered">Ordered</option>
+                <option value="UnderProcess">Under Process</option>
+                <option value="Packed">Packed</option>
+                <option value="Shipped">Shipped</option>
+                <option value="Delivered">Delivered</option>
+                <option value="Cancelled">Cancelled</option>
               </select>
-              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-red-700">
-                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd"
-                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                    clip-rule="evenodd" />
-                </svg>
+              <div
+                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400 group-hover/select:text-red-500">
+                <i class="fa-solid fa-chevron-down text-[10px]"></i>
               </div>
             </div>
           </td>
-          <td class="py-3 px-4 text-center">
+          <td class="py-4 px-4 text-center">
             <button
-              class="flex items-center justify-center bg-gradient-to-r from-red-600 to-orange-500 text-white p-2 rounded-full shadow-md hover:scale-110 hover:shadow-orange-500/50 hover:shadow-lg transition-all duration-300"
-              (click)="updateOrderStatus(order)" title="Save Status">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
-                stroke="currentColor" class="w-5 h-5">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
-              </svg>
+              class="w-10 h-10 flex items-center justify-center bg-white border border-gray-200 text-gray-800 rounded-full shadow-sm hover:bg-red-600 hover:text-white hover:border-red-600 hover:scale-110 transition-all duration-300 mx-auto"
+              (click)="updateOrderStatus(order)" title="Save Order Status">
+              <i class="fa-solid fa-floppy-disk"></i>
             </button>
+          </td>
+        </tr>
+
+        <!-- Empty Results -->
+        <tr *ngIf="filteredOrders.length === 0">
+          <td colspan="8" class="py-20 text-center text-gray-400">
+            <i class="fa-solid fa-box-open text-5xl mb-4 block opacity-20"></i>
+            <p class="text-lg">No orders found matching your criteria.</p>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <div
-    class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 transition-transform transform hover:scale-[1.01] animate-fadeIn relative overflow-hidden">
-    <!-- Decorative background ring -->
+  <!-- Analytics Section (Integrated) -->
+  <div class="bg-gray-50 rounded-3xl p-8 border border-gray-100 relative overflow-hidden shadow-inner">
     <div
-      class="absolute inset-0 bg-gradient-to-tr from-red-50 via-orange-50 to-transparent opacity-60 rounded-2xl blur-2xl">
+      class="absolute top-0 right-0 w-64 h-64 bg-red-100 rounded-full blur-3xl opacity-20 -translate-y-1/2 translate-x-1/2">
     </div>
 
-    <h2 class="relative text-2xl font-extrabold text-center text-gray-800 mb-8 tracking-wide uppercase">
-      <span
-        class="inline-block bg-gradient-to-r from-red-500 via-orange-400 to-red-500 bg-clip-text text-transparent animate-pulse">
-        Order Status Overview
-      </span>
-    </h2>
+    <h3 class="text-xl font-extrabold text-gray-800 mb-8 border-l-4 border-red-500 pl-4">
+      Order Fulfillment Statistics
+    </h3>
 
-    <div class="relative flex flex-col md:flex-row items-center justify-center gap-12 md:gap-16 z-10">
-      <!-- Left Legend with motion arrow -->
-      <div class="flex flex-col gap-4 text-sm text-gray-600 md:w-1/3 animate-slideInLeft">
-        <div class="flex items-center gap-3 text-red-500 font-semibold mb-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 animate-bounce" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
-          </svg>
-          <span class="text-gray-700">Order Flow Status</span>
-        </div>
-
+    <div class="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-20">
+      <!-- Legend -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full lg:w-1/3">
         <div *ngFor="let label of pieChartLabels; let i = index"
-          class="flex items-center gap-3 hover:translate-x-2 transition-transform duration-300">
-          <span class="w-4 h-4 rounded-full shadow-md border border-gray-200" [style.background]="getColor(i)"></span>
-          <span class="font-medium">{{ label }}</span>
+          class="flex items-center gap-4 bg-white p-3 rounded-2xl shadow-sm border border-gray-50 hover:translate-x-1 transition-transform">
+          <span class="w-4 h-4 rounded-lg shadow-inner" [style.background]="getColor(i)"></span>
+          <span class="font-bold text-gray-700 text-sm">{{ label }}</span>
         </div>
       </div>
 
-      <!-- Center Pie Chart -->
-      <div
-        class="relative md:w-1/2 flex justify-center items-center animate-fadeInSlow hover:scale-105 transition-transform duration-300"
-        style="max-width: 420px;">
-        <!-- Glowing ring background -->
-        <div
-          class="absolute w-80 h-80 bg-gradient-to-tr from-red-100 via-orange-100 to-transparent rounded-full blur-3xl opacity-50 animate-pulse">
-        </div>
-
+      <!-- Donut Chart -->
+      <div class="relative w-full max-w-[350px] flex justify-center items-center">
         <canvas baseChart [data]="pieChartData" [type]="pieChartType" [options]="pieChartOptions"></canvas>
-
-        <!-- Rotating arrow indicator -->
-        <div class="absolute top-1/2 right-[-20px] transform -translate-y-1/2 animate-spin-slow">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="orange"
-            class="w-6 h-6 drop-shadow-md">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-          </svg>
-        </div>
       </div>
     </div>
   </div>
+
+</div>

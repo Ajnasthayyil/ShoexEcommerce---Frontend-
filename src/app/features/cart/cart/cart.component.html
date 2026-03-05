@@ -1,104 +1,210 @@
-<div class="cart-container px-6 py-10 bg-gray-50 min-h-screen pt-24">
-  <div class="flex items-center justify-center mb-10">
-    <h2 class="text-3xl font-bold text-gray-900 flex items-center gap-3">
-      <i class="fa-solid fa-cart-shopping text-red-500"></i>
-      My Cart
-    </h2>
-  </div>
-  
+<div class="min-h-screen bg-gray-50/50 py-16 px-6 animate-fadeIn pt-32">
+  <div class="max-w-7xl mx-auto">
 
-  <!-- Cart Items -->
-  <div class="space-y-6">
-    <div
-      class="cart-item flex items-center justify-between bg-white rounded-2xl shadow-md p-4 hover:shadow-lg transition-all border border-gray-100"
-      *ngFor="let item of cartItems">
-
-      <!-- Checkbox for Selection -->
-      <input
-        type="checkbox"
-        [checked]="isSelected(item.product.id)"
-        (change)="toggleSelection(item.product.id)"
-        class="mr-4 accent-red-600 scale-125">
-
-      <!-- Product Image -->
-      <img
-        [src]="item.product.imageUrl"
-        alt="{{ item.product.name }}"
-        class="w-24 h-24 object-cover rounded-lg border border-gray-200"/>
-
-      <!-- Product Info -->
-      <div class="flex-1 ml-6">
-        <h3 class="text-lg font-semibold text-gray-900 truncate">
-          {{ item.product.name }}
-        </h3>
-        <p class="text-sm text-gray-500 mt-1">₹{{ item.product.price }}</p>
-        <div class="flex items-center mt-1">
-          <span class="text-sm text-gray-600 mr-2">Qty:</span>
-          <button
-            (click)="decrementQuantity(item)"
-            class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-2 py-1 rounded-l text-sm">-</button>
-          <span class="px-3 py-1 bg-gray-100 text-sm">{{ item.quantity }}</span>
-          <button
-            (click)="incrementQuantity(item)"
-            class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-2 py-1 rounded-r text-sm">+</button>
-        </div>
-        <div class="mt-2">
-          <label class="text-sm text-gray-600">Size:</label>
-          <select
-            [value]="item.size"
-            (change)="updateSize(item, $event)"
-            class="ml-2 px-2 py-1 border border-gray-300 rounded text-sm">
-            <option *ngFor="let size of item.product.availableSizes" [value]="size">{{ size }}</option>
-          </select>
-        </div>
-        <p class="text-sm text-gray-600 mt-1">Gender: {{ item.product.gender }}</p>
+    <!-- Page Header -->
+    <div class="flex items-center justify-between mb-12">
+      <div class="flex flex-col">
+        <h2 class="text-4xl font-extrabold text-gray-900 flex items-center gap-4 tracking-tight">
+          Shopping Bag <span class="text-red-500 font-black">/</span>
+        </h2>
+        <p class="text-gray-500 font-medium mt-1">Review your items before proceeding to checkout</p>
       </div>
-      <!-- Remove Button -->
-      <button
-        (click)="removeItem(item)"
-        class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition-colors">
-        Remove
-      </button>
+      <div class="hidden md:flex items-center gap-2 px-6 py-2 bg-white rounded-2xl shadow-sm border border-gray-100">
+        <span class="text-xs font-black text-gray-400 uppercase tracking-widest">Total Items</span>
+        <span class="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center font-black text-sm">{{
+          cartItems.length }}</span>
+      </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div *ngIf="cartItems.length > 0; else noOrders" class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+      <!-- Cart Items Section (Left Column) -->
+      <div class="lg:col-span-8 space-y-6">
+        <div *ngFor="let item of cartItems"
+          class="group bg-white rounded-[2rem] shadow-sm border border-gray-100 p-6 hover:shadow-xl hover:shadow-red-500/5 transition-all duration-500 flex flex-col sm:flex-row items-center gap-6 relative overflow-hidden">
+
+          <!-- Background Decor -->
+          <div
+            class="absolute top-0 right-0 w-24 h-24 bg-red-50 rounded-full -translate-y-1/2 translate-x-1/2 opacity-30 group-hover:scale-125 transition-transform duration-700">
+          </div>
+
+          <!-- Selection Checkbox -->
+          <div class="flex-shrink-0">
+            <label class="relative flex items-center cursor-pointer">
+              <input type="checkbox" [checked]="isSelected(item.product.id)" (change)="toggleSelection(item.product.id)"
+                class="sr-only peer">
+              <div
+                class="w-7 h-7 bg-gray-100 border-2 border-gray-200 rounded-lg peer-checked:bg-red-600 peer-checked:border-red-600 transition-all flex items-center justify-center">
+                <i
+                  class="fa-solid fa-check text-white text-[10px] transform scale-0 peer-checked:scale-100 transition-transform"></i>
+              </div>
+            </label>
+          </div>
+
+          <!-- Product Image -->
+          <div class="w-32 h-32 flex-shrink-0 relative overflow-hidden rounded-2xl shadow-sm border border-gray-100">
+            <img [src]="item.product.imageUrl" alt="{{ item.product.name }}"
+              class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" />
+          </div>
+
+          <!-- Info & Controls -->
+          <div class="flex-1 min-w-0">
+            <div class="flex flex-col sm:flex-row justify-between items-start gap-2 mb-2">
+              <h3 class="text-xl font-black text-gray-900 truncate pr-4 group-hover:text-red-500 transition-colors">
+                {{ item.product.name }}
+              </h3>
+              <p class="text-xl font-black text-gray-900">₹{{ item.product.price }}</p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-6 mt-4">
+              <!-- Quantity Controls -->
+              <div
+                class="flex items-center bg-gray-100 px-1 py-1 rounded-xl shadow-inner divide-x divide-gray-200 border border-gray-200">
+                <button (click)="decrementQuantity(item)"
+                  class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-600 hover:bg-white rounded-lg transition-all active:scale-95">
+                  <i class="fa-solid fa-minus text-[10px]"></i>
+                </button>
+                <div class="px-4 font-black text-gray-900 text-sm flex items-center justify-center">{{ item.quantity }}
+                </div>
+                <button (click)="incrementQuantity(item)"
+                  class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-green-600 hover:bg-white rounded-lg transition-all active:scale-95">
+                  <i class="fa-solid fa-plus text-[10px]"></i>
+                </button>
+              </div>
+
+              <!-- Size Tag -->
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Selected Size</span>
+                <span class="px-3 py-1 bg-gray-900 text-white rounded-lg font-black text-[10px] shadow-sm">
+                  {{ item.size }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="flex-shrink-0 flex items-center gap-3">
+            <button (click)="removeItem(item)"
+              class="w-12 h-12 bg-red-50 text-red-500 rounded-full hover:bg-red-600 hover:text-white transition-all transform active:scale-90 flex items-center justify-center shadow-sm hover:shadow-red-200">
+              <i class="fa-solid fa-trash-can text-sm"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cart Summary (Right Column - Sticky) -->
+      <div class="lg:col-span-4">
+        <div class="sticky top-32 space-y-6">
+          <div
+            class="bg-gray-900 rounded-[2.5rem] shadow-2xl p-10 text-white relative overflow-hidden border border-white/5">
+
+            <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2">
+            </div>
+
+            <h2
+              class="text-2xl font-black mb-8 flex items-center gap-3 decoration-red-500 decoration-4 underline-offset-8 uppercase tracking-tight">
+              Summary
+              <span class="text-xs font-black text-gray-500 uppercase tracking-widest no-underline">Items ({{
+                selectedItems.size }})</span>
+            </h2>
+
+            <!-- Selected Items Details -->
+            <div class="space-y-4 mb-10 max-h-[200px] overflow-y-auto custom-scrollbar pr-2">
+              <ng-container *ngFor="let item of cartItems">
+                <div *ngIf="isSelected(item.product.id)"
+                  class="flex justify-between items-center text-sm group/summary transition-all animate-fadeIn">
+                  <span class="text-gray-400 font-bold group-hover/summary:text-white transition-colors">
+                    {{ item.product.name | slice:0:20 }}{{ item.product.name.length > 20 ? '...' : '' }}
+                    <span class="text-gray-600 ml-1">x {{ item.quantity }}</span>
+                  </span>
+                  <span class="font-black">₹{{ item.product.price * item.quantity }}</span>
+                </div>
+              </ng-container>
+              <div *ngIf="selectedItems.size === 0"
+                class="text-center py-6 border-2 border-dashed border-gray-800 rounded-3xl">
+                <p class="text-xs font-black text-gray-600 uppercase tracking-widest">No Items Selected</p>
+              </div>
+            </div>
+
+            <div class="space-y-4 pt-10 border-t border-white/10 relative">
+              <!-- Decorative Line -->
+              <div class="absolute -top-px left-0 w-20 h-px bg-red-500 shadow-[0_0_10px_red]"></div>
+
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-black text-gray-500 uppercase tracking-[0.2em]">Subtotal</span>
+                <span class="font-bold">₹{{ getSelectedTotal() }}</span>
+              </div>
+              <div class="flex justify-between items-center pb-2">
+                <span class="text-xs font-black text-gray-500 uppercase tracking-[0.2em]">Shipping</span>
+                <span class="text-green-400 font-black text-xs uppercase tracking-widest">Free</span>
+              </div>
+
+              <div class="flex justify-between items-center py-6 border-y border-white/5 my-6">
+                <span class="text-xl font-black uppercase tracking-widest">Grand Total</span>
+                <span class="text-4xl font-black text-white">₹{{ getSelectedTotal() }}</span>
+              </div>
+
+              <button (click)="goToAddress()" [disabled]="cartItems.length === 0 || selectedItems.size === 0"
+                class="w-full bg-red-600 hover:bg-red-700 active:scale-95 disabled:bg-gray-800 disabled:text-gray-600 disabled:scale-100 text-white py-5 rounded-2xl font-black shadow-2xl shadow-red-500/10 transition-all flex items-center justify-center gap-3 tracking-widest uppercase text-xs">
+                Proceed to Checkout
+                <i class="fa-solid fa-arrow-right-long text-xs"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Trust Badge -->
+          <div class="bg-white rounded-3xl border border-gray-100 p-6 flex items-center justify-around">
+            <div class="flex flex-col items-center text-center gap-2">
+              <i class="fa-solid fa-shield-halved text-gray-300 text-xl"></i>
+              <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest leading-tight">Secure
+                Account</span>
+            </div>
+            <div class="w-px h-10 bg-gray-100"></div>
+            <div class="flex flex-col items-center text-center gap-2">
+              <i class="fa-solid fa-truck-fast text-gray-300 text-xl"></i>
+              <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest leading-tight">Fast
+                Delivery</span>
+            </div>
+            <div class="w-px h-10 bg-gray-100"></div>
+            <div class="flex flex-col items-center text-center gap-2">
+              <i class="fa-solid fa-rotate-left text-gray-300 text-xl"></i>
+              <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest leading-tight">Easy
+                Returns</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
+</div>
 
-  <!-- Cart Summary -->
+<!-- High-Fidelity Empty Cart Template -->
+<ng-template #noOrders>
   <div
-    class="cart-summary mt-10 bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
-    <h2 class="text-xl font-bold text-gray-800 mb-4 text-center">
-      Cart Summary
-    </h2>
-    <!-- Itemized Details -->
-    <div class="space-y-2 mb-4" *ngIf="selectedItems.size > 0">
-      <div
-        class="flex justify-between text-sm text-gray-700"
-        *ngFor="let item of cartItems; let i = index">
-        <span *ngIf="isSelected(item.product.id)">{{ item.product.name }} (x{{ item.quantity }})</span>
-        <span *ngIf="isSelected(item.product.id)">₹{{ item.product.price * item.quantity }}</span>
-      </div>
-    </div>
-    <hr class="my-4">
-    <div class="flex justify-between text-lg font-semibold text-gray-800 mb-4" *ngIf="selectedItems.size === 0">
-      <span>Total:</span>
-      <span>₹0</span>
-    </div>
-    <div class="flex justify-between text-lg font-semibold text-gray-800 mb-4" *ngIf="selectedItems.size > 0">
-      <span>Total:</span>
-      <span>₹{{ getSelectedTotal() }}</span>
-    </div>
-    <div class="text-center">
-      <button
-        (click)="goToAddress()"
-        [disabled]="cartItems.length === 0 || selectedItems.size === 0"
-        class="bg-red-500 hover:bg-red-600 text-white text-base font-semibold px-6 py-3 rounded-full shadow-md transition-all disabled:bg-gray-400 disabled:cursor-not-allowed">
-        Proceed to Checkout
-      </button>
-    </div>
-  </div>
-</div>
+    class="flex flex-col items-center justify-center py-32 text-center bg-white rounded-[3rem] shadow-sm border border-gray-100 p-16 max-w-2xl mx-auto animate-fadeIn relative overflow-hidden">
 
-<!-- Empty Cart Template -->
-<div *ngIf="cartItems.length === 0" class="flex flex-col items-center justify-center min-h-[60vh] text-gray-600">
-  <h2 class="text-2xl font-semibold mb-4">Your cart is empty <i class="fa-solid fa-cart-shopping"></i></h2>
-  <p class="text-sm">Start adding products to your cart!</p>
-</div>
+    <div
+      class="absolute top-0 right-0 w-64 h-64 bg-red-50 rounded-full blur-3xl opacity-20 -translate-y-1/2 translate-x-1/2">
+    </div>
+
+    <div class="w-32 h-32 bg-gray-50 rounded-full flex items-center justify-center mb-8 shadow-inner relative group">
+      <i
+        class="fa-solid fa-cart-arrow-down text-5xl text-gray-300 group-hover:scale-110 transition-transform duration-500"></i>
+      <div
+        class="absolute -top-2 -right-2 w-8 h-8 bg-black text-white rounded-full flex items-center justify-center font-bold text-xs">
+        ?</div>
+    </div>
+
+    <h2 class="text-3xl font-black text-gray-900 mb-3 tracking-tight">Your shopping bag is empty</h2>
+    <p class="text-gray-500 mb-10 max-w-sm leading-relaxed font-medium">It looks like you haven't added anything to your
+      cart yet. Let's find something incredible for you!</p>
+
+    <a routerLink="/products"
+      class="group bg-gray-900 hover:bg-red-600 active:scale-95 text-white px-10 py-4 rounded-2xl font-black shadow-2xl transition-all flex items-center gap-3 tracking-widest uppercase text-xs">
+      Start Shopping
+      <i class="fa-solid fa-arrow-right text-sm group-hover:translate-x-2 transition-transform"></i>
+    </a>
+  </div>
+</ng-template>

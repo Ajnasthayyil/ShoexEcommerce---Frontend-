@@ -11,8 +11,14 @@ import { Chart, ChartData, ChartType } from 'chart.js';
 export class OrdersComponent implements OnInit {
   orders: any[] = [];
 
+  filteredOrders: any[] = [];
+  searchText: string = '';
+  selectedStatus: string = '';
+  sortField: string = 'orderId';
+  sortDir: 'asc' | 'desc' = 'desc';
+
   // Chart Labels
-  pieChartLabels: string[] = ['Ordered', 'Packed', 'Shipped', 'Delivered', 'Cancelled'];
+  pieChartLabels: string[] = ['Ordered', 'Under Process', 'Packed', 'Shipped', 'Delivered', 'Cancelled'];
 
   // Donut (Pie) Chart setup
   pieChartType: 'doughnut' = 'doughnut';
@@ -20,8 +26,8 @@ export class OrdersComponent implements OnInit {
     labels: this.pieChartLabels,
     datasets: [
       {
-        data: [0, 0, 0, 0, 0],
-        backgroundColor: ['#f97316', '#fb923c', '#111827', '#10b981', '#ef4444'], // Orange, Light Orange, Black, Emerald, Red
+        data: [0, 0, 0, 0, 0, 0],
+        backgroundColor: ['#f97316', '#fcd34d', '#fb923c', '#111827', '#10b981', '#ef4444'], // Orange, Yellow, Light Orange, Black, Emerald, Red
         borderWidth: 2,
         hoverOffset: 8
       }
@@ -86,16 +92,63 @@ export class OrdersComponent implements OnInit {
         });
 
         this.orders = allOrders;
+        this.applyFilters();
         this.updatePieChart();
       },
       error: err => console.error('Error loading orders', err)
     });
   }
 
+  applyFilters(): void {
+    let result = [...this.orders];
+
+    if (this.searchText) {
+      const search = this.searchText.toLowerCase().trim();
+      result = result.filter(o =>
+        o.orderId.toString().includes(search) ||
+        o.customerName.toLowerCase().includes(search) ||
+        o.productName.toLowerCase().includes(search)
+      );
+    }
+
+    if (this.selectedStatus) {
+      result = result.filter(o => o.status === this.selectedStatus);
+    }
+
+    // Sort
+    result.sort((a, b) => {
+      const valA = a[this.sortField];
+      const valB = b[this.sortField];
+      let comparison = 0;
+      if (valA > valB) comparison = 1;
+      else if (valA < valB) comparison = -1;
+      return this.sortDir === 'asc' ? comparison : -comparison;
+    });
+
+    this.filteredOrders = result;
+  }
+
+  sortBy(field: string): void {
+    if (this.sortField === field) {
+      this.sortDir = this.sortDir === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortField = field;
+      this.sortDir = 'asc';
+    }
+    this.applyFilters();
+  }
+
+  clearFilters(): void {
+    this.searchText = '';
+    this.selectedStatus = '';
+    this.applyFilters();
+  }
+
   // Update Pie chart data
   updatePieChart(): void {
     const statusCount: Record<string, number> = {
       Ordered: 0,
+      UnderProcess: 0,
       Packed: 0,
       Shipped: 0,
       Delivered: 0,
@@ -115,7 +168,7 @@ export class OrdersComponent implements OnInit {
       datasets: [
         {
           data: dataValues,
-          backgroundColor: ['#f97316', '#fb923c', '#111827', '#10b981', '#ef4444'], // Matching theme
+          backgroundColor: ['#f97316', '#fcd34d', '#fb923c', '#111827', '#10b981', '#ef4444'], // Matching theme
           borderWidth: 2,
           hoverOffset: 8
         }
@@ -150,6 +203,7 @@ export class OrdersComponent implements OnInit {
             o.status = order.status;
           }
         });
+        this.applyFilters();
         this.updatePieChart();
         this.adminService.refreshDashboardStats();
       },

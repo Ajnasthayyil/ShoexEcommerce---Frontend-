@@ -14,13 +14,15 @@ import { CommonModule } from '@angular/common';
 import { CartModule } from './features/cart/cart/cart.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
-
+import { ErrorInterceptor } from './core/interceptors/error.interceptor';
+import { ProfileComponent } from './features/profile/profile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     AboutComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -45,6 +47,11 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
       multi: true
     }
   ],

@@ -32,7 +32,9 @@ export class ProductsComponent implements OnInit {
 
   // Stock Management
   showStockModal = false;
+  showViewStockModal = false;
   stockProductData: Product | null = null;
+  viewStockProduct: Product | null = null;
   stockForm!: FormGroup;
 
   constructor(
@@ -152,8 +154,10 @@ export class ProductsComponent implements OnInit {
     this.showAddModal = false;
     this.showEditModal = false;
     this.showStockModal = false;
+    this.showViewStockModal = false;
     this.editProductData = null;
     this.stockProductData = null;
+    this.viewStockProduct = null;
   }
 
   // ---------------- STOCK ----------------
@@ -161,6 +165,17 @@ export class ProductsComponent implements OnInit {
     this.stockProductData = product;
     this.stockForm.reset({ action: 'update', quantity: 0, sizeId: '' });
     this.showStockModal = true;
+  }
+
+  openViewStockModal(product: Product): void {
+    this.viewStockProduct = product;
+    this.showViewStockModal = true;
+  }
+
+  getSizeName(sizeId: any): string {
+    const sId = Number(sizeId);
+    const size = this.sizes.find(s => s.id === sId);
+    return size ? size.name : `Size ${sId}`;
   }
 
   submitStock(): void {
@@ -228,6 +243,97 @@ export class ProductsComponent implements OnInit {
       this.selectedFiles = Array.from(event.target.files);
     }
   }
+  // ---------------- BRAND MANAGEMENT ----------------
+  showBrandModal = false;
+  brandForm!: FormGroup;
+  editBrandData: Brand | null = null;
+  isSubmittingBrand = false;
+
+  openBrandModal(): void {
+    if (!this.brandForm) {
+      this.brandForm = this.fb.group({
+        name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100), Validators.pattern(/^[A-Za-z]+(?: [A-Za-z]+)*$/)]]
+      });
+    } else {
+      this.brandForm.reset();
+    }
+    this.editBrandData = null;
+    this.showBrandModal = true;
+    this.loadDropdownData(); // ensure fresh brands
+  }
+
+  editBrand(brand: Brand): void {
+    this.editBrandData = brand;
+    this.brandForm.patchValue({ name: brand.name });
+  }
+
+  cancelBrandEdit(): void {
+    this.editBrandData = null;
+    this.brandForm.reset();
+  }
+
+  submitBrand(): void {
+    if (this.brandForm.invalid) {
+      this.brandForm.markAllAsTouched();
+      return;
+    }
+
+    this.isSubmittingBrand = true;
+    const name = this.brandForm.value.name;
+
+    if (this.editBrandData) {
+      this.brandService.updateBrand(this.editBrandData.id, name).subscribe({
+        next: () => {
+          this.toastr.success('Brand updated successfully');
+          this.cancelBrandEdit();
+          this.loadDropdownData();
+          this.isSubmittingBrand = false;
+        },
+        error: (err) => {
+          this.toastr.error(err.error?.message || 'Failed to update brand');
+          this.isSubmittingBrand = false;
+        }
+      });
+    } else {
+      this.brandService.createBrand(name).subscribe({
+        next: () => {
+          this.toastr.success('Brand added successfully');
+          this.brandForm.reset();
+          this.loadDropdownData();
+          this.isSubmittingBrand = false;
+        },
+        error: (err) => {
+          this.toastr.error(err.error?.message || 'Failed to add brand');
+          this.isSubmittingBrand = false;
+        }
+      });
+    }
+  }
+
+  toggleBrandStatus(brand: Brand): void {
+    if (confirm(`Are you sure you want to ${brand.isActive === false ? 'activate' : 'deactivate'} the brand "${brand.name}"?`)) {
+      this.brandService.toggleBrand(brand.id).subscribe({
+        next: (res: any) => {
+          this.toastr.info(res?.message || 'Brand status toggled');
+          this.loadDropdownData();
+        },
+        error: () => this.toastr.error('Failed to toggle brand status')
+      });
+    }
+  }
+
+  deleteBrandRecord(brandId: number): void {
+    if (confirm('Are you strictly sure you want to permanently delete this brand? This might affect attached products.')) {
+      this.brandService.deleteBrand(brandId).subscribe({
+        next: (res: any) => {
+          this.toastr.success(res?.message || 'Brand deleted successfully');
+          this.loadDropdownData();
+        },
+        error: (err) => this.toastr.error(err.error?.message || 'Failed to delete brand')
+      });
+    }
+  }
+
   // --- new properties for filtering & sorting ---
   selectedCategory: string = '';
   selectedPriceRange: string = ''; // e.g. '0-499', '500-999'

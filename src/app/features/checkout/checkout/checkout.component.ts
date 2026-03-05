@@ -3,38 +3,68 @@ import { Subscription } from 'rxjs';
 import { CartService, CartItem } from 'src/app/core/services/cart.service';
 import { Router } from '@angular/router';
 import { OrdersService } from 'src/app/core/services/order.service';
+import { AddressService, AddressDto } from 'src/app/core/services/address.service';
 import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.css']
 })
-
 export class checkoutComponent implements OnInit, OnDestroy {
   totalAmount: number = 0;
-  address: any = null;
-  paymentMethod: string = 'Credit Card';
+
+  // Address Management
+  address: AddressDto | null = null;
+  addresses: AddressDto[] = [];
+  isLoadingAddress = false;
+
+  paymentMethod: string = 'COD';
   cartItems: CartItem[] = [];
 
   private cartSubscription: Subscription = new Subscription();
   isBuyNow: boolean = false;
   buyNowProduct: any = null;
+  buyNowSizeId: number | null = null;
+  buyNowQuantity: number = 1;
 
-  constructor(private cartService: CartService, private router: Router,private orderService:OrdersService,private toastrService:ToastrService) {}
+  isPlacingOrder = false;
+
+  constructor(
+    private cartService: CartService,
+    private router: Router,
+    private orderService: OrdersService,
+    private addressService: AddressService,
+    private toastrService: ToastrService
+  ) { }
 
   ngOnDestroy() {
     this.cartSubscription.unsubscribe();
   }
 
   ngOnInit() {
+    this.initOrderData();
+    this.loadAddressData();
+  }
+
+  private initOrderData() {
     const buyNowData = localStorage.getItem('buyNowProduct');
     if (buyNowData) {
       this.isBuyNow = true;
       const parsedData = JSON.parse(buyNowData);
       this.buyNowProduct = parsedData.product;
-      const quantity = parsedData.quantity || 1;
-      this.cartItems = [{ product: this.buyNowProduct, quantity }];
-      this.totalAmount = this.buyNowProduct.price * quantity;
+      this.buyNowQuantity = parsedData.quantity || 1;
+
+      this.buyNowSizeId = parsedData.sizeId !== undefined && parsedData.sizeId !== null
+        ? parsedData.sizeId
+        : (this.buyNowProduct.sizes && this.buyNowProduct.sizes.length > 0 ? this.buyNowProduct.sizes[0].id : 0);
+
+      this.cartItems = [{
+        product: this.buyNowProduct,
+        quantity: this.buyNowQuantity,
+        size: this.buyNowProduct.sizes?.find((s: any) => s.id === this.buyNowSizeId)?.name || 'N/A'
+      }];
+      this.totalAmount = this.buyNowProduct.price * this.buyNowQuantity;
     } else {
       const selectedItemsData = localStorage.getItem('selectedCartItems');
       if (selectedItemsData) {
@@ -51,48 +81,103 @@ export class checkoutComponent implements OnInit, OnDestroy {
         });
       }
     }
-    const storedAddress = localStorage.getItem('userAddress');
-    if (storedAddress) {
-      this.address = JSON.parse(storedAddress);
-    }
+  }
+
+  private loadAddressData() {
+    this.isLoadingAddress = true;
+    this.addressService.getAddresses().subscribe({
+      next: (res) => {
+        this.addresses = res.data || res || [];
+
+        // 1. Try to get manually selected address from AddAddress component redirect
+        const selectedIdStr = localStorage.getItem('selectedAddressId');
+        if (selectedIdStr) {
+          const id = parseInt(selectedIdStr, 10);
+          this.address = this.addresses.find(a => a.id === id) || null;
+          localStorage.removeItem('selectedAddressId'); // Consume it
+        }
+
+        // 2. If no valid selection, fallback to Default Address
+        if (!this.address) {
+          this.address = this.addresses.find(a => a.isDefault) || null;
+        }
+
+        // 3. Final fallback: just grab the first one if they have any but no default
+        if (!this.address && this.addresses.length > 0) {
+          this.address = this.addresses[0];
+        }
+
+        this.isLoadingAddress = false;
+      },
+      error: (err) => {
+        this.toastrService.error('Failed to load your addresses.');
+        this.isLoadingAddress = false;
+      }
+    });
   }
 
   private updateTotal() {
-    const cartItems = this.cartService.getCartItems();
-    console.log('Cart items in checkout:', cartItems);
     this.totalAmount = this.cartService.getTotal();
-    console.log('Total amount in checkout:', this.totalAmount);
   }
-
-
 
   placeOrder() {
     if (!this.paymentMethod) {
-      alert('Please select a payment method');
+      this.toastrService.warning('Please select a payment method');
       return;
     }
-    let items: CartItem[];
+
+    if (!this.address) {
+      this.toastrService.warning('Please select or add a delivery address');
+      this.router.navigate(['/checkout/add-address']);
+      return;
+    }
+
+    if (this.cartItems.length === 0 && !this.isBuyNow) {
+      this.toastrService.error('Your cart is empty.');
+      return;
+    }
+
+    this.isPlacingOrder = true;
+
     if (this.isBuyNow) {
-      const quantity = this.cartItems[0].quantity;
-      items = [{ product: this.buyNowProduct, quantity }];
-    } else {
-      items = this.cartService.getCartItems();
-      if (items.length === 0) {
-        this.toastrService.error('Your cart is empty. Please add items to your cart before placing an order.');
+      if (!this.buyNowProduct || this.buyNowSizeId === null || this.buyNowSizeId === undefined) {
+        this.toastrService.error('Invalid Buy Now data. Please try adding to cart instead.');
+        this.isPlacingOrder = false;
         return;
       }
-    }
-    console.log('Placing order with items:', items);
-    console.log('Order total:', this.totalAmount);
-    this.orderService.saveOrder(items);
-    this.toastrService.success('Order Placed Successfully');
-    if (this.isBuyNow) {
-      localStorage.removeItem('buyNowProduct');
+
+      this.orderService.placeBuyNowOrder(
+        this.buyNowProduct.id,
+        this.buyNowSizeId,
+        this.buyNowQuantity,
+        this.address.id,
+        this.paymentMethod
+      ).subscribe({
+        next: (res) => {
+          this.handleSuccessResponse();
+          localStorage.removeItem('buyNowProduct');
+        },
+        error: (err) => this.handleErrorResponse(err)
+      });
     } else {
-      this.cartService.clearCart();
+      this.orderService.placeCartOrder(this.address.id, this.paymentMethod).subscribe({
+        next: (res) => {
+          this.handleSuccessResponse();
+          this.cartService.clearCart();
+        },
+        error: (err) => this.handleErrorResponse(err)
+      });
     }
-    this.router.navigate(['/orders']);
+  }
+
+  private handleSuccessResponse() {
+    this.toastrService.success('Order Placed Successfully!', 'Success');
+    this.isPlacingOrder = false;
+    this.router.navigate(['/orders']); // Navigate to Purchase History
+  }
+
+  private handleErrorResponse(err: any) {
+    this.toastrService.error(err.error?.message || err.error || 'Failed to place order. Please try again.', 'Error');
+    this.isPlacingOrder = false;
   }
 }
-
-

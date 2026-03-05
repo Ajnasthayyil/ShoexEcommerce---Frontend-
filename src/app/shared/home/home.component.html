@@ -1,275 +1,301 @@
-<!-- Hero Section -->
-<section class="relative h-screen overflow-hidden">
- <div class="absolute inset-0">
-  <!-- Background Video -->
-  <video autoplay loop muted playsinline class="w-full h-full object-cover opacity-70">
-    <source src="assets\video\vdo3.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
+<!-- Cinematic Hero Section -->
+<section class="relative h-screen overflow-hidden animate-fadeIn">
+  <div class="absolute inset-0">
+    <video autoplay loop muted playsinline class="w-full h-full object-cover scale-105 animate-slow-zoom">
+      <source src="assets/video/vdo3.mp4" type="video/mp4" />
+    </video>
+    <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80"></div>
+  </div>
 
-  <!-- Dark Overlay for Readability -->
-  <div class="absolute inset-0 bg-black/50"></div>
+  <div class="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
+    <div class="space-y-6 max-w-4xl">
+      <h2 class="text-xs font-black text-red-600 uppercase tracking-[0.6em] animate-fadeInUp">Elite Performance</h2>
+      <h1 class="text-6xl md:text-9xl font-black text-white tracking-tighter leading-none animate-slideInUp">
+        DEFIANT <span
+          class="bg-clip-text text-transparent bg-gradient-to-r from-red-600 to-orange-500 italic">MOTION</span>
+      </h1>
+      <p class="text-gray-400 font-bold text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto animate-fadeIn"
+        style="animation-delay: 0.3s">
+        Engineered for those who demand more. Unleash your potential with our latest laboratory-tested drops.
+      </p>
+      <div class="pt-10 animate-slideInUp" style="animation-delay: 0.5s">
+        <a routerLink="/products"
+          class="group relative px-12 py-5 bg-white text-gray-900 rounded-full font-black uppercase tracking-[0.3em] text-xs transition-all hover:pr-16 hover:bg-red-600 hover:text-white shadow-2xl overflow-hidden active:scale-95">
+          <span class="relative z-10">Access Collection</span>
+          <i
+            class="fa-solid fa-arrow-right-long absolute right-6 opacity-0 group-hover:opacity-100 transition-all duration-300"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll Indicator -->
+  <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-40">
+    <div class="w-px h-16 bg-gradient-to-b from-transparent via-white to-transparent"></div>
+  </div>
+</section>
+
+<!-- Designer Announcement Marquee -->
+<div class="relative bg-gray-900 border-y border-white/5 py-6 overflow-hidden shadow-2xl shadow-black/50">
+  <div class="marquee whitespace-nowrap flex items-center gap-24 animate-marquee-fast">
+    <div class="flex items-center gap-4 text-xs font-black uppercase tracking-[0.3em] text-white">
+      <span class="w-2 h-2 rounded-full bg-red-600"></span>
+      Big Sale Alert: Up To <span class="text-red-500 italic">50% Exclusive Advantage</span>
+    </div>
+    <div class="flex items-center gap-4 text-xs font-black uppercase tracking-[0.3em] text-white/40">
+      <span class="w-2 h-2 rounded-full bg-orange-500"></span>
+      Priority Dispatch Protocol: <span class="text-white italic">Free Delivery Active</span>
+    </div>
+    <div class="flex items-center gap-4 text-xs font-black uppercase tracking-[0.3em] text-white">
+      <span class="w-2 h-2 rounded-full bg-red-600"></span>
+      New Laboratory Drops: <span class="text-red-500 italic">Limited Series Released</span>
+    </div>
+    <!-- Duplicated for Loop -->
+    <div class="flex items-center gap-4 text-xs font-black uppercase tracking-[0.3em] text-white">
+      <span class="w-2 h-2 rounded-full bg-red-600"></span>
+      Big Sale Alert: Up To <span class="text-red-500 italic">50% Exclusive Advantage</span>
+    </div>
+    <div class="flex items-center gap-4 text-xs font-black uppercase tracking-[0.3em] text-white/40">
+      <span class="w-2 h-2 rounded-full bg-orange-500"></span>
+      Priority Dispatch Protocol: <span class="text-white italic">Free Delivery Active</span>
+    </div>
+  </div>
 </div>
 
+<!-- Architectural Legacy Section -->
+<section class="bg-white py-32 px-6 md:px-16 overflow-hidden">
+  <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-24 items-center">
 
-  <div class="relative z-10 flex flex-col items-center justify-center h-full text-white px-4">
-    <h1 class="text-5xl md:text-7xl font-bold mb-4 drop-shadow-lg">Step into Your Style</h1>
-    <p class="text-xl md:text-2xl mb-8 drop-shadow-md">
-      Premium Branded Sneakers. Unleash Your Confident Walk.
-    </p>
-    <a
-      routerLink="/products"
-      class="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-full font-semibold transition-shadow shadow-lg"
-    >
-      Shop Now
-    </a>
-  </div>
-</section>
-
-
-<!-- offer banner -->
-
-<!-- Marquee Section -->
-<div class="relative bg-gradient-to-r from-yellow-50 via-white to-yellow-50 text-black py-4 overflow-hidden shadow-lg">
-  <div class="marquee whitespace-nowrap text-sm font-bold tracking-wide flex items-center gap-10">
-    <span class="uppercase">⚡ Big Sale Alert: Up To <span class="text-yellow-500 font-extrabold">50% OFF</span> on Sneakers 👟</span>
-    <span class="uppercase">⏳ Hurry Limited Time Sale!</span>
-    <span class="uppercase">🚚 Free Delivery Over <span class="text-yellow-500">₹999</span></span>
-    <span class="uppercase">🆕 Latest Drops In Stock. Cop Your Style!</span>
-    <span class="uppercase">⏳ Hurry Limited Time Sale!</span>
-  </div>
-</div>
-
-<style>
-  @keyframes marquee {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
-  }
-
-  .marquee {
-    display: inline-flex;
-    animation: marquee 20s linear infinite;
-  }
-</style>
-
-
-
-<!--About Section-->
-
-<section class="bg-gray-100 pt-24 pb-16 px-6 md:px-16">
-    <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center">
-
-      <!-- Image -->
-      <div class="relative">
-        <img 
-          src="https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg"
-          alt="Sneakers"
-          class="rounded-2xl shadow-lg w-full object-cover max-w-sm"/>
+    <!-- Visual Core -->
+    <div class="relative group animate-slideInLeft">
+      <div
+        class="absolute -inset-4 bg-gray-50 rounded-[3rem] -z-10 group-hover:bg-red-50 transition-colors duration-700">
       </div>
-
-      
-
-      <!-- Text Content -->
-      <div>
-        <h2 class="text-4xl font-semibold text-gray-900 mb-4">
-          We Are <span class="text-red-600">ShoeX Hub</span>
-        </h2>
-        
-        <p class="text-gray-700 leading-relaxed mb-4">
-          Step into a world where style meets comfort. SheoX Hub is built for those who dare to move, chase dreams, 
-          and make bold choices every single day. Our mission is to deliver premium footwear that speaks your personality.
-        </p>
-
-        <p class="text-gray-700 leading-relaxed mb-6">
-          From iconic classics to modern street style, we craft products that elevate your confidence and redefine fashion.
-        </p>
-
-        <div class="space-y-3">
-          <p class="flex items-center gap-3 text-gray-800">
-            <i class="fa-solid fa-shield-halved text-red-600"></i>
-            Top-notch Quality
-          </p>
-          <p class="flex items-center gap-3 text-gray-800">
-            <i class="fa-solid fa-fire text-red-600"></i>
-            Trendy & Stylish Always
-          </p>
-          <p class="flex items-center gap-3 text-gray-800">
-            <i class="fa-solid fa-feather text-red-600"></i>
-            100% Comfort Guarantee
-          </p>
-          <p class="flex items-center gap-3 text-gray-800">
-            <i class="fa-solid fa-truck-fast text-red-600"></i>
-            Fast & Free Shipping Over ₹999
-          </p>
+      <div class="relative rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white">
+        <img src="https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg" alt="Legacy Footwear"
+          class="w-full h-[600px] object-cover group-hover:scale-110 transition-transform duration-1000" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+        <div class="absolute bottom-10 left-10 text-white">
+          <p class="text-[10px] font-black uppercase tracking-[0.4em] mb-2 opacity-60">Est. 2024</p>
+          <h3 class="text-3xl font-black italic uppercase tracking-tighter">ShoeX Manifesto</h3>
         </div>
+      </div>
+      <!-- Floating Badge -->
+      <div
+        class="absolute -top-10 -right-10 w-40 h-40 bg-red-600 rounded-full flex flex-col items-center justify-center text-white p-6 text-center shadow-2xl animate-float">
+        <span class="text-[10px] font-black uppercase tracking-widest leading-tight">Mastery in</span>
+        <span class="text-3xl font-black italic leading-none">A1</span>
+        <span class="text-[8px] font-black uppercase tracking-[0.2em]">Quality Control</span>
       </div>
     </div>
-  </section>
 
+    <!-- Context Core -->
+    <div class="space-y-12 animate-slideInRight">
+      <div class="space-y-6">
+        <h2 class="text-xs font-black text-red-600 uppercase tracking-[0.4em]">The Intelligence</h2>
+        <h3 class="text-5xl md:text-7xl font-black text-gray-900 tracking-tighter leading-none">
+          WE ARE <span class="italic text-red-600">SHOE<span class="text-black">X</span></span>
+        </h3>
+        <p class="text-gray-500 font-bold text-lg leading-relaxed">
+          More than footwear. It's an engineered extension of your intent. Every stitch, every compound, Every curve is
+          designed to amplify the human engine.
+        </p>
+      </div>
 
-<section class="py-12 bg-gray-50 overflow-hidden">
-  <div class="max-w-7xl mx-auto text-center px-6">
-    <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-10">
-      Trusted By Top Companies
-    </h2>
-
-    <div class="relative w-full overflow-hidden">
-      <!-- Animated Logos -->
-      <div class="flex items-center gap-16 animate-scroll">
-        <!-- Logos (repeated for seamless loop) -->
-        <div class="w-28 h-16 flex items-center justify-center bg-white rounded-xl shadow-sm">
-          <img src="assets/logo/fila.jpg" alt="Fila" class="h-10 object-contain grayscale hover:grayscale-0 opacity-80 hover:opacity-100 transition">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div
+          class="flex items-start gap-4 p-6 bg-gray-50 rounded-3xl border border-gray-100 hover:bg-white hover:shadow-xl hover:shadow-gray-200/50 transition-all group">
+          <div
+            class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-red-600 shadow-sm transition-transform group-hover:rotate-12">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div>
+            <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-900 mb-1">Durable Tech</h4>
+            <p class="text-[11px] font-bold text-gray-400">Military-grade resilience in every sole.</p>
+          </div>
         </div>
-        <div class="w-28 h-16 flex items-center justify-center bg-white rounded-xl shadow-sm">
-          <img src="assets/logo/vans.jpg" alt="Vans" class="h-10 object-contain grayscale hover:grayscale-0 opacity-80 hover:opacity-100 transition">
+        <div
+          class="flex items-start gap-4 p-6 bg-gray-50 rounded-3xl border border-gray-100 hover:bg-white hover:shadow-xl hover:shadow-gray-200/50 transition-all group">
+          <div
+            class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-red-600 shadow-sm transition-transform group-hover:rotate-12">
+            <i class="fa-solid fa-fire"></i>
+          </div>
+          <div>
+            <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-900 mb-1">Hyper Style</h4>
+            <p class="text-[11px] font-bold text-gray-400">Curated silhouettes for the avant-garde.</p>
+          </div>
         </div>
-        <div class="w-28 h-16 flex items-center justify-center bg-white rounded-xl shadow-sm">
-          <img src="assets/logo/adidas.jpg" alt="Adidas" class="h-10 object-contain grayscale hover:grayscale-0 opacity-80 hover:opacity-100 transition">
+        <div
+          class="flex items-start gap-4 p-6 bg-gray-50 rounded-3xl border border-gray-100 hover:bg-white hover:shadow-xl hover:shadow-gray-200/50 transition-all group">
+          <div
+            class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-red-600 shadow-sm transition-transform group-hover:rotate-12">
+            <i class="fa-solid fa-feather"></i>
+          </div>
+          <div>
+            <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-900 mb-1">Gravity Zero</h4>
+            <p class="text-[11px] font-bold text-gray-400">Optimized weight for sustained velocity.</p>
+          </div>
         </div>
-        <div class="w-28 h-16 flex items-center justify-center bg-white rounded-xl shadow-sm">
-          <img src="assets/logo/underarmour.jpg" alt="Under Armour" class="h-10 object-contain grayscale hover:grayscale-0 opacity-80 hover:opacity-100 transition">
-        </div>
-        <div class="w-28 h-16 flex items-center justify-center bg-white rounded-xl shadow-sm">
-          <img src="assets/logo/reebok.jpg" alt="Reebok" class="h-10 object-contain grayscale hover:grayscale-0 opacity-80 hover:opacity-100 transition">
-        </div>
-        <div class="w-28 h-16 flex items-center justify-center bg-white rounded-xl shadow-sm">
-          <img src="assets/logo/puma.jpg" alt="Puma" class="h-10 object-contain grayscale hover:grayscale-0 opacity-80 hover:opacity-100 transition">
-        </div>
-
-        <!-- Repeat same logos for looping effect -->
-        <div class="w-28 h-16 flex items-center justify-center bg-white rounded-xl shadow-sm">
-          <img src="assets/logo/fila.jpg" alt="Fila" class="h-10 object-contain grayscale opacity-80 transition">
-        </div>
-        <div class="w-28 h-16 flex items-center justify-center bg-white rounded-xl shadow-sm">
-          <img src="assets/logo/vans.jpg" alt="Vans" class="h-10 object-contain grayscale opacity-80 transition">
-        </div>
-        <div class="w-28 h-16 flex items-center justify-center bg-white rounded-xl shadow-sm">
-          <img src="assets/logo/adidas.jpg" alt="Adidas" class="h-10 object-contain grayscale opacity-80 transition">
-        </div>
-        <div class="w-28 h-16 flex items-center justify-center bg-white rounded-xl shadow-sm">
-          <img src="assets/logo/underarmour.jpg" alt="Under Armour" class="h-10 object-contain grayscale opacity-80 transition">
-        </div>
-        <div class="w-28 h-16 flex items-center justify-center bg-white rounded-xl shadow-sm">
-          <img src="assets/logo/reebok.jpg" alt="Reebok" class="h-10 object-contain grayscale opacity-80 transition">
-        </div>
-        <div class="w-28 h-16 flex items-center justify-center bg-white rounded-xl shadow-sm">
-          <img src="assets/logo/puma.jpg" alt="Puma" class="h-10 object-contain grayscale opacity-80 transition">
+        <div
+          class="flex items-start gap-4 p-6 bg-gray-50 rounded-3xl border border-gray-100 hover:bg-white hover:shadow-xl hover:shadow-gray-200/50 transition-all group">
+          <div
+            class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-red-600 shadow-sm transition-transform group-hover:rotate-12">
+            <i class="fa-solid fa-truck-fast"></i>
+          </div>
+          <div>
+            <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-900 mb-1">Mach-1 Shipping</h4>
+            <p class="text-[11px] font-bold text-gray-400">Priority logistics across the global grid.</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- Company Alliances -->
+<section class="py-20 bg-gray-50 border-y border-gray-100 overflow-hidden outline-none">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col items-center mb-16 space-y-4">
+      <h3 class="text-[10px] font-black text-red-600 uppercase tracking-[0.5em]">Network</h3>
+      <h4 class="text-3xl font-black tracking-tight text-gray-900 uppercase italic">Trusted Alliances</h4>
+    </div>
 
-<section class="max-w-7xl mx-auto px-6 py-12">
-  <!-- Header Section -->
-  <div class="flex justify-between items-center mb-8">
-    <h2 class="text-3xl font-bold text-gray-900">Best Shoes Collection</h2>
-    <a routerLink="/products">
-      <button
-        class="flex items-center gap-2 px-5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-full transition">
-        Explore More
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-          stroke-width="2" stroke="currentColor" class="w-4 h-4">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-        </svg>
-      </button>
+    <div class="marquee-logos flex items-center gap-16 py-4">
+      <div class="flex items-center gap-16 animate-marquee-logos">
+        <div *ngFor="let logo of ['fila', 'vans', 'adidas', 'underarmour', 'reebok', 'puma']"
+          class="w-40 h-24 flex items-center justify-center bg-white rounded-[2rem] shadow-sm border border-gray-100 grayscale hover:grayscale-0 hover:border-red-500/30 transition-all duration-500 hover:shadow-xl group">
+          <img [src]="'assets/logo/' + logo + '.jpg'" [alt]="logo"
+            class="h-8 object-contain opacity-40 group-hover:opacity-100 transition-all">
+        </div>
+        <!-- Duplicated for Loop -->
+        <div *ngFor="let logo of ['fila', 'vans', 'adidas', 'underarmour', 'reebok', 'puma']"
+          class="w-40 h-24 flex items-center justify-center bg-white rounded-[2rem] shadow-sm border border-gray-100 grayscale hover:grayscale-0 hover:border-red-500/30 transition-all duration-500 hover:shadow-xl group">
+          <img [src]="'assets/logo/' + logo + '.jpg'" [alt]="logo"
+            class="h-8 object-contain opacity-40 group-hover:opacity-100 transition-all">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- High-Impact Gallery Grid -->
+<section class="max-w-7xl mx-auto px-6 py-32">
+  <div class="flex flex-col md:flex-row justify-between items-end gap-6 mb-16 animate-fadeIn">
+    <div class="space-y-4">
+      <h2 class="text-xs font-black text-red-600 uppercase tracking-[0.5em]">The Archive</h2>
+      <h3 class="text-5xl md:text-7xl font-black text-gray-900 tracking-tighter uppercase italic">Best <span
+          class="text-red-600">Series</span></h3>
+    </div>
+    <a routerLink="/products"
+      class="group flex items-center gap-4 py-4 px-8 bg-gray-900 text-white rounded-[2rem] font-black uppercase tracking-widest text-[10px] hover:bg-red-600 transition-all">
+      Full Catalog
+      <i class="fa-solid fa-arrow-right-long group-hover:translate-x-2 transition-transform"></i>
     </a>
   </div>
 
-  <!-- Image Grid -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <!-- Left Image -->
-    <div
-      class="md:col-span-1 overflow-hidden rounded-2xl shadow-lg group cursor-pointer">
-      <img src="assets/products/product2.avif" alt="Basketball Shoe"
-        class="w-full h-full object-cover transform transition duration-500 group-hover:scale-110 group-hover:brightness-90">
-    </div>
-
-    <!-- Middle Image with Overlay -->
-    <div
-      class="relative overflow-hidden rounded-2xl shadow-lg group cursor-pointer">
-      <img src="assets/products/product8.jpg" alt="Sign Up Offer"
-        class="w-full h-full object-cover brightness-75 transform transition duration-500 group-hover:scale-110 group-hover:brightness-90">
-      <div
-        class="absolute inset-0 flex flex-col items-center justify-center text-center text-white font-bold text-2xl transition duration-500 group-hover:scale-105">
-        <p>SIGN UP & GET</p>
-        <p class="text-3xl">25% OFF</p>
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-8 h-[800px]">
+    <!-- Left Hero Image -->
+    <div class="md:col-span-4 relative group rounded-[3rem] overflow-hidden shadow-2xl animate-slideInLeft">
+      <img src="assets/products/product2.avif" alt="Vertical Series"
+        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+      <div class="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent"></div>
+      <div class="absolute bottom-10 left-10">
+        <span class="text-[9px] font-black text-red-500 uppercase tracking-widest mb-2 block">Premium Tier</span>
+        <h4 class="text-2xl font-black text-white uppercase italic tracking-tight">Vortex Blue</h4>
       </div>
     </div>
 
-    <!-- Right Top and Bottom Grid -->
-    <div class="grid grid-rows-2 gap-6">
-      <div
-        class="overflow-hidden rounded-2xl shadow-lg group cursor-pointer">
-        <img src="assets/products/product6.avif" alt="Running Shoe"
-          class="w-full h-full object-cover transform transition duration-500 group-hover:scale-110 group-hover:brightness-90">
+    <!-- Center Product Card -->
+    <div class="md:col-span-4 relative group rounded-[3rem] overflow-hidden shadow-2xl animate-slideInUp">
+      <img src="assets/products/product8.jpg" alt="Seasonal Series"
+        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+      <div class="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent"></div>
+      <div class="absolute bottom-10 left-10">
+        <span class="text-[9px] font-black text-red-500 uppercase tracking-widest mb-2 block">Premium Drop</span>
+        <h4 class="text-2xl font-black text-white uppercase italic tracking-tight">Urban Grit</h4>
       </div>
-      <div
-        class="overflow-hidden rounded-2xl shadow-lg group cursor-pointer">
-        <img src="assets/products/product8.avif" alt="Casual Shoe"
-          class="w-full h-full object-cover transform transition duration-500 group-hover:scale-110 group-hover:brightness-90">
+    </div>
+
+    <!-- Right Composite Column -->
+    <div class="md:col-span-4 flex flex-col gap-8 animate-slideInRight">
+      <div class="flex-1 relative group rounded-[2.5rem] overflow-hidden shadow-2xl">
+        <img src="assets/products/product6.avif" alt="Sub-Series A"
+          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+        <div class="absolute bottom-8 left-8">
+          <h5 class="text-lg font-black text-white uppercase italic tracking-tight">Stealth Shift</h5>
+        </div>
+      </div>
+      <div class="flex-1 relative group rounded-[2.5rem] overflow-hidden shadow-2xl">
+        <img src="assets/products/product8.avif" alt="Sub-Series B"
+          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+        <div class="absolute bottom-8 left-8">
+          <h5 class="text-lg font-black text-white uppercase italic tracking-tight">Desert Dash</h5>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Product Grid Wrapper -->
-<section class="mb-20 px-6 md:px-12 lg:px-20">
-  <div class="p-8 bg-gradient-to-b from-white to-gray-50 rounded-3xl shadow-sm">
+<!-- High-Fidelity New Arrival Product Scroll -->
+<section class="pb-40 px-6 md:px-12 lg:px-20 animate-fadeInUp">
+  <div class="p-16 bg-gray-50/50 rounded-[4rem] border-2 border-gray-100 relative overflow-hidden group/container">
+    <div
+      class="absolute top-0 right-0 w-96 h-96 bg-red-600/5 rounded-full blur-[100px] -z-10 group-hover/container:bg-orange-500/10 transition-colors duration-1000">
+    </div>
+
     <!-- Heading Row -->
-    <div class="flex items-center justify-between mb-10">
-      <h2 class="text-3xl md:text-4xl font-bold text-gray-900">
-        New Arrival
-      </h2>
-      <a
-        routerLink="/products"
-        class="text-sm font-semibold text-gray-600 hover:text-red-500 transition-all duration-300"
-      >
-        ALL PRODUCTS →
+    <div class="flex flex-col md:flex-row items-end justify-between mb-20 gap-8">
+      <div class="space-y-4">
+        <span class="text-[10px] font-black text-red-600 uppercase tracking-[0.5em]">Laboratory Fresh</span>
+        <h2 class="text-5xl md:text-7xl font-black text-gray-900 tracking-tighter uppercase italic">New Arrival</h2>
+      </div>
+      <a routerLink="/products"
+        class="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] hover:text-red-600 transition-colors border-b border-gray-200 hover:border-red-600 pb-1">
+        Explore Full Inventory →
       </a>
     </div>
 
     <!-- Product Grid -->
-    <div
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 place-items-center"
-    >
-      <div
-        *ngFor="let product of products"
-        (click)="viewDetails(product.id)"
-        class="group relative bg-white border border-gray-100 rounded-2xl shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-pointer w-full max-w-xs overflow-hidden"
-      >
-        <!-- Product Image -->
-        <div class="relative overflow-hidden">
-          <img
-            [src]="product.imageUrl"
-            [alt]="product.name"
-            class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-500"
-          />
-        </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+      <div *ngFor="let product of products" (click)="viewDetails(product.id)"
+        class="group/card relative bg-white rounded-[3rem] p-4 border border-gray-100 hover:border-red-500/20 hover:shadow-2xl hover:shadow-gray-200/80 transition-all duration-700 cursor-pointer overflow-hidden animate-fadeIn">
 
-        <!-- Info Section -->
-        <div class="p-5 text-center relative h-24">
-          <!-- Default Text -->
+        <!-- Image Core -->
+        <div class="relative h-80 rounded-[2.5rem] overflow-hidden bg-gray-50 mb-6">
+          <img [src]="product.imageUrl" [alt]="product.name"
+            class="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-700" />
           <div
-            class="transition-all duration-300 group-hover:opacity-0 group-hover:translate-y-2"
-          >
-            <h3 class="text-lg font-semibold text-gray-900 truncate">
-              {{ product.name }}
-            </h3>
-            <p class="text-sm text-gray-500">
-              {{ product.brand }}
-            </p>
+            class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity">
           </div>
 
-          <!-- Hover Text -->
+          <!-- Quick Action Badge -->
           <div
-            class="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300"
-          >
-            <p class="text-red-600 font-semibold text-base">View Details</p>
+            class="absolute bottom-6 left-1/2 -translate-x-1/2 translate-y-20 group-hover/card:translate-y-0 transition-transform duration-500 z-10">
+            <span
+              class="px-6 py-3 bg-red-600 text-white text-[9px] font-black uppercase tracking-widest rounded-full shadow-xl">
+              Inspect Drop
+            </span>
           </div>
         </div>
+
+        <!-- Info Core -->
+        <div class="px-4 pb-4 space-y-2">
+          <div class="flex justify-between items-start">
+            <h3 class="text-xl font-black text-gray-900 uppercase tracking-tighter shrink-0 truncate max-w-[140px]">{{
+              product.name }}</h3>
+            <span class="text-sm font-black text-red-600 tracking-tighter">₹{{ product.price }}</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">{{ product.brand }}</span>
+            <span class="w-1 h-1 rounded-full bg-gray-200"></span>
+            <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none">High-Spec</span>
+          </div>
+        </div>
+
+        <!-- Floating Indicator -->
+        <div class="absolute top-8 right-8 w-2 h-2 rounded-full bg-red-600 animate-pulse"></div>
       </div>
     </div>
   </div>

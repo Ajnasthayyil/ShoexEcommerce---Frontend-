@@ -1,13 +1,7 @@
 <div class="relative flex justify-center items-center min-h-screen overflow-hidden">
 
   <!-- Background Video -->
-  <video
-    autoplay
-    loop
-    muted
-    playsinline 
-    class="absolute top-0 left-0 w-full h-full object-cover"
-  >
+  <video autoplay loop muted playsinline class="absolute top-0 left-0 w-full h-full object-cover">
     <source src="assets\video\vdo4.mp4" type="video/mp4" />
   </video>
 
@@ -31,17 +25,19 @@
         <input type="text" formControlName="fullName"
           class="peer w-full bg-transparent border-b-2 border-gray-400 text-white py-2 px-2 focus:border-yellow-400 outline-none"
           required>
-        <label
-          class="absolute left-2 top-2 text-gray-300 text-sm pointer-events-none transition-all
+        <label class="absolute left-2 top-2 text-gray-300 text-sm pointer-events-none transition-all
                  peer-focus:-top-3 peer-focus:text-xs peer-focus:text-yellow-400
                  peer-valid:-top-3 peer-valid:text-xs peer-valid:text-yellow-400">
           Full Name
         </label>
         <p *ngIf="registerForm.controls['fullName'].invalid && registerForm.controls['fullName'].touched"
-           class="text-red-400 text-xs mt-1">
+          class="text-red-400 text-xs mt-1">
           <span *ngIf="registerForm.controls['fullName'].errors?.['required']">Name is required</span>
-          <span *ngIf="registerForm.controls['fullName'].errors?.['minlength']">Name must be at least 2 characters</span>
-          <span *ngIf="registerForm.controls['fullName'].errors?.['maxlength']">Name must be less than 50 characters</span>
+          <span *ngIf="registerForm.controls['fullName'].errors?.['minlength']">Name must be at least 3
+            characters</span>
+          <span *ngIf="registerForm.controls['fullName'].errors?.['maxlength']">Name must be less than 100
+            characters</span>
+          <span *ngIf="registerForm.controls['fullName'].errors?.['pattern']">Only letters and spaces allowed</span>
         </p>
       </div>
 
@@ -50,16 +46,16 @@
         <input type="email" formControlName="email"
           class="peer w-full bg-transparent border-b-2 border-gray-400 text-white py-2 px-2 focus:border-yellow-400 outline-none"
           required>
-        <label
-          class="absolute left-2 top-2 text-gray-300 text-sm pointer-events-none transition-all
+        <label class="absolute left-2 top-2 text-gray-300 text-sm pointer-events-none transition-all
                  peer-focus:-top-3 peer-focus:text-xs peer-focus:text-yellow-400
                  peer-valid:-top-3 peer-valid:text-xs peer-valid:text-yellow-400">
-          Email
+          Email (lowercase only)
         </label>
         <p *ngIf="registerForm.controls['email'].invalid && registerForm.controls['email'].touched"
-           class="text-red-400 text-xs mt-1">
+          class="text-red-400 text-xs mt-1">
           <span *ngIf="registerForm.controls['email'].errors?.['required']">Email is required</span>
-          <span *ngIf="registerForm.controls['email'].errors?.['email']">Please enter a valid email</span>
+          <span *ngIf="registerForm.controls['email'].errors?.['pattern']">Must be a valid lowercase email
+            address</span>
         </p>
       </div>
 
@@ -68,16 +64,15 @@
         <input type="tel" formControlName="mobile"
           class="peer w-full bg-transparent border-b-2 border-gray-400 text-white py-2 px-2 focus:border-yellow-400 outline-none"
           required>
-        <label
-          class="absolute left-2 top-2 text-gray-300 text-sm pointer-events-none transition-all
+        <label class="absolute left-2 top-2 text-gray-300 text-sm pointer-events-none transition-all
                  peer-focus:-top-3 peer-focus:text-xs peer-focus:text-yellow-400
                  peer-valid:-top-3 peer-valid:text-xs peer-valid:text-yellow-400">
           Mobile Number
         </label>
         <p *ngIf="registerForm.controls['mobile'].invalid && registerForm.controls['mobile'].touched"
-           class="text-red-400 text-xs mt-1">
+          class="text-red-400 text-xs mt-1">
           <span *ngIf="registerForm.controls['mobile'].errors?.['required']">Mobile number is required</span>
-          <span *ngIf="registerForm.controls['mobile'].errors?.['pattern']">Please enter a valid 10-digit mobile number</span>
+          <span *ngIf="registerForm.controls['mobile'].errors?.['pattern']">Enter exactly 10 digits</span>
         </p>
       </div>
 
@@ -86,18 +81,17 @@
         <input type="text" formControlName="username"
           class="peer w-full bg-transparent border-b-2 border-gray-400 text-white py-2 px-2 focus:border-yellow-400 outline-none"
           required>
-        <label
-          class="absolute left-2 top-2 text-gray-300 text-sm pointer-events-none transition-all
+        <label class="absolute left-2 top-2 text-gray-300 text-sm pointer-events-none transition-all
                  peer-focus:-top-3 peer-focus:text-xs peer-focus:text-yellow-400
                  peer-valid:-top-3 peer-valid:text-xs peer-valid:text-yellow-400">
           Username
         </label>
         <p *ngIf="registerForm.controls['username'].invalid && registerForm.controls['username'].touched"
-           class="text-red-400 text-xs mt-1">
+          class="text-red-400 text-xs mt-1">
           <span *ngIf="registerForm.controls['username'].errors?.['required']">Username is required</span>
-          <span *ngIf="registerForm.controls['username'].errors?.['pattern']">Username must contain only letters and numbers</span>
-          <span *ngIf="registerForm.controls['username'].errors?.['minlength']">Username must be at least 3 characters</span>
-          <span *ngIf="registerForm.controls['username'].errors?.['maxlength']">Username must be less than 20 characters</span>
+          <span *ngIf="registerForm.controls['username'].errors?.['pattern']">Letters, numbers, no spaces</span>
+          <span *ngIf="registerForm.controls['username'].errors?.['minlength']">At least 3 characters</span>
+          <span *ngIf="registerForm.controls['username'].errors?.['maxlength']">Less than 30 characters</span>
           <span *ngIf="registerForm.controls['username'].errors?.['usernameExists']">Username already exists</span>
         </p>
       </div>
@@ -107,17 +101,17 @@
         <input type="password" formControlName="password"
           class="peer w-full bg-transparent border-b-2 border-gray-400 text-white py-2 px-2 focus:border-yellow-400 outline-none"
           required>
-        <label
-          class="absolute left-2 top-2 text-gray-300 text-sm pointer-events-none transition-all
+        <label class="absolute left-2 top-2 text-gray-300 text-sm pointer-events-none transition-all
                  peer-focus:-top-3 peer-focus:text-xs peer-focus:text-yellow-400
                  peer-valid:-top-3 peer-valid:text-xs peer-valid:text-yellow-400">
           Password
         </label>
         <p *ngIf="registerForm.controls['password'].invalid && registerForm.controls['password'].touched"
-           class="text-red-400 text-xs mt-1">
+          class="text-red-400 text-xs mt-1">
           <span *ngIf="registerForm.controls['password'].errors?.['required']">Password is required</span>
-          <span *ngIf="registerForm.controls['password'].errors?.['minlength']">Password must be at least 6 characters</span>
-          <span *ngIf="registerForm.controls['password'].errors?.['pattern']">Password must contain at least one lowercase letter, one uppercase letter, and one number</span>
+          <span *ngIf="registerForm.controls['password'].errors?.['minlength']">At least 6 characters</span>
+          <span *ngIf="registerForm.controls['password'].errors?.['pattern']">Must have uppercase, lowercase, number, &
+            special character</span>
         </p>
       </div>
 

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, throwError } from 'rxjs';
+import { BehaviorSubject, throwError, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 import { AuthService } from './auth.service';
+import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../environments/environment';
 
 export interface CartItem {
@@ -26,7 +27,8 @@ export class CartService {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastr: ToastrService
   ) {
     this.reloadCart();
 
@@ -41,19 +43,30 @@ export class CartService {
       this.http.get<any>(`${this.apiUrl}/myCart`).subscribe({
         next: (res) => {
           const cartDto = res.data || res;
-          if (cartDto && cartDto.items) {
-            this.cartItems = cartDto.items.map((i: any) => ({
-              cartItemId: i.cartItemId,
+
+          let itemsArray: any[] = [];
+          if (Array.isArray(cartDto)) {
+            itemsArray = cartDto;
+          } else if (cartDto && Array.isArray(cartDto.items)) {
+            itemsArray = cartDto.items;
+          }
+
+          if (itemsArray && itemsArray.length > 0) {
+            this.cartItems = itemsArray.map((i: any) => ({
+              cartItemId: i.cartItemId || i.id, // accommodate alternative properties
               product: {
                 id: i.productId,
-                name: i.productName,
-                price: i.price,
-                imageUrl: i.imageUrl
+                name: i.productName || i.product?.name,
+                price: i.price || i.product?.price,
+                imageUrl: i.imageUrl || i.product?.imageUrl
               },
               quantity: i.quantity,
-              size: i.sizeName,
+              size: i.sizeName || i.size,
               sizeId: i.sizeId
             }));
+            this.cartItemsSubject.next(this.cartItems);
+          } else {
+            this.cartItems = [];
             this.cartItemsSubject.next(this.cartItems);
           }
         },
@@ -70,24 +83,44 @@ export class CartService {
     this.loadCartFromDB();
   }
 
+
   // Add item to cart
-  addToCart(product: any, quantity: number = 1, size: string = '', sizeId?: number) {
+  addToCart(product: any, quantity: number = 1, size: string = '', sizeId?: number): Observable<any> {
     if (!this.authService.isLoggedIn()) {
-      // Could implement local storage cart here, or prompt login
       console.log("Must be logged in to add to cart");
-      return;
+      return throwError(() => new Error("Not logged in"));
+    }
+
+    let finalSizeId = sizeId ? Number(sizeId) : Number(size);
+    if (isNaN(finalSizeId) || finalSizeId <= 0) {
+      if (product && product.sizeIds && product.sizeIds.length > 0) {
+        finalSizeId = Number(product.sizeIds[0]);
+      } else {
+        finalSizeId = 1;
+      }
     }
 
     const formData = new FormData();
-    formData.append('ProductId', product.id.toString());
-    // Use the provided size id or a fallback
-    formData.append('SizeId', sizeId ? sizeId.toString() : '1');
-    formData.append('Quantity', quantity.toString());
+    formData.append('ProductId', (product?.id ? product.id : 1).toString());
+    formData.append('SizeId', finalSizeId.toString());
+    formData.append('Quantity', (quantity ? quantity : 1).toString());
 
-    this.http.post<any>(`${this.apiUrl}/add`, formData).subscribe({
-      next: () => this.reloadCart(),
-      error: (err) => console.error("Error adding to cart", err)
-    });
+    return this.http.post<any>(`${this.apiUrl}/add`, formData).pipe(
+      tap((res) => {
+        if (!res.isSuccess && !!res.message) {
+          this.toastr.error(res.message);
+        } else {
+          this.reloadCart();
+          this.toastr.success('Product Successfully Added');
+        }
+      }),
+      catchError((err) => {
+        console.error("Error adding to cart", err);
+        const msg = err.error?.message || err.message || 'Failed to add product to cart API.';
+        this.toastr.error(msg);
+        return throwError(() => err);
+      })
+    );
   }
 
   // Remove item from cart
@@ -142,8 +175,31 @@ export class CartService {
     formData.append('Quantity', quantity.toString());
 
     this.http.put<any>(`${this.apiUrl}/update`, formData).subscribe({
-      next: () => this.reloadCart(),
-      error: (err) => console.error("Error updating cart", err)
+      next: (res) => {
+        if (!res.isSuccess && !!res.message) {
+          this.toastr.error(res.message);
+
+          if (res.message.toLowerCase().includes('out of stock')) {
+            // Optional: trigger a reload to get the real stock, or automatically remove if stock is 0
+            this.reloadCart();
+          }
+        } else {
+          this.reloadCart();
+        }
+      },
+      error: (err) => {
+        console.error("Error updating cart", err);
+        const msg = err.error?.message || err.message || 'Error updating quantity.';
+        this.toastr.error(msg);
+
+        // If backend tells us out of stock (409) or size not available (400)
+        if (msg.toLowerCase().includes('out of stock') || msg.toLowerCase().includes('size is not available')) {
+          this.removeFromCart(cartItemId);
+          this.toastr.warning('Item removed from cart because it is out of stock.');
+        } else {
+          this.reloadCart(); // revert local visual change
+        }
+      }
     });
   }
 

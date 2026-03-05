@@ -1,142 +1,118 @@
-<header
-  class="fixed top-4 left-1/2 -translate-x-1/2 w-[92%] md:w-[85%]
-         bg-white/60 backdrop-blur-md border border-gray-200/50
-         shadow-lg rounded-full z-50 transition-all duration-300"
->
-  <div class="flex items-center justify-between px-6 py-3 md:px-10">
-    
-    <!-- Logo -->
-    <a
-      routerLink="/home"
-      class="text-2xl font-extrabold tracking-wide bg-gradient-to-r from-red-600 to-orange-500 bg-clip-text text-transparent hover:scale-105 transition-transform duration-300"
-    >
+<header class="fixed top-6 left-1/2 -translate-x-1/2 w-[95%] md:w-[88%] lg:w-[82%]
+         bg-white/80 backdrop-blur-xl border border-white/40
+         shadow-[0_8px_32px_rgba(0,0,0,0.08)] rounded-[2.5rem] z-50 transition-all duration-500 overflow-hidden"
+  [class.py-2]="true">
+  <div class="flex items-center justify-between px-8 py-3 md:px-12">
+
+    <!-- Logo Section -->
+    <a routerLink="/home"
+      class="text-2xl font-black tracking-tight bg-gradient-to-r from-red-600 to-orange-500 bg-clip-text text-transparent hover:scale-105 transition-transform duration-300">
       ShoeX
     </a>
 
-    <!-- Nav Links -->
-    <nav class="hidden md:flex items-center space-x-8">
-      <a
-        routerLink="/home"
-        class="relative text-gray-700 font-medium hover:text-red-600 transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-red-500 hover:after:w-full after:transition-all after:duration-300"
-      >
-        Home
-      </a>
-      <a
-        routerLink="/about"
-        class="relative text-gray-700 font-medium hover:text-red-600 transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-red-500 hover:after:w-full after:transition-all after:duration-300"
-      >
-        About
-      </a>
-      <a
-        routerLink="/products"
-        class="relative text-gray-700 font-medium hover:text-red-600 transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-red-500 hover:after:w-full after:transition-all after:duration-300"
-      >
-        Products
-      </a>
-      <a
-        routerLink="/contact"
-        class="relative text-gray-700 font-medium hover:text-red-600 transition duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-red-500 hover:after:w-full after:transition-all after:duration-300"
-      >
-        Contact
-      </a>
+    <!-- Architectural Navigation -->
+    <nav class="hidden lg:flex items-center bg-gray-50/50 rounded-full px-8 py-2 border border-gray-100/50">
+      <div class="flex items-center space-x-10">
+        <a routerLink="/home" routerLinkActive="text-red-600 font-black" [routerLinkActiveOptions]="{exact: true}"
+          class="text-[11px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-red-600 transition-all duration-300 relative py-1">
+          Home
+        </a>
+        <a routerLink="/products" routerLinkActive="text-red-600 font-black"
+          class="text-[11px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-red-600 transition-all duration-300 relative py-1">
+          Catalog
+        </a>
+        <a routerLink="/about" routerLinkActive="text-red-600 font-black"
+          class="text-[11px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-red-600 transition-all duration-300 relative py-1">
+          Legacy
+        </a>
+        <a routerLink="/contact" routerLinkActive="text-red-600 font-black"
+          class="text-[11px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-red-600 transition-all duration-300 relative py-1">
+          Connect
+        </a>
+      </div>
     </nav>
 
-    <!-- Icons + Buttons -->
-    <div class="flex items-center space-x-4 md:space-x-6">
-      
-      <!-- Wishlist -->
-      <button (click)="onWishlistClick()" class="relative group">
-        <i class="fa-solid fa-heart text-[18px] text-gray-700 group-hover:text-red-600 transition-transform duration-300 group-hover:scale-110"></i>
-        <span
-          *ngIf="wishlistItemCount > 0"
-          class="absolute -top-1 -right-2 bg-red-600 text-white text-[10px] px-1.5 rounded-full"
-        >
+    <!-- Interactive Action Hub -->
+    <div class="flex items-center gap-2 md:gap-4">
+
+      <!-- Wishlist Action -->
+      <button (click)="onWishlistClick()"
+        class="relative w-11 h-11 flex items-center justify-center rounded-2xl bg-gray-50 hover:bg-white hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-500 group">
+        <i
+          class="fa-solid fa-heart text-[16px] text-gray-400 group-hover:text-red-600 transition-all duration-300 group-hover:scale-110"></i>
+        <span *ngIf="wishlistItemCount > 0"
+          class="absolute -top-1 -right-1 w-5 h-5 bg-red-600 text-white text-[9px] font-black flex items-center justify-center rounded-full border-2 border-white animate-bounce-short">
           {{ wishlistItemCount }}
         </span>
       </button>
 
-      <!-- Cart -->
-      <button (click)="onCartClick()" class="relative group">
-        <i class="fa-solid fa-cart-shopping text-[18px] text-gray-700 group-hover:text-red-600 transition-transform duration-300 group-hover:scale-110"></i>
-        <span
-          *ngIf="cartItemCount > 0"
-          class="absolute -top-1 -right-2 bg-red-600 text-white text-[10px] px-1.5 rounded-full"
-        >
+      <!-- Cart Action -->
+      <button (click)="onCartClick()"
+        class="relative w-11 h-11 flex items-center justify-center rounded-2xl bg-gray-50 hover:bg-white hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-500 group">
+        <i
+          class="fa-solid fa-bag-shopping text-[16px] text-gray-400 group-hover:text-gray-900 transition-all duration-300 group-hover:scale-110"></i>
+        <span *ngIf="cartItemCount > 0"
+          class="absolute -top-1 -right-1 w-5 h-5 bg-gray-900 text-white text-[9px] font-black flex items-center justify-center rounded-full border-2 border-white">
           {{ cartItemCount }}
         </span>
       </button>
 
-      <!-- User Profile -->
-      <a
-        *ngIf="isLoggedIn"
-        routerLink="/profile"
-        class="flex items-center justify-center group"
-        title="My Profile"
-      >
-        <i class="fa-solid fa-user text-[18px] text-gray-700 group-hover:text-red-600 transition-transform duration-300 group-hover:scale-110"></i>
-      </a>
+      <span class="w-px h-6 bg-gray-100 hidden md:block"></span>
 
-      <!-- Login / Logout -->
-      <a
-        *ngIf="!isLoggedIn"
-        routerLink="/auth/login"
-        class="bg-gradient-to-r from-red-600 to-orange-500 text-white px-4 py-1.5 font-semibold text-xs rounded-full shadow-sm hover:shadow-md hover:scale-105 transition-transform duration-300"
-      >
-        Login
-      </a>
+      <!-- User Authentication Flow -->
+      <div class="flex items-center gap-3">
+        <a *ngIf="isLoggedIn" routerLink="/profile"
+          class="w-11 h-11 hidden md:flex items-center justify-center rounded-2xl bg-gray-900 text-white hover:bg-red-600 hover:shadow-xl hover:shadow-red-500/20 transition-all duration-500 shadow-lg">
+          <i class="fa-solid fa-user-ninja text-[16px]"></i>
+        </a>
 
-      <button
-        *ngIf="isLoggedIn"
-        (click)="logout()"
-        class="bg-gradient-to-r from-red-600 to-orange-500 text-white px-4 py-1.5 font-semibold text-xs rounded-full shadow-sm hover:shadow-md hover:scale-105 transition-transform duration-300"
-      >
-        Logout
-      </button>
+        <a *ngIf="!isLoggedIn" routerLink="/auth/login"
+          class="px-6 py-2.5 bg-gray-900 text-white text-[11px] font-black uppercase tracking-widest rounded-2xl hover:bg-red-600 transition-all duration-500 shadow-lg hover:shadow-red-500/20 active:scale-95">
+          Login
+        </a>
 
-      <!-- Mobile Menu Button -->
-      <button
-        (click)="toggleMenu()"
-        class="md:hidden text-gray-700 hover:text-red-600 focus:outline-none transition-transform duration-300 hover:scale-110"
-      >
-        <i class="fa-solid fa-bars text-lg"></i>
+        <button *ngIf="isLoggedIn" (click)="logout()"
+          class="p-2.5 text-red-500 hover:text-red-700 hover:scale-110 transition-all hidden md:block"
+          title="Logout Session">
+          <i class="fa-solid fa-power-off text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Mobile Menu Trigger -->
+      <button (click)="toggleMenu()"
+        class="lg:hidden w-11 h-11 flex items-center justify-center rounded-2xl bg-gray-50 text-gray-900 hover:bg-white transition-all shadow-sm">
+        <i class="fa-solid" [class.fa-bars-staggered]="!isMenuOpen" [class.fa-xmark]="isMenuOpen"></i>
       </button>
     </div>
   </div>
 
-  <!-- Mobile Menu -->
-  <div
-    *ngIf="isMenuOpen"
-    class="md:hidden bg-white/80 backdrop-blur-md border-t border-gray-200 shadow-lg rounded-b-3xl animate-slide-down"
-  >
-    <nav class="flex flex-col px-6 py-4 space-y-3">
-      <a
-        routerLink="/home"
-        (click)="toggleMenu()"
-        class="text-gray-700 font-medium hover:text-red-600 transition"
-      >Home</a>
-      <a
-        routerLink="/about"
-        (click)="toggleMenu()"
-        class="text-gray-700 font-medium hover:text-red-600 transition"
-      >About</a>
-      <a
-        routerLink="/products"
-        (click)="toggleMenu()"
-        class="text-gray-700 font-medium hover:text-red-600 transition"
-      >Products</a>
-      <a
-        routerLink="/contact"
-        (click)="toggleMenu()"
-        class="text-gray-700 font-medium hover:text-red-600 transition"
-      >Contact</a>
-      <a
-        *ngIf="isLoggedIn"
-        routerLink="/profile"
-        (click)="toggleMenu()"
-        class="text-gray-700 font-medium hover:text-red-600 transition"
-      >
-        My Profile
+  <!-- Designer Mobile Menu -->
+  <div *ngIf="isMenuOpen" class="lg:hidden bg-white px-8 py-10 space-y-8 animate-slideInDown border-t border-gray-50">
+    <nav class="flex flex-col space-y-6">
+      <a routerLink="/home" (click)="toggleMenu()"
+        class="text-2xl font-black text-gray-900 uppercase tracking-tighter hover:text-red-600 transition-colors">Home</a>
+      <a routerLink="/products" (click)="toggleMenu()"
+        class="text-2xl font-black text-gray-900 uppercase tracking-tighter hover:text-red-600 transition-colors">Selection</a>
+      <a routerLink="/about" (click)="toggleMenu()"
+        class="text-2xl font-black text-gray-900 uppercase tracking-tighter hover:text-red-600 transition-colors">The
+        Brand</a>
+      <a routerLink="/contact" (click)="toggleMenu()"
+        class="text-2xl font-black text-gray-900 uppercase tracking-tighter hover:text-red-600 transition-colors">Connect</a>
+      <div class="h-px bg-gray-100 w-full"></div>
+      <a *ngIf="isLoggedIn" routerLink="/profile" (click)="toggleMenu()"
+        class="flex items-center gap-4 text-xl font-black text-gray-900 uppercase tracking-tight">
+        <div class="w-10 h-10 bg-gray-900 rounded-xl flex items-center justify-center text-white">
+          <i class="fa-solid fa-user text-sm"></i>
+        </div>
+        My Dossier
       </a>
+      <button *ngIf="isLoggedIn" (click)="logout(); toggleMenu()"
+        class="flex items-center gap-4 text-xl font-black text-red-600 uppercase tracking-tight">
+        <div class="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center">
+          <i class="fa-solid fa-power-off text-sm"></i>
+        </div>
+        Terminate Session
+      </button>
     </nav>
   </div>
 </header>

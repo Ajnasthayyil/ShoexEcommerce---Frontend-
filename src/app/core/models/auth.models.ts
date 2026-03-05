@@ -19,4 +19,8 @@ export interface RegisterDto {
 export interface ForgotPasswordDto { }
 export interface VerifyOtpDto { }
 export interface ResetPasswordDto { }
-export interface UpdateProfileDto { }
+export interface UpdateProfileDto {
+    fullName: string;
+    email: string;
+    mobileNumber: string;
+}

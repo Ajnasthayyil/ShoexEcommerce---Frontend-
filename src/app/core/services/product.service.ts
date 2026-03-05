@@ -41,6 +41,7 @@ export class ProductService {
     );
   }
 
+
   /** Backward compatibility */
   getProducts(): Observable<Product[]> {
     return this.getAll();
@@ -62,6 +63,8 @@ export class ProductService {
           description: p.description || '',
           availableSizes: p.sizeIds ? p.sizeIds.map(String) : [],
           sizeIds: p.sizeIds || [],
+          sizeStocks: p.sizeStocks || {},
+          sizes: p.sizes || [],
           gender: p.genderName || p.gender || '',
           genderId: p.genderId,
           isActive: p.isActive
@@ -86,9 +89,11 @@ export class ProductService {
           description: p.description || '',
           availableSizes: p.sizeIds ? p.sizeIds.map(String) : [],
           sizeIds: p.sizeIds || [],
+          sizeStocks: p.sizeStocks || {},
           gender: p.genderName || p.gender || '',
           genderId: p.genderId,
-          isActive: p.isActive
+          isActive: p.isActive,
+          sizes: p.sizes || []
         };
       })
     );

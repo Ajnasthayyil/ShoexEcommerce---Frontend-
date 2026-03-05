@@ -1,48 +1,125 @@
-<footer class="bg-gray-900 text-gray-200 pt-12 pb-6">
-  <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-10">
+<footer class="bg-gray-900 text-white pt-24 pb-12 overflow-hidden relative">
+  <!-- Architectural Background Elements -->
+  <div class="absolute top-0 right-0 w-96 h-96 bg-red-600/5 rounded-full blur-[120px] -z-0"></div>
+  <div class="absolute bottom-0 left-0 w-64 h-64 bg-orange-500/5 rounded-full blur-[100px] -z-0"></div>
 
-    <div>
-      <h2 class="text-xl font-semibold text-white mb-3 tracking-wide">ShoeX Hub</h2>
-      <p class="text-sm leading-relaxed">
-        Stylish. Trendy. Comfortable. We deliver the best footwear that keeps you moving
-        with confidence every day.
+  <div class="max-w-7xl mx-auto px-8 relative z-10">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 lg:gap-8 mb-20">
+
+      <!-- Brand Identity Column -->
+      <div class="space-y-8">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-gray-900 shadow-xl shadow-white/5">
+            <i class="fa-solid fa-bolt-lightning text-xl"></i>
+          </div>
+          <h2 class="text-2xl font-black tracking-tighter uppercase italic">SHOE<span class="text-red-600">X</span> HUB
+          </h2>
+        </div>
+        <p class="text-sm font-bold text-gray-400 leading-relaxed max-w-xs">
+          Engineered for velocity. Designed for the elite. We curate footwear that defies gravity and defines the future
+          of motion.
+        </p>
+        <div class="flex items-center gap-3">
+          <a href="#"
+            class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center border border-white/10 hover:bg-white hover:text-gray-900 transition-all duration-500 group">
+            <i class="fab fa-instagram text-sm group-hover:scale-110"></i>
+          </a>
+          <a href="#"
+            class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center border border-white/10 hover:bg-white hover:text-gray-900 transition-all duration-500 group">
+            <i class="fab fa-twitter text-sm group-hover:scale-110"></i>
+          </a>
+          <a href="#"
+            class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center border border-white/10 hover:bg-white hover:text-gray-900 transition-all duration-500 group">
+            <i class="fab fa-youtube text-sm group-hover:scale-110"></i>
+          </a>
+          <a href="#"
+            class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center border border-white/10 hover:bg-white hover:text-gray-900 transition-all duration-500 group">
+            <i class="fab fa-tiktok text-sm group-hover:scale-110"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Inventory Navigator -->
+      <div class="space-y-8">
+        <h3 class="text-[10px] font-black uppercase tracking-[0.4em] text-red-600">The Catalog</h3>
+        <ul class="space-y-5">
+          <li><a routerLink="/products"
+              class="text-[11px] font-black uppercase tracking-widest text-gray-400 hover:text-white transition-colors flex items-center gap-3 group">
+              <span class="w-4 h-px bg-gray-800 group-hover:w-6 group-hover:bg-red-600 transition-all"></span> New
+              Arrivals
+            </a></li>
+          <li><a routerLink="/products"
+              class="text-[11px] font-black uppercase tracking-widest text-gray-400 hover:text-white transition-colors flex items-center gap-3 group">
+              <span class="w-4 h-px bg-gray-800 group-hover:w-6 group-hover:bg-red-600 transition-all"></span>
+              Performance
+            </a></li>
+          <li><a routerLink="/products"
+              class="text-[11px] font-black uppercase tracking-widest text-gray-400 hover:text-white transition-colors flex items-center gap-3 group">
+              <span class="w-4 h-px bg-gray-800 group-hover:w-6 group-hover:bg-red-600 transition-all"></span> Lifestyle
+            </a></li>
+          <li><a routerLink="/wishlist"
+              class="text-[11px] font-black uppercase tracking-widest text-gray-400 hover:text-white transition-colors flex items-center gap-3 group">
+              <span class="w-4 h-px bg-gray-800 group-hover:w-6 group-hover:bg-red-600 transition-all"></span> Saved
+              Drops
+            </a></li>
+        </ul>
+      </div>
+
+      <!-- Support Infrastructure -->
+      <div class="space-y-8">
+        <h3 class="text-[10px] font-black uppercase tracking-[0.4em] text-red-600">Concierge</h3>
+        <ul class="space-y-5">
+          <li><a routerLink="/contact"
+              class="text-[11px] font-black uppercase tracking-widest text-gray-400 hover:text-white transition-colors flex items-center gap-3 group">
+              <span class="w-4 h-px bg-gray-800 group-hover:w-6 group-hover:bg-red-600 transition-all"></span> Order
+              Terminal
+            </a></li>
+          <li><a routerLink="/about"
+              class="text-[11px] font-black uppercase tracking-widest text-gray-400 hover:text-white transition-colors flex items-center gap-3 group">
+              <span class="w-4 h-px bg-gray-800 group-hover:w-6 group-hover:bg-red-600 transition-all"></span> Heritage
+            </a></li>
+          <li><a routerLink="/return-policy"
+              class="text-[11px] font-black uppercase tracking-widest text-gray-400 hover:text-white transition-colors flex items-center gap-3 group">
+              <span class="w-4 h-px bg-gray-800 group-hover:w-6 group-hover:bg-red-600 transition-all"></span> Logistics
+              Policy
+            </a></li>
+          <li><a routerLink="/faq"
+              class="text-[11px] font-black uppercase tracking-widest text-gray-400 hover:text-white transition-colors flex items-center gap-3 group">
+              <span class="w-4 h-px bg-gray-800 group-hover:w-6 group-hover:bg-red-600 transition-all"></span>
+              Intelligence Base
+            </a></li>
+        </ul>
+      </div>
+
+      <!-- Newsletter Medallion -->
+      <div class="space-y-8">
+        <h3 class="text-[10px] font-black uppercase tracking-[0.4em] text-red-600">Stay Optimized</h3>
+        <p class="text-xs font-bold text-gray-500 leading-relaxed">
+          Join the inner circle for priority access to limited series releases.
+        </p>
+        <div class="relative group">
+          <input type="email" placeholder="Access code (Email)"
+            class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-xs font-bold text-white placeholder-gray-600 focus:outline-none focus:border-red-600/50 transition-all group-hover:bg-white/10">
+          <button
+            class="absolute top-1/2 -translate-y-1/2 right-3 w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center text-white hover:bg-white hover:text-red-600 transition-all duration-500 shadow-xl shadow-red-600/20 active:scale-90">
+            <i class="fa-solid fa-arrow-right-long"></i>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Final Legal Strata -->
+    <div class="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+      <div class="flex items-center gap-6 text-[9px] font-black uppercase tracking-[0.3em] text-gray-600">
+        <a href="#" class="hover:text-red-600 transition-colors">Privacy Matrix</a>
+        <a href="#" class="hover:text-red-600 transition-colors">Terms of Engagement</a>
+        <a href="#" class="hover:text-red-600 transition-colors">Cookies</a>
+      </div>
+      <p class="text-[9px] font-black uppercase tracking-[0.4em] text-gray-700">
+        &copy; 2026 SHOEX_CORP. ALL PROTOCOLS RESERVED.
       </p>
     </div>
-
-    <div>
-      <h3 class="text-lg font-semibold text-white mb-3">Quick Links</h3>
-      <ul class="space-y-2 text-sm">
-        <li><a routerLink="/home" class="hover:text-yellow-300">Home</a></li>
-        <li><a routerLink="/products" class="hover:text-yellow-300">Shop</a></li>
-        <li><a routerLink="/wishlist" class="hover:text-yellow-300">Wishlist</a></li>
-        <li><a routerLink="/cart" class="hover:text-yellow-300">Cart</a></li>
-      </ul>
-    </div>
-
-    <div>
-      <h3 class="text-lg font-semibold text-white mb-3">Support</h3>
-      <ul class="space-y-2 text-sm">
-        <li><a routerLink="/contact" class="hover:text-yellow-300">Contact Us</a></li>
-        <li><a routerLink="/user-order" class="hover:text-yellow-300">Track Order</a></li>
-        <li><a routerLink="/return-policy" class="hover:text-yellow-300">Returns & Exchange</a></li>
-        <li><a routerLink="/faq" class="hover:text-yellow-300">FAQ</a></li>
-      </ul>
-    </div>
-
-    <div>
-      <h3 class="text-lg font-semibold text-white mb-3">Connect With Us</h3>
-      <p class="text-sm mb-3">Follow our social media for exclusive offers</p>
-      <div class="flex space-x-4 text-xl">
-        <a href="#" class="hover:text-yellow-300"><i class="fab fa-facebook"></i></a>
-        <a href="#" class="hover:text-yellow-300"><i class="fab fa-instagram"></i></a>
-        <a href="#" class="hover:text-yellow-300"><i class="fab fa-twitter"></i></a>
-        <a href="#" class="hover:text-yellow-300"><i class="fab fa-youtube"></i></a>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="mt-10 text-center text-xs text-gray-200 border-t border-white/20 pt-4">
-    © 2025 SheoeXHub. All Rights Reserved.
   </div>
 </footer>

@@ -21,7 +21,7 @@ export class WishlistComponent implements OnInit, OnDestroy {
     private cartService: CartService,
     private authService: AuthService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.subscription.add(
@@ -44,10 +44,11 @@ export class WishlistComponent implements OnInit, OnDestroy {
       this.router.navigate(['/auth/login']);
       return;
     }
-    this.cartService.addToCart(item);
-
-    this.wishlistService.removeFromWishlist(item.id);
-    this.toastr.success(`${item.name} moved to cart!`);
+    this.cartService.addToCart(item).subscribe({
+      next: () => {
+        this.wishlistService.removeFromWishlist(item.id);
+      }
+    });
   }
 
   viewProduct(item: Product) {

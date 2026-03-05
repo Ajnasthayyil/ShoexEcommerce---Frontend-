@@ -19,15 +19,15 @@ export class RegisterComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
-      fullName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-      email: ['', [Validators.required, Validators.email]],
-      mobile: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
-      username: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9]+$/), Validators.minLength(3), Validators.maxLength(20)], [this.usernameAsyncValidator()]],
-      password: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)]]
+      fullName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100), Validators.pattern(/^[A-Za-z]+(?: [A-Za-z]+)*$/)]],
+      email: ['', [Validators.required, Validators.pattern(/^[a-z][a-z0-9._%+\-]*@[a-z0-9.\-]+\.[a-z]{2,}$/)]],
+      mobile: ['', [Validators.required, Validators.pattern(/^[1-9][0-9]{9}$/)]],
+      username: ['', [Validators.required, Validators.pattern(/^[A-Za-z0-9]\S*$/), Validators.minLength(3), Validators.maxLength(30)], [this.usernameAsyncValidator()]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{6,}$/)]]
     });
   }
 
@@ -51,9 +51,16 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    const userData = this.registerForm.value;
+    const formValues = this.registerForm.value;
+    const userData = {
+      fullName: formValues.fullName,
+      email: formValues.email,
+      mobileNumber: formValues.mobile,
+      username: formValues.username,
+      password: formValues.password
+    };
 
-    // Proceed with registration (username uniqueness is now checked in real-time via async validator)
+    // Proceed with registration
     this.authService.register(userData).subscribe({
       next: () => {
         this.toastr.success('Registration Successful! Please Login.');
@@ -61,7 +68,7 @@ export class RegisterComponent implements OnInit {
       },
       error: (err) => {
         console.error(err);
-        this.toastr.error('Registration failed. Please try again.');
+        this.toastr.error(err.error?.message || err.error || 'Registration failed. Please try again.');
       }
     });
   }

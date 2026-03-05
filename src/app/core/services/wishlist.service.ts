@@ -32,15 +32,29 @@ export class WishlistService {
     if (this.authService.isLoggedIn()) {
       this.http.get<any>(`${this.apiUrl}/MyWishlist`).subscribe({
         next: (res) => {
-          const itemsDto = res.data || res;
-          if (itemsDto && Array.isArray(itemsDto.items)) {
-            const mapped = itemsDto.items.map((i: any) => ({
-              id: i.productId,
-              name: i.productName,
+          const data = res.data || res;
+
+          let itemsArray: any[] = [];
+          if (Array.isArray(data)) {
+            itemsArray = data; // Unwrapped JSON array
+          } else if (data && Array.isArray(data.items)) {
+            itemsArray = data.items; // Wrapped in DTO
+          }
+
+          if (itemsArray && itemsArray.length > 0) {
+            const mapped = itemsArray.map((i: any) => ({
+              id: i.productId || i.id, // Support different property names
+              name: i.productName || i.name,
               price: i.price,
-              imageUrl: i.imageUrl
-            }));
+              imageUrl: i.imageUrl,
+              brand: i.brand || '',
+              gender: i.gender || '',
+              description: i.description || '',
+              availableSizes: i.availableSizes || []
+            })) as Product[];
             this.wishlistItemsSubject.next(mapped);
+          } else {
+            this.wishlistItemsSubject.next([]);
           }
         },
         error: (err) => console.log('Failed to load wishlist', err)

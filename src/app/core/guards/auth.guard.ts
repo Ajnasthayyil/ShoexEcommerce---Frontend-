@@ -13,14 +13,11 @@ export class AuthGuard implements CanActivate {
     if (this.authService.isLoggedIn()) {
       const isAdmin = localStorage.getItem('isAdmin') === 'true';
 
-      // Prevent Admins from accessing User-only routes (like Cart, Checkout)
-      if (isAdmin) {
-        this.router.navigate(['/admin/dashboard']);
-        return false;
-      }
+      // Allowing admins to access user routes if they choose to
+      // (Used to redirect here, but it caused issues with wishlist access)
 
       const loggedUser = this.authService.getLoggedUser();
-      if (loggedUser && loggedUser.isBlock) {
+      if (loggedUser && (loggedUser.isBlocked || loggedUser.isBlock)) {
         this.authService.logout();
         this.router.navigate(['/auth/login']);
         return false;
