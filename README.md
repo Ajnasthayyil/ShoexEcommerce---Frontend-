@@ -1,12 +1,11 @@
 # 🛍️ Shoex Ecommerce Frontend
 
-> A modern, responsive **Angular** ecommerce storefront for an online shoe store. Features a beautiful UI with Angular Material, Tailwind CSS, and seamless integration with the Shoex REST API. Optimized for performance, accessibility, and user experience.
+> A modern, feature-rich **Angular ecommerce storefront** built with **scalable architecture**, responsive design, and seamless API integration. Showcases real-world Angular patterns including lazy loading, guards, interceptors, and feature-based module organization.
 
 <p align="center">
   <img src="https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white" alt="Angular"/>
   <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript"/>
   <img src="https://img.shields.io/badge/Tailwind%20CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind"/>
-  <img src="https://img.shields.io/badge/Angular%20Material-0078D4?style=for-the-badge&logo=material-design&logoColor=white" alt="Angular Material"/>
   <img src="https://img.shields.io/badge/RxJS-B7178C?style=for-the-badge&logo=reactivex&logoColor=white" alt="RxJS"/>
   <img src="https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white" alt="npm"/>
 </p>
@@ -16,206 +15,292 @@
 ## 📋 Table of Contents
 - [Overview](#overview)
 - [Tech Stack](#tech-stack)
+- [Architecture](#architecture)
 - [Features](#features)
-- [Screenshots](#screenshots)
-- [Getting Started](#getting-started)
 - [Project Structure](#project-structure)
-- [Component Architecture](#component-architecture)
-- [Services & State Management](#services--state-management)
-- [Routing](#routing)
-- [Styling](#styling)
-- [Performance Optimization](#performance-optimization)
+- [Getting Started](#getting-started)
+- [Feature Modules](#feature-modules)
+- [Core Services](#core-services)
+- [Guards & Interceptors](#guards--interceptors)
+- [Authentication Flow](#authentication-flow)
+- [API Integration](#api-integration)
 - [Testing](#testing)
 - [Deployment](#deployment)
-- [Troubleshooting](#troubleshooting)
-- [Contributing](#contributing)
 - [Contact](#contact)
 
 ---
 
 ## 🎯 Overview
 
-Shoex Frontend is a full-featured ecommerce web application built with **Angular 15+**. It provides customers with a seamless shopping experience including:
+Shoex Ecommerce Frontend is a **production-ready Angular application** demonstrating industry-standard practices:
 
-- 🏪 **Product Browsing** — Search, filter, and discover shoes
-- 🛒 **Shopping Cart** — Add/remove items, manage quantities
-- 💳 **Checkout & Payment** — Secure payment processing
-- 👤 **User Accounts** — Registration, login, profile management
-- 📦 **Order Tracking** — Monitor order status in real-time
-- ⭐ **Reviews & Ratings** — Leave feedback on products
-- 🔍 **Search & Filtering** — Find products by category, price, rating
-- 📱 **Responsive Design** — Works seamlessly on mobile, tablet, desktop
-- ♿ **Accessibility** — WCAG 2.1 compliant
+✅ **Feature-Based Architecture** — Organized by business domain (auth, products, cart, orders)  
+✅ **Clean Code Patterns** — Guards, interceptors, lazy loading  
+✅ **Role-Based Access** — Customer, Admin, Staff with route protection  
+✅ **State Management** — RxJS observables and services  
+✅ **Responsive Design** — Mobile-first approach with Tailwind CSS  
+✅ **Error Handling** — Centralized interceptor for API errors  
+✅ **JWT Authentication** — Secure token management & refresh logic  
 
 ---
 
 ## 🛠 Tech Stack
 
-### Frontend Framework & Languages
-| Technology | Purpose | Version |
-|-----------|---------|---------|
-| **Angular** | Frontend framework | 15+ |
-| **TypeScript** | Programming language | 4.8+ |
-| **RxJS** | Reactive programming | 7+ |
-| **Node.js** | Runtime environment | 16+ |
-| **npm** | Package manager | 8+ |
-
-### UI & Styling
-| Library | Purpose |
-|---------|---------|
-| **Angular Material** | Pre-built UI components |
-| **Tailwind CSS** | Utility-first CSS framework |
-| **Angular Material Icons** | Icon library |
-
-### API & Communication
-| Library | Purpose |
-|---------|---------|
-| **HttpClientModule** | HTTP requests |
-| **Interceptors** | JWT token handling, error management |
-| **Services** | API integration |
-
-### State Management & Forms
-| Library | Purpose |
-|---------|---------|
-| **RxJS** | Observable-based state management |
-| **FormControl & FormBuilder** | Form handling |
-| **BehaviorSubject** | Shared state across components |
-
-### Development Tools
-| Tool | Purpose |
-|------|---------|
-| **Angular CLI** | Development server & build tools |
-| **Webpack** | Module bundler |
-| **Karma & Jasmine** | Unit testing |
-| **ESLint** | Code quality |
+| Layer | Technology | Purpose |
+|-------|-----------|---------|
+| **Framework** | Angular 15+ | Frontend framework |
+| **Language** | TypeScript 4.8+ | Type-safe JavaScript |
+| **Styling** | Tailwind CSS | Utility-first CSS |
+| **State** | RxJS | Reactive programming |
+| **HTTP** | HttpClient + Interceptors | API communication |
+| **Package Manager** | npm | Dependency management |
+| **Backend API** | ASP.NET Core REST | API server |
 
 ---
 
-## ✨ Core Features
+## 🏗️ Architecture
 
-### 🏪 Product Catalog
-- Browse all products with image galleries
-- Filter by category, price range, size, color
-- Sort by price, popularity, newest, rating
-- Product search with autocomplete
-- Detailed product pages with specifications
-- Customer reviews and ratings
-- Stock availability indicators
+### Feature-Based Module Organization
 
-### 🛒 Shopping Cart
-- Add/remove products from cart
-- Update product quantities
-- Real-time cart summary
-- Persistent cart (stored in localStorage)
-- Cart calculation with discounts
-- Recommended products section
+```
+App Module
+├── Core Module (Singleton Services)
+│   ├── Guards
+│   ├── Interceptors
+│   └── Services
+│
+├── Shared Module (Reusable)
+│   ├── Components
+│   ├── Pipes
+│   └── Models
+│
+├── Layouts Module
+│   ├── Header Component
+│   └── Footer Component
+│
+└── Features (Lazy-Loaded Modules)
+    ├── Auth Module
+    │   ├── Login
+    │   ├── Register
+    │   └── Profile
+    ├── Products Module
+    │   ├── Product List
+    │   ├── Product Detail
+    │   └── Search
+    ├── Cart Module
+    │   └── Cart Management
+    ├── Wishlist Module
+    │   └── Wishlist Management
+    ├── Orders Module
+    │   ├── Order History
+    │   └── Order Details
+    └── Admin Module
+        ├── Product Management
+        ├── Order Management
+        └── Dashboard
+```
 
-### 💳 Checkout & Payment
-- Multi-step checkout process
-- Shipping address form
-- Billing address options
-- Multiple payment methods
-- Order review before confirmation
-- Payment confirmation with receipt
-- Invoice download
+### Data Flow Architecture
 
-### 👤 User Account Management
-- User registration with validation
-- Secure login/logout
-- Profile management (edit details)
-- Address book management
-- Wishlist functionality
-- Order history viewing
-- Account settings
+```
+Component
+    ↓
+Service (Observable)
+    ↓
+HttpClient + Interceptor (JWT Token)
+    ↓
+Backend API
+    ↓
+Response back to Component (via Observable)
+    ↓
+Template Update
+```
+
+### Routing with Lazy Loading
+
+```typescript
+// Modules loaded on-demand = faster initial load
+const routes: Routes = [
+  {
+    path: 'auth',
+    loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule)
+  },
+  {
+    path: 'products',
+    loadChildren: () => import('./features/products/products.module').then(m => m.ProductsModule)
+  },
+  {
+    path: 'cart',
+    loadChildren: () => import('./features/cart/cart.module').then(m => m.CartModule),
+    canActivate: [AuthGuard]
+  }
+];
+```
+
+---
+
+## ✨ Key Features
+
+### 🔐 Authentication & Authorization
+- User registration & login
+- JWT token management
+- Token refresh mechanism
+- Role-based route protection (AuthGuard)
+- Logout with token cleanup
+
+### 🛒 Shopping Features
+- Browse products with filtering
+- Add/remove from cart
+- Wishlist management
+- Cart persistence (localStorage)
+- Real-time cart updates
 
 ### 📦 Order Management
-- View all orders
-- Order status tracking
-- Order details with items
-- Cancel order (if eligible)
-- Download invoice as PDF
-- Order timeline/history
+- Create orders from cart
+- View order history
+- Track order status
+- Order details & invoice
+- Order cancellation
 
-### ⭐ Reviews & Ratings
-- Leave product reviews with ratings
-- View customer reviews on product page
-- Filter reviews (newest, highest-rated)
-- Review moderation (admin approval)
-- Helpful/unhelpful voting
-
-### 🔍 Search & Discovery
-- Global search with suggestions
-- Advanced filtering (category, price, size)
-- Sort options (price, rating, newest)
-- Related products recommendations
-- Trending/featured products section
-- Recently viewed products
+### 👥 Admin Panel
+- Product management (CRUD)
+- Order management
+- User management
+- Dashboard with analytics
+- Role-based access control
 
 ### 📱 Responsive Design
 - Mobile-first approach
 - Tablet & desktop optimization
 - Touch-friendly interface
-- Hamburger menu on mobile
-- Responsive grid layouts
-- Mobile payment integration
+- Adaptive layouts
 
-### ♿ Accessibility
-- WCAG 2.1 Level AA compliant
-- Semantic HTML
-- ARIA labels for screen readers
-- Keyboard navigation support
-- Color contrast compliance
-- Focus management
+### ♿ User Experience
+- Error handling & notifications
+- Loading states
+- Form validation
+- Smooth navigation
+- Persistent authentication
 
 ---
 
-## 📸 Screenshots
+## 📁 Project Structure (Detailed)
 
-### Home Page
-- Hero banner with featured products
-- Category cards
-- Trending products
-- Newsletter signup
-- Footer with links
+```
+src/
+│
+├── app/
+│   │
+│   ├── core/                           # ⭐ Singleton Services
+│   │   ├── services/
+│   │   │   ├── auth.service.ts         # JWT, login, logout
+│   │   │   ├── user.service.ts         # User data
+│   │   │   ├── notification.service.ts # Toasts, alerts
+│   │   │   └── api.service.ts          # Base API calls
+│   │   │
+│   │   ├── guards/
+│   │   │   ├── auth.guard.ts           # Protect authenticated routes
+│   │   │   ├── admin.guard.ts          # Protect admin routes
+│   │   │   └── role.guard.ts           # Role-based access
+│   │   │
+│   │   └── interceptors/
+│   │       ├── token.interceptor.ts    # Add JWT token to headers
+│   │       └── error.interceptor.ts    # Handle API errors
+│   │
+│   ├── shared/                         # ⭐ Reusable Components
+│   │   ├── components/
+│   │   │   ├── navbar.component.ts
+│   │   │   ├── footer.component.ts
+│   │   │   ├── product-card.component.ts
+│   │   │   ├── loading.component.ts
+│   │   │   └── error.component.ts
+│   │   │
+│   │   ├── pipes/
+│   │   │   ├── currency.pipe.ts
+│   │   │   └── date.pipe.ts
+│   │   │
+│   │   ├── models/
+│   │   │   ├── product.model.ts
+│   │   │   ├── user.model.ts
+│   │   │   ├── order.model.ts
+│   │   │   └── cart.model.ts
+│   │   │
+│   │   └── shared.module.ts
+│   │
+│   ├── features/                       # ⭐ Feature Modules (Lazy-Loaded)
+│   │   │
+│   │   ├── auth/
+│   │   │   ├── components/
+│   │   │   │   ├── login.component.ts
+│   │   │   │   ├── register.component.ts
+│   │   │   │   └── profile.component.ts
+│   │   │   ├── services/
+│   │   │   │   └── auth.service.ts
+│   │   │   ├── auth-routing.module.ts
+│   │   │   └── auth.module.ts
+│   │   │
+│   │   ├── products/
+│   │   │   ├── components/
+│   │   │   │   ├── product-list.component.ts
+│   │   │   │   ├── product-detail.component.ts
+│   │   │   │   └── product-filter.component.ts
+│   │   │   ├── services/
+│   │   │   │   └── product.service.ts
+│   │   │   ├── products-routing.module.ts
+│   │   │   └── products.module.ts
+│   │   │
+│   │   ├── cart/
+│   │   │   ├── components/
+│   │   │   │   ├── cart.component.ts
+│   │   │   │   └── cart-item.component.ts
+│   │   │   ├── services/
+│   │   │   │   └── cart.service.ts
+│   │   │   ├── cart-routing.module.ts
+│   │   │   └── cart.module.ts
+│   │   │
+│   │   ├── wishlist/
+│   │   │   ├── components/
+│   │   │   └── wishlist.component.ts
+│   │   │
+│   │   ├── orders/
+│   │   │   ├── components/
+│   │   │   │   ├── order-list.component.ts
+│   │   │   │   └── order-detail.component.ts
+│   │   │   ├── services/
+│   │   │   │   └── order.service.ts
+│   │   │   └── orders.module.ts
+│   │   │
+│   │   └── admin/
+│   │       ├── components/
+│   │       │   ├── admin-dashboard.component.ts
+│   │       │   ├── product-management.component.ts
+│   │       │   └── order-management.component.ts
+│   │       └── admin.module.ts
+│   │
+│   ├── layouts/
+│   │   ├── header.component.ts
+│   │   ├── footer.component.ts
+│   │   ├── sidebar.component.ts
+│   │   └── layouts.module.ts
+│   │
+│   ├── app-routing.module.ts
+│   ├── app.component.ts
+│   └── app.module.ts
+│
+├── assets/
+│   ├── images/
+│   ├── icons/
+│   └── products/
+│
+├── environments/
+│   ├── environment.ts        # Development API URL
+│   └── environment.prod.ts   # Production API URL
+│
+├── styles.css                # Global styles + Tailwind
+├── index.html
+└── main.ts
 
-### Product Listing Page
-- Product grid with images
-- Sidebar filters (category, price, size)
-- Sort dropdown
-- Search bar with suggestions
-- Pagination
-
-### Product Details Page
-- Product gallery with zoom
-- Product description & specs
-- Price and availability
-- Size & color selection
-- Add to cart button
-- Customer reviews section
-- Recommended products
-
-### Shopping Cart
-- Cart items list
-- Item quantity controls
-- Remove item button
-- Cart summary (subtotal, tax, total)
-- Proceed to checkout button
-- Continue shopping link
-
-### Checkout Process
-1. **Shipping Address** — Enter delivery address
-2. **Billing Address** — Same as shipping or different
-3. **Payment Method** — Choose payment option
-4. **Review Order** — Confirm order details
-5. **Order Confirmation** — Success page with order number
-
-### User Account
-- Profile information
-- Address book
-- Order history
-- Wishlist
-- Account settings
-- Logout
+```
 
 ---
 
@@ -223,489 +308,378 @@ Shoex Frontend is a full-featured ecommerce web application built with **Angular
 
 ### Prerequisites
 
-Ensure you have installed:
-```
-✓ Node.js 16+ (download from nodejs.org)
-✓ npm 8+ (comes with Node.js)
-✓ Angular CLI 15+ (npm install -g @angular/cli)
-✓ Git for version control
+```bash
+# Check versions
+node --version      # 16+
+npm --version       # 8+
+ng version         # 15+
 ```
 
-### Verify Installation
+### Installation
 
 ```bash
-# Check Node.js version
-node --version
+# 1. Clone repository
+git clone https://github.com/Ajnasthayyil/ShoexEcommerce---Frontend-.git
+cd ShoexEcommerce---Frontend-
 
-# Check npm version
-npm --version
-
-# Check Angular CLI version
-ng version
-```
-
-### Step 1: Clone the Repository
-
-```bash
-# Clone the repository
-git clone https://github.com/Ajnasthayyil/Shoex-Frontend.git
-
-# Navigate to project directory
-cd Shoex-Frontend
-```
-
-### Step 2: Install Dependencies
-
-```bash
-# Install all npm packages
+# 2. Install dependencies
 npm install
 
-# This installs all dependencies listed in package.json
-```
-
-### Step 3: Configure Environment
-
-1. Open `src/environments/environment.ts`
-2. Update the API base URL:
-
-```typescript
+# 3. Configure API URL
+# Edit: src/environments/environment.ts
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:5001/api'  // Update with your API URL
+  apiUrl: 'https://localhost:5001/api'  // Your API URL
 };
-```
 
-For production, update `src/environments/environment.prod.ts`:
-
-```typescript
-export const environment = {
-  production: true,
-  apiUrl: 'https://api.shoex.com/api'  // Your production API URL
-};
-```
-
-### Step 4: Start Development Server
-
-```bash
-# Start Angular development server
+# 4. Start development server
 ng serve
-
-# Or using npm
+# or
 npm start
 
-# Navigate to: http://localhost:4200
-# App will auto-reload on code changes
-```
-
-### Step 5: Build for Production
-
-```bash
-# Create optimized production build
-ng build --configuration production
-
-# Build output in dist/shoex-frontend/
+# 5. Open browser
+# http://localhost:4200
 ```
 
 ---
 
-## 📁 Project Structure
+## 🔌 Feature Modules (Lazy-Loaded)
 
-```
-Shoex-Frontend/
-│
-├── src/
-│   ├── app/
-│   │   ├── modules/
-│   │   │   ├── auth/
-│   │   │   │   ├── components/
-│   │   │   │   │   ├── login.component.ts
-│   │   │   │   │   ├── register.component.ts
-│   │   │   │   │   └── profile.component.ts
-│   │   │   │   ├── services/
-│   │   │   │   │   └── auth.service.ts
-│   │   │   │   └── auth.module.ts
-│   │   │   │
-│   │   │   ├── products/
-│   │   │   │   ├── components/
-│   │   │   │   │   ├── product-list.component.ts
-│   │   │   │   │   ├── product-detail.component.ts
-│   │   │   │   │   └── product-filter.component.ts
-│   │   │   │   ├── services/
-│   │   │   │   │   └── product.service.ts
-│   │   │   │   └── products.module.ts
-│   │   │   │
-│   │   │   ├── cart/
-│   │   │   │   ├── components/
-│   │   │   │   │   └── cart.component.ts
-│   │   │   │   ├── services/
-│   │   │   │   │   └── cart.service.ts
-│   │   │   │   └── cart.module.ts
-│   │   │   │
-│   │   │   ├── checkout/
-│   │   │   │   ├── components/
-│   │   │   │   │   ├── shipping.component.ts
-│   │   │   │   │   ├── payment.component.ts
-│   │   │   │   │   └── confirmation.component.ts
-│   │   │   │   ├── services/
-│   │   │   │   │   └── checkout.service.ts
-│   │   │   │   └── checkout.module.ts
-│   │   │   │
-│   │   │   └── orders/
-│   │   │       ├── components/
-│   │   │       │   ├── order-list.component.ts
-│   │   │       │   └── order-detail.component.ts
-│   │   │       ├── services/
-│   │   │       │   └── order.service.ts
-│   │   │       └── orders.module.ts
-│   │   │
-│   │   ├── shared/
-│   │   │   ├── components/
-│   │   │   │   ├── navbar.component.ts
-│   │   │   │   ├── footer.component.ts
-│   │   │   │   ├── sidebar.component.ts
-│   │   │   │   └── loader.component.ts
-│   │   │   ├── services/
-│   │   │   │   ├── api.service.ts
-│   │   │   │   ├── notification.service.ts
-│   │   │   │   └── loading.service.ts
-│   │   │   ├── guards/
-│   │   │   │   ├── auth.guard.ts
-│   │   │   │   └── admin.guard.ts
-│   │   │   ├── interceptors/
-│   │   │   │   ├── token.interceptor.ts
-│   │   │   │   └── error.interceptor.ts
-│   │   │   ├── pipes/
-│   │   │   │   ├── currency.pipe.ts
-│   │   │   │   └── date.pipe.ts
-│   │   │   └── shared.module.ts
-│   │   │
-│   │   ├── core/
-│   │   │   ├── guards/
-│   │   │   ├── interceptors/
-│   │   │   └── core.module.ts
-│   │   │
-│   │   ├── app-routing.module.ts
-│   │   ├── app.component.ts
-│   │   └── app.module.ts
-│   │
-│   ├── assets/
-│   │   ├── images/
-│   │   ├── icons/
-│   │   └── styles/
-│   │       └── global.css
-│   │
-│   ├── styles/
-│   │   ├── _variables.scss
-│   │   ├── _mixins.scss
-│   │   ├── _utilities.scss
-│   │   └── styles.scss
-│   │
-│   ├── environments/
-│   │   ├── environment.ts
-│   │   └── environment.prod.ts
-│   │
-│   ├── index.html
-│   └── main.ts
-│
-├── angular.json              # Angular CLI configuration
-├── tsconfig.json            # TypeScript configuration
-├── tsconfig.app.json        # App-specific TS config
-├── tailwind.config.js       # Tailwind CSS config
-├── package.json             # Dependencies
-├── package-lock.json        # Dependency lock file
-├── karma.conf.js            # Testing configuration
-├── .gitignore
-├── README.md
-└── Shoex-Frontend.code-workspace
-```
+Each feature module is **independently loadable** for better performance:
 
----
-
-## 🏛️ Component Architecture
-
-### Module-Based Organization
-
-The application is organized into **feature modules** to maintain clean separation of concerns:
-
-```
-App Module
-├── Auth Module
-│   ├── Login Component
-│   ├── Register Component
-│   └── Profile Component
-├── Products Module
-│   ├── Product List Component
-│   ├── Product Detail Component
-│   └── Product Filter Component
-├── Cart Module
-│   └── Cart Component
-├── Checkout Module
-│   ├── Shipping Component
-│   ├── Payment Component
-│   └── Confirmation Component
-├── Orders Module
-│   ├── Order List Component
-│   └── Order Detail Component
-└── Shared Module
-    ├── Navbar Component
-    ├── Footer Component
-    ├── Services
-    ├── Guards
-    ├── Interceptors
-    └── Pipes
-```
-
-### Component Examples
-
-**Product List Component:**
+### **Auth Module** 🔐
 ```typescript
-@Component({
-  selector: 'app-product-list',
-  templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.scss']
+// auth/auth.module.ts
+@NgModule({
+  declarations: [LoginComponent, RegisterComponent, ProfileComponent],
+  imports: [CommonModule, AuthRoutingModule, SharedModule]
 })
-export class ProductListComponent implements OnInit {
-  products$ = this.productService.getProducts();
-  loading$ = this.loadingService.loading$;
+export class AuthModule { }
+```
+
+**Components:**
+- Login (email/password)
+- Register (validation)
+- Profile (user details)
+
+**Service:**
+```typescript
+// auth/services/auth.service.ts
+@Injectable({ providedIn: 'root' })
+export class AuthService {
+  login(email: string, password: string): Observable<{token: string}> {
+    return this.http.post(`${this.apiUrl}/auth/login`, {email, password});
+  }
   
-  constructor(
-    private productService: ProductService,
-    private loadingService: LoadingService
-  ) {}
-  
-  ngOnInit() {
-    this.loadProducts();
+  logout(): void {
+    localStorage.removeItem('token');
   }
 }
 ```
 
-**Cart Service (State Management with RxJS):**
+---
+
+### **Products Module** 📦
 ```typescript
+// products/products.module.ts
+@NgModule({
+  declarations: [
+    ProductListComponent,
+    ProductDetailComponent,
+    ProductFilterComponent
+  ]
+})
+export class ProductsModule { }
+```
+
+**Components:**
+- Product List (grid view with filters)
+- Product Detail (full details + reviews)
+- Product Filter (category, price, rating)
+
+**Service:**
+```typescript
+// products/services/product.service.ts
+@Injectable({ providedIn: 'root' })
+export class ProductService {
+  getProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.apiUrl}/products`);
+  }
+  
+  getProductById(id: number): Observable<Product> {
+    return this.http.get<Product>(`${this.apiUrl}/products/${id}`);
+  }
+}
+```
+
+---
+
+### **Cart Module** 🛒
+```typescript
+// cart/cart.module.ts
+@NgModule({
+  declarations: [CartComponent, CartItemComponent]
+})
+export class CartModule { }
+```
+
+**Service with State Management:**
+```typescript
+// cart/services/cart.service.ts
 @Injectable({ providedIn: 'root' })
 export class CartService {
   private cartSubject = new BehaviorSubject<CartItem[]>([]);
   cart$ = this.cartSubject.asObservable();
   
-  addToCart(item: CartItem) {
+  addToCart(item: CartItem): void {
     const current = this.cartSubject.value;
     this.cartSubject.next([...current, item]);
   }
-}
-```
-
----
-
-## 🔌 Services & State Management
-
-### Service Architecture
-
-```
-API Service (Central HTTP Layer)
-    ↓
-Domain Services (Auth, Product, Cart, Order)
-    ↓
-Components (Subscribe to observables)
-    ↓
-UI Updates (Auto-detect changes)
-```
-
-### Key Services
-
-| Service | Purpose |
-|---------|---------|
-| **AuthService** | User authentication, JWT handling |
-| **ProductService** | Product data, search, filtering |
-| **CartService** | Cart management (state with BehaviorSubject) |
-| **OrderService** | Order creation, tracking |
-| **ApiService** | Centralized HTTP requests |
-| **NotificationService** | Toasts, alerts, modals |
-| **LoadingService** | Global loading state |
-
-### State Management Pattern
-
-```typescript
-// Using RxJS BehaviorSubject for state
-export class StateService {
-  private state$ = new BehaviorSubject<AppState>(initialState);
   
-  // Expose state as observable
-  getState() {
-    return this.state$.asObservable();
-  }
-  
-  // Update state
-  updateState(newState: Partial<AppState>) {
-    const current = this.state$.value;
-    this.state$.next({ ...current, ...newState });
+  getTotalPrice(): Observable<number> {
+    return this.cart$.pipe(
+      map(items => items.reduce((sum, item) => sum + (item.price * item.quantity), 0))
+    );
   }
 }
 ```
 
 ---
 
-## 🛣️ Routing
+### **Orders Module** 📋
+Create orders, track status, view history
 
-### Main Routes
+### **Wishlist Module** ❤️
+Add/remove products to wishlist
 
-```typescript
-const routes: Routes = [
-  {
-    path: '',
-    component: LayoutComponent,
-    children: [
-      { path: '', component: HomeComponent },
-      { path: 'products', component: ProductListComponent },
-      { path: 'products/:id', component: ProductDetailComponent },
-      { path: 'cart', component: CartComponent },
-      {
-        path: 'checkout',
-        component: CheckoutComponent,
-        canActivate: [AuthGuard]
-      },
-      {
-        path: 'account',
-        component: ProfileComponent,
-        canActivate: [AuthGuard],
-        children: [
-          { path: 'orders', component: OrderListComponent },
-          { path: 'addresses', component: AddressesComponent },
-          { path: 'wishlist', component: WishlistComponent }
-        ]
-      }
-    ]
-  },
-  {
-    path: 'auth',
-    children: [
-      { path: 'login', component: LoginComponent },
-      { path: 'register', component: RegisterComponent }
-    ]
-  },
-  { path: '**', component: NotFoundComponent }
-];
-```
+### **Admin Module** 👨‍💼
+Product and order management (role-restricted)
 
-### Route Guards
+---
+
+## 🔐 Guards & Interceptors
+
+### **AuthGuard** — Protect Routes
 
 ```typescript
-// AuthGuard protects routes requiring authentication
+// core/guards/auth.guard.ts
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
   
-  canActivate(): boolean {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     if (this.authService.isLoggedIn()) {
       return true;
     }
-    this.router.navigate(['/auth/login']);
+    
+    this.router.navigate(['/auth/login'], {
+      queryParams: { returnUrl: state.url }
+    });
     return false;
   }
 }
 ```
 
----
-
-## 🎨 Styling
-
-### Tailwind CSS + Angular Material
-
-**Global Styles:**
-```scss
-// src/styles/styles.scss
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
-
-// Custom variables
-$primary: #3b82f6;
-$secondary: #1e40af;
-$success: #10b981;
-$danger: #ef4444;
-```
-
-**Component Styling:**
+**Usage in Routes:**
 ```typescript
-@Component({
-  selector: 'app-product-card',
-  template: `
-    <div class="bg-white rounded-lg shadow-md p-4">
-      <img [src]="product.image" class="w-full h-48 object-cover rounded">
-      <h3 class="text-lg font-bold mt-2">{{ product.name }}</h3>
-      <p class="text-gray-600">{{ product.price | currency }}</p>
-    </div>
-  `
-})
-export class ProductCardComponent {
-  @Input() product: Product;
-}
-```
-
-### Responsive Breakpoints
-
-```scss
-// Mobile-first approach
-$sm: 640px;    // Small devices
-$md: 768px;    // Tablets
-$lg: 1024px;   // Desktops
-$xl: 1280px;   // Large screens
-
-@media (min-width: $md) {
-  // Tablet styles
-}
-
-@media (min-width: $lg) {
-  // Desktop styles
+{
+  path: 'cart',
+  loadChildren: () => import('./features/cart/cart.module').then(m => m.CartModule),
+  canActivate: [AuthGuard]  // ⭐ Protected route
 }
 ```
 
 ---
 
-## ⚡ Performance Optimization
+### **Token Interceptor** — Add JWT to Requests
 
-### Code Splitting & Lazy Loading
 ```typescript
-const routes: Routes = [
-  {
-    path: 'products',
-    loadChildren: () => import('./modules/products/products.module')
-      .then(m => m.ProductsModule)
+// core/interceptors/token.interceptor.ts
+@Injectable()
+export class TokenInterceptor implements HttpInterceptor {
+  constructor(private authService: AuthService) {}
+  
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    const token = this.authService.getToken();
+    
+    if (token) {
+      request = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`  // ⭐ Add JWT to every request
+        }
+      });
+    }
+    
+    return next.handle(request);
   }
-];
+}
 ```
 
-### Change Detection Strategy
+---
+
+### **Error Interceptor** — Handle API Errors
+
 ```typescript
+// core/interceptors/error.interceptor.ts
+@Injectable()
+export class ErrorInterceptor implements HttpInterceptor {
+  constructor(private notificationService: NotificationService) {}
+  
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    return next.handle(request).pipe(
+      catchError((error: HttpErrorResponse) => {
+        let errorMessage = 'An error occurred';
+        
+        if (error.status === 401) {
+          errorMessage = 'Unauthorized. Please login.';
+        } else if (error.status === 403) {
+          errorMessage = 'Access denied.';
+        } else if (error.status === 404) {
+          errorMessage = 'Resource not found.';
+        }
+        
+        this.notificationService.showError(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+}
+```
+
+---
+
+## 🔐 Authentication Flow
+
+### Login Process
+
+```typescript
+// User enters credentials
+login(email: string, password: string) {
+  return this.authService.login(email, password).pipe(
+    tap(response => {
+      localStorage.setItem('token', response.token);  // Store JWT
+      this.authService.setLoggedIn(true);
+    })
+  );
+}
+```
+
+### Protected API Calls
+
+```typescript
+// Every HTTP request automatically includes JWT
+// Thanks to TokenInterceptor ⭐
+
+this.http.get('/api/cart')  // Token added automatically
+// Headers: Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
+```
+
+### Token Refresh
+
+```typescript
+// When token expires, refresh it
+refreshToken(): Observable<{token: string}> {
+  return this.http.post(`${this.apiUrl}/auth/refresh-token`, {
+    refreshToken: localStorage.getItem('refreshToken')
+  });
+}
+```
+
+---
+
+## 🌐 API Integration
+
+### Environment Configuration
+
+**Development:**
+```typescript
+// src/environments/environment.ts
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:5001/api'
+};
+```
+
+**Production:**
+```typescript
+// src/environments/environment.prod.ts
+export const environment = {
+  production: true,
+  apiUrl: 'https://api.shoex.com/api'
+};
+```
+
+### API Service (Centralized)
+
+```typescript
+// core/services/api.service.ts
+@Injectable({ providedIn: 'root' })
+export class ApiService {
+  constructor(private http: HttpClient) {}
+  
+  get<T>(endpoint: string): Observable<T> {
+    return this.http.get<T>(`${environment.apiUrl}${endpoint}`);
+  }
+  
+  post<T>(endpoint: string, data: any): Observable<T> {
+    return this.http.post<T>(`${environment.apiUrl}${endpoint}`, data);
+  }
+  
+  put<T>(endpoint: string, data: any): Observable<T> {
+    return this.http.put<T>(`${environment.apiUrl}${endpoint}`, data);
+  }
+  
+  delete<T>(endpoint: string): Observable<T> {
+    return this.http.delete<T>(`${environment.apiUrl}${endpoint}`);
+  }
+}
+```
+
+### Using API Service in Component
+
+```typescript
+// features/products/components/product-list.component.ts
 @Component({
   selector: 'app-product-list',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: './product-list.component.html'
 })
-export class ProductListComponent {}
+export class ProductListComponent implements OnInit {
+  products$: Observable<Product[]>;
+  loading = false;
+  
+  constructor(
+    private productService: ProductService,
+    private apiService: ApiService
+  ) {}
+  
+  ngOnInit() {
+    this.loading = true;
+    this.products$ = this.apiService.get<Product[]>('/products').pipe(
+      finalize(() => this.loading = false)
+    );
+  }
+}
 ```
 
-### OnPush Optimization
-- Use OnPush change detection strategy
-- Unsubscribe from observables with `takeUntil`
-- Use `async` pipe in templates
-- Memoize expensive computations
+### Template Using Async Pipe
 
-### Image Optimization
 ```html
-<!-- Use responsive images -->
-<img 
-  [src]="product.image" 
-  alt="Product image"
-  loading="lazy"
-  class="w-full object-cover"
->
-```
-
-### Bundle Analysis
-
-```bash
-# Analyze bundle size
-npm run build -- --stats-json
-ng build --stats-json
-webpack-bundle-analyzer dist/shoex-frontend/stats.json
+<!-- automatic unsubscribe with async pipe -->
+<div *ngIf="products$ | async as products">
+  <app-product-card 
+    *ngFor="let product of products"
+    [product]="product">
+  </app-product-card>
+</div>
 ```
 
 ---
@@ -715,49 +689,50 @@ webpack-bundle-analyzer dist/shoex-frontend/stats.json
 ### Run Unit Tests
 
 ```bash
-# Run all tests
 ng test
-
-# Run with coverage
 ng test --code-coverage
-
-# Run in headless mode (CI/CD)
-ng test --browsers=ChromeHeadless --watch=false
+ng test --browsers=ChromeHeadless --watch=false  # CI/CD
 ```
 
-### Example Component Test
+### Example: Component Test
 
 ```typescript
 describe('ProductListComponent', () => {
   let component: ProductListComponent;
   let fixture: ComponentFixture<ProductListComponent>;
-  let mockProductService: jasmine.SpyObj<ProductService>;
+  let mockApiService: jasmine.SpyObj<ApiService>;
   
   beforeEach(async () => {
-    mockProductService = jasmine.createSpyObj('ProductService', ['getProducts']);
+    mockApiService = jasmine.createSpyObj('ApiService', ['get']);
     
     await TestBed.configureTestingModule({
       declarations: [ProductListComponent],
-      providers: [{ provide: ProductService, useValue: mockProductService }]
+      providers: [{ provide: ApiService, useValue: mockApiService }]
     }).compileComponents();
     
     fixture = TestBed.createComponent(ProductListComponent);
     component = fixture.componentInstance;
   });
   
-  it('should display products', () => {
-    mockProductService.getProducts.and.returnValue(
-      of([{ id: 1, name: 'Shoe', price: 100 }])
-    );
+  it('should load products on init', (done) => {
+    const mockProducts = [
+      { id: 1, name: 'Shoe 1', price: 100 },
+      { id: 2, name: 'Shoe 2', price: 150 }
+    ];
     
-    fixture.detectChanges();
+    mockApiService.get.and.returnValue(of(mockProducts));
     
-    expect(component.products).toBeDefined();
+    component.ngOnInit();
+    
+    component.products$.subscribe(products => {
+      expect(products.length).toBe(2);
+      done();
+    });
   });
 });
 ```
 
-### Example Service Test
+### Example: Service Test
 
 ```typescript
 describe('CartService', () => {
@@ -769,144 +744,75 @@ describe('CartService', () => {
   });
   
   it('should add item to cart', (done) => {
-    const item = { id: 1, name: 'Shoe', quantity: 1 };
+    const item: CartItem = {
+      id: 1,
+      name: 'Shoe',
+      price: 100,
+      quantity: 1
+    };
+    
     service.addToCart(item);
     
     service.cart$.subscribe(cart => {
       expect(cart.length).toBe(1);
+      expect(cart[0].name).toBe('Shoe');
+      done();
+    });
+  });
+  
+  it('should calculate total price correctly', (done) => {
+    const item1 = { id: 1, price: 100, quantity: 2 };
+    const item2 = { id: 2, price: 50, quantity: 1 };
+    
+    service.addToCart(item1);
+    service.addToCart(item2);
+    
+    service.getTotalPrice().subscribe(total => {
+      expect(total).toBe(250);  // (100*2) + (50*1)
       done();
     });
   });
 });
 ```
 
----
-
-## 🚢 Deployment
-
-### Build for Production
-
-```bash
-# Create optimized production build
-ng build --configuration production
-
-# Build with analytics
-ng build --stats-json
-
-# Output: dist/shoex-frontend/
-```
-
-### Deploy to Firebase Hosting
-
-```bash
-# Install Firebase CLI
-npm install -g firebase-tools
-
-# Initialize Firebase
-firebase init
-
-# Deploy
-firebase deploy
-```
-
-### Deploy to Netlify
-
-```bash
-# Using Netlify CLI
-npm install -g netlify-cli
-
-# Deploy
-netlify deploy --prod --dir=dist/shoex-frontend
-```
-
-### Deploy to AWS S3 + CloudFront
-
-```bash
-# Build
-npm run build
-
-# Upload to S3
-aws s3 sync dist/shoex-frontend s3://your-bucket
-
-# Invalidate CloudFront
-aws cloudfront create-invalidation --distribution-id YOUR_ID --paths "/*"
-```
-
-### Environment Configuration for Deployment
-
-```typescript
-// environment.prod.ts
-export const environment = {
-  production: true,
-  apiUrl: 'https://api.shoex.com',
-  logLevel: 'error'
-};
-```
 
 ---
 
 ## 🐛 Troubleshooting
 
-### Common Issues
-
-**Port 4200 Already in Use**
+### Port 4200 Already in Use
 ```bash
-# Run on different port
 ng serve --port 4201
 ```
 
-**Module Not Found Error**
+### Module Not Found
 ```bash
-# Reinstall dependencies
 rm -rf node_modules package-lock.json
 npm install
 ```
 
-**Build Failing with Memory Error**
-```bash
-# Increase Node.js memory limit
-export NODE_OPTIONS="--max_old_space_size=4096"
-npm run build
-```
+### API Connection Error
+- Verify Backend is running on `localhost:5001`
+- Check `environment.ts` has correct API URL
+- Verify CORS is enabled in backend
 
-**CORS Error When Calling API**
-- Ensure API server is running
-- Check API base URL in environment.ts
-- Verify API has CORS enabled
-
-**Slow Build Times**
+### Slow Build Time
 ```bash
-# Use faster build option
-ng build --aot=false --build-optimizer=false --source-map=false
+ng build --aot=false --build-optimizer=false
 ```
 
 ---
 
 ## 📚 Learning Resources
 
-- [Angular Official Docs](https://angular.io/docs)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-- [RxJS Documentation](https://rxjs.dev)
-- [Angular Material Components](https://material.angular.io)
+- [Angular Documentation](https://angular.io/docs)
+- [RxJS Guide](https://rxjs.dev)
+- [Tailwind CSS](https://tailwindcss.com/docs)
 - [TypeScript Handbook](https://www.typescriptlang.org/docs)
-- [Web Components Best Practices](https://www.webcomponents.org/)
 
 ---
 
-
-### Code Style Guidelines
-- Use Angular style guide
-- Prefer functional components
-- Write meaningful comments
-- Keep components focused
-- Follow naming conventions
-
----
-
-
-## 📞 Contact & Support
-
-Need help or have questions?
+## 📞 Contact
 
 - **LinkedIn:** [Ajnas Thayyil](https://www.linkedin.com/in/ajnasthaayyil/)
 - **Email:** [ajnasthayyil123@gmail.com](mailto:ajnasthayyil123@gmail.com)
@@ -920,14 +826,5 @@ Need help or have questions?
   <br/>
   <a href="https://github.com/Ajnasthayyil">Follow on GitHub</a>
 </p>
-
----
-
-## 🙏 Acknowledgments
-
-- Angular team for the amazing framework
-- Tailwind CSS for utility-first CSS
-- Angular Material for UI components
-- The open-source community
 
 **Last Updated:** April 2026
