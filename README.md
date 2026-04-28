@@ -893,38 +893,6 @@ ng build --aot=false --build-optimizer=false --source-map=false
 
 ---
 
-## 🤝 Contributing
-
-Contributions are welcome! Here's the process:
-
-1. **Fork the repository**
-   ```bash
-   git clone https://github.com/YOUR-USERNAME/Shoex-Frontend.git
-   ```
-
-2. **Create a feature branch**
-   ```bash
-   git checkout -b feature/amazing-feature
-   ```
-
-3. **Make your changes**
-   - Follow Angular style guide
-   - Write tests for new features
-   - Update documentation
-
-4. **Commit your changes**
-   ```bash
-   git commit -m "Add amazing feature"
-   ```
-
-5. **Push to your branch**
-   ```bash
-   git push origin feature/amazing-feature
-   ```
-
-6. **Open a Pull Request**
-   - Describe your changes
-   - Link related issues
 
 ### Code Style Guidelines
 - Use Angular style guide
@@ -935,11 +903,6 @@ Contributions are welcome! Here's the process:
 
 ---
 
-## 📄 License
-
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
-
----
 
 ## 📞 Contact & Support
 
