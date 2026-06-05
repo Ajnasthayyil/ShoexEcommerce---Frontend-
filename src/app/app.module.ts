@@ -16,13 +16,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { ProfileComponent } from './features/profile/profile.component';
+import { NotFoundComponent } from './shared/not-found/not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     AboutComponent,
-    ProfileComponent
+    ProfileComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,

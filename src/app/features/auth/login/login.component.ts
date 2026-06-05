@@ -15,7 +15,6 @@ export class LoginComponent implements OnInit {
   forgotForm!: FormGroup;
   otpForm!: FormGroup;
   resetForm!: FormGroup;
-
   viewMode: 'login' | 'forgot' | 'otp' | 'reset' = 'login';
 
   resetEmail: string = '';

@@ -31,7 +31,10 @@ export class ErrorInterceptor implements HttpInterceptor {
                         (errorMessage.toLowerCase().includes('blocked') || errorMessage.toLowerCase().includes('inactive'));
 
                     if (isBlocked) {
-                        this.toastr.error('Your account has been blocked or is inactive. You have been logged out.', 'Access Denied');
+                        // Skip showing toast if it's a login request, LoginComponent will handle it
+                        if (!request.url.includes('login')) {
+                            this.toastr.error('Your account has been blocked or is inactive. You have been logged out.', 'Access Denied');
+                        }
                         this.authService.logout();
                         this.router.navigate(['/auth/login']);
                     }

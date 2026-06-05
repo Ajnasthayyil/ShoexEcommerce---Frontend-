@@ -8,7 +8,7 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { HomeComponent } from './shared/home/home.component';
 import { ProfileComponent } from './features/profile/profile.component';
 import { AdminAuthGuard } from './core/guards/admin.guard';
-
+import { NotFoundComponent } from './shared/not-found/not-found.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -25,7 +25,7 @@ const routes: Routes = [
   { path: 'orders', loadChildren: () => import('./shared/user-orders/orders.module').then(m => m.OrdersModule), canActivate: [AuthGuard] },
   { path: 'wishlist', loadChildren: () => import('./features/wishlist/wishlist/wishlist.module').then(m => m.WishlistModule), canActivate: [AuthGuard] },
   { path: 'admin', loadChildren: () => import('./features/admin/admin.module').then(m => m.AdminModule), canActivate: [AdminAuthGuard] },
-  { path: '**', redirectTo: 'home' }
+  { path: '**', component: NotFoundComponent }
 ];
 
 @NgModule({

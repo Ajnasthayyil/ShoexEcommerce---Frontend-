@@ -1,0 +1,81 @@
+.not-found-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+  background-color: transparent;
+  /* blend directly with the app background */
+  font-family: 'Inter', sans-serif;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.not-found-content {
+  max-width: 600px;
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+h1.glitch {
+  font-size: 140px;
+  font-weight: 900;
+  color: #0b1120;
+  /* Dark navy matching navbar login button */
+  margin: 0;
+  line-height: 1;
+  letter-spacing: -4px;
+}
+
+h2 {
+  font-size: 32px;
+  font-weight: 800;
+  color: #eb3333;
+  /* ShoeX Red */
+  margin-top: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+p {
+  color: #6b7280;
+  font-size: 18px;
+  margin: 20px auto 40px;
+  line-height: 1.6;
+  max-width: 400px;
+}
+
+.btn-return {
+  display: inline-block;
+  background-color: #0b1120;
+  /* Matching the Login Button */
+  color: #ffffff;
+  padding: 14px 40px;
+  border-radius: 50px;
+  /* Pill shape matching Top Navbar */
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border: 2px solid transparent;
+}
+
+.btn-return:hover {
+  background-color: transparent;
+  color: #0b1120;
+  border-color: #0b1120;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(11, 17, 32, 0.15);
+}
+
+@keyframes fadeInUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
