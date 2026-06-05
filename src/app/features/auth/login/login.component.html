@@ -1,186 +1,170 @@
-<div class="relative flex justify-center items-center min-h-screen overflow-hidden">
+<div class="flex min-h-screen w-full bg-white font-sans">
 
-  <!-- Background Video -->
-  <video autoplay loop muted playsinline class="absolute top-0 left-0 w-full h-full object-cover">
-    <source src="assets\video\vdo4.mp4" type="video/mp4" />
-  </video>
+  <!-- Left Side: Login Panel -->
+  <div class="w-full lg:w-1/2 flex items-center justify-center p-8">
+    <div class="w-full max-w-md animate-fadeIn">
 
-  <!-- Overlay for readability -->
-  <div class="absolute inset-0 bg-black/50 bg-blend-overlay"></div>
-
-  <!-- Login Card -->
-  <div
-    class="relative z-10 w-[380px] bg-white/15 backdrop-blur-xl p-8 rounded-2xl shadow-2xl animate-fadeIn border border-white/10">
-    <h1 class="text-3xl font-extrabold text-center text-white uppercase tracking-wide mb-2">
-      <ng-container *ngIf="viewMode === 'login'">Login</ng-container>
-      <ng-container *ngIf="viewMode === 'forgot'">Forgot Password</ng-container>
-      <ng-container *ngIf="viewMode === 'otp'">Verify OTP</ng-container>
-      <ng-container *ngIf="viewMode === 'reset'">New Password</ng-container>
-    </h1>
-
-    <p class="text-center text-gray-200 text-sm mt-1 mb-6" *ngIf="viewMode === 'login'">
-      Welcome back
-    </p>
-    <p class="text-center text-gray-200 text-sm mt-1 mb-6" *ngIf="viewMode === 'forgot'">
-      Enter email to receive OTP
-    </p>
-    <p class="text-center text-gray-200 text-sm mt-1 mb-6" *ngIf="viewMode === 'otp'">
-      OTP sent to {{ resetEmail }}
-    </p>
-    <p class="text-center text-gray-200 text-sm mt-1 mb-6" *ngIf="viewMode === 'reset'">
-      Create a strong password
-    </p>
-
-    <!-- Login View -->
-    <ng-container *ngIf="viewMode === 'login'">
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <!-- Username -->
-        <div class="relative mb-6">
-          <input type="text" formControlName="username"
-            class="peer w-full bg-transparent border-b-2 border-gray-400 text-white py-2 px-2 focus:border-yellow-400 outline-none"
-            required />
-          <label class="absolute left-2 top-2 text-gray-300 text-sm pointer-events-none transition-all
-                   peer-focus:-top-3 peer-focus:text-xs peer-focus:text-yellow-400
-                   peer-valid:-top-3 peer-valid:text-xs peer-valid:text-yellow-400">
-            Username
-          </label>
-          <p *ngIf="loginForm.controls['username'].invalid && loginForm.controls['username'].touched"
-            class="text-red-400 text-xs mt-1">
-            Username required
-          </p>
-        </div>
-
-        <!-- Password -->
-        <div class="relative mb-8">
-          <input type="password" formControlName="password"
-            class="peer w-full bg-transparent border-b-2 border-gray-400 text-white py-2 px-2 focus:border-yellow-400 outline-none"
-            required />
-          <label class="absolute left-2 top-2 text-gray-300 text-sm pointer-events-none transition-all
-                   peer-focus:-top-3 peer-focus:text-xs peer-focus:text-yellow-400
-                   peer-valid:-top-3 peer-valid:text-xs peer-valid:text-yellow-400">
-            Password
-          </label>
-          <p *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched"
-            class="text-red-400 text-xs mt-1">
-            Password required
-          </p>
-        </div>
-
-        <button type="submit" [disabled]="loginForm.invalid"
-          class="w-full bg-gradient-to-r from-red-600 to-orange-500 text-white py-2 rounded-xl font-semibold hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-xl disabled:opacity-70">
-          Login Now
-        </button>
-      </form>
-
-      <div class="flex justify-between items-center mt-4">
-        <a href="javascript:void(0)" (click)="switchView('forgot')" class="text-yellow-200 text-sm hover:underline">
-          Forgot Password?
-        </a>
-        <a routerLink="/auth/register" class="text-yellow-200 text-sm hover:underline">
-          Register new user?
-        </a>
+      <!-- Brand Logo / Header -->
+      <div class="mb-10 text-center lg:text-left">
+        <h2
+          class="text-4xl font-black tracking-tight uppercase mb-2 bg-clip-text text-transparent bg-gradient-to-r from-red-600 to-orange-500 inline-block">
+          ShoeX
+        </h2>
+        <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight mb-2">
+          <ng-container *ngIf="viewMode === 'login'">Welcome Back</ng-container>
+          <ng-container *ngIf="viewMode === 'forgot'">Reset Password</ng-container>
+          <ng-container *ngIf="viewMode === 'otp'">Verify Identity</ng-container>
+          <ng-container *ngIf="viewMode === 'reset'">Secure Account</ng-container>
+        </h1>
+        <p class="text-gray-500 text-sm">
+          <ng-container *ngIf="viewMode === 'login'">Please enter your details to sign in.</ng-container>
+          <ng-container *ngIf="viewMode === 'forgot'">Enter your email to receive an OTP code.</ng-container>
+          <ng-container *ngIf="viewMode === 'otp'">OTP sent to <span class="font-semibold text-gray-800">{{ resetEmail
+              }}</span></ng-container>
+          <ng-container *ngIf="viewMode === 'reset'">Create a strong, new password below.</ng-container>
+        </p>
       </div>
-    </ng-container>
 
-    <!-- Forgot Password View -->
-    <ng-container *ngIf="viewMode === 'forgot'">
-      <form [formGroup]="forgotForm" (ngSubmit)="onForgotSubmit()">
-        <div class="relative mb-6">
-          <input type="email" formControlName="email"
-            class="peer w-full bg-transparent border-b-2 border-gray-400 text-white py-2 px-2 focus:border-yellow-400 outline-none"
-            required />
-          <label class="absolute left-2 top-2 text-gray-300 text-sm pointer-events-none transition-all
-                   peer-focus:-top-3 peer-focus:text-xs peer-focus:text-yellow-400
-                   peer-valid:-top-3 peer-valid:text-xs peer-valid:text-yellow-400">
-            Email
-          </label>
-          <p *ngIf="forgotForm.controls['email'].invalid && forgotForm.controls['email'].touched"
-            class="text-red-400 text-xs mt-1">
-            Valid email required
-          </p>
-        </div>
+      <!-- Login View -->
+      <ng-container *ngIf="viewMode === 'login'">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-5">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Username</label>
+            <input type="text" formControlName="username"
+              class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-900 focus:bg-white focus:border-[#0b1120] focus:ring-2 focus:ring-[#0b1120]/20 outline-none transition-all"
+              placeholder="Enter your username" required />
+            <p *ngIf="loginForm.controls['username'].invalid && loginForm.controls['username'].touched"
+              class="text-red-500 text-xs mt-1">
+              Username is required
+            </p>
+          </div>
 
-        <button type="submit" [disabled]="forgotForm.invalid"
-          class="w-full bg-gradient-to-r from-red-600 to-orange-500 text-white py-2 rounded-xl font-semibold hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-xl disabled:opacity-70 mb-4">
-          Send OTP
-        </button>
-      </form>
-      <div class="text-center">
-        <a href="javascript:void(0)" (click)="switchView('login')"
-          class="text-gray-300 text-sm hover:text-white transition-colors">
-          Back to Login
-        </a>
-      </div>
-    </ng-container>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Password</label>
+            <input type="password" formControlName="password"
+              class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-900 focus:bg-white focus:border-[#0b1120] focus:ring-2 focus:ring-[#0b1120]/20 outline-none transition-all"
+              placeholder="••••••••" required />
+            <p *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched"
+              class="text-red-500 text-xs mt-1">
+              Password is required
+            </p>
+          </div>
 
-    <!-- Verify OTP View -->
-    <ng-container *ngIf="viewMode === 'otp'">
-      <form [formGroup]="otpForm" (ngSubmit)="onOtpSubmit()">
-        <div class="relative mb-6">
-          <input type="text" formControlName="otp"
-            class="peer w-full bg-transparent border-b-2 border-gray-400 text-white py-2 px-2 focus:border-yellow-400 outline-none"
-            required />
-          <label class="absolute left-2 top-2 text-gray-300 text-sm pointer-events-none transition-all
-                   peer-focus:-top-3 peer-focus:text-xs peer-focus:text-yellow-400
-                   peer-valid:-top-3 peer-valid:text-xs peer-valid:text-yellow-400">
-            Enter OTP
-          </label>
-          <p *ngIf="otpForm.controls['otp'].invalid && otpForm.controls['otp'].touched"
-            class="text-red-400 text-xs mt-1">
-            Valid OTP required (4-8 characters)
-          </p>
-        </div>
+          <div class="flex justify-between items-center text-sm font-medium">
+            <label class="flex items-center text-gray-600 gap-2 cursor-pointer">
+              <input type="checkbox" class="rounded border-gray-300 text-[#0b1120] focus:ring-[#0b1120] w-4 h-4">
+              Remember me
+            </label>
+            <a href="javascript:void(0)" (click)="switchView('forgot')" class="text-[#eb3333] hover:text-red-700">Forgot
+              Password?</a>
+          </div>
 
-        <button type="submit" [disabled]="otpForm.invalid"
-          class="w-full bg-gradient-to-r from-red-600 to-orange-500 text-white py-2 rounded-xl font-semibold hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-xl disabled:opacity-70 mb-4">
-          Verify OTP
-        </button>
-      </form>
-    </ng-container>
+          <button type="submit" [disabled]="loginForm.invalid"
+            class="w-full bg-[#0b1120] text-white py-3.5 rounded-xl font-bold hover:bg-gray-900 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed mt-2">
+            Sign In
+          </button>
+        </form>
 
-    <!-- Reset Password View -->
-    <ng-container *ngIf="viewMode === 'reset'">
-      <form [formGroup]="resetForm" (ngSubmit)="onResetSubmit()">
-        <div class="relative mb-6">
-          <input type="password" formControlName="newPassword"
-            class="peer w-full bg-transparent border-b-2 border-gray-400 text-white py-2 px-2 focus:border-yellow-400 outline-none"
-            required />
-          <label class="absolute left-2 top-2 text-gray-300 text-sm pointer-events-none transition-all
-                   peer-focus:-top-3 peer-focus:text-xs peer-focus:text-yellow-400
-                   peer-valid:-top-3 peer-valid:text-xs peer-valid:text-yellow-400">
-            New Password
-          </label>
-          <p *ngIf="resetForm.controls['newPassword'].errors?.['required'] && resetForm.controls['newPassword'].touched"
-            class="text-red-400 text-xs mt-1">
-            New Password required
-          </p>
-          <p *ngIf="resetForm.controls['newPassword'].errors?.['pattern'] && resetForm.controls['newPassword'].touched"
-            class="text-red-400 text-xs mt-1">
-            Must be 8+ chars, 1 uppercase, 1 lowercase, 1 number, 1 special char
-          </p>
-        </div>
+        <p class="text-center text-gray-600 text-sm mt-8 font-medium">
+          Don't have an account? <a routerLink="/auth/register" class="text-[#0b1120] font-bold hover:underline">Sign up
+            for free</a>
+        </p>
+      </ng-container>
 
-        <div class="relative mb-6">
-          <input type="password" formControlName="confirmPassword"
-            class="peer w-full bg-transparent border-b-2 border-gray-400 text-white py-2 px-2 focus:border-yellow-400 outline-none"
-            required />
-          <label class="absolute left-2 top-2 text-gray-300 text-sm pointer-events-none transition-all
-                   peer-focus:-top-3 peer-focus:text-xs peer-focus:text-yellow-400
-                   peer-valid:-top-3 peer-valid:text-xs peer-valid:text-yellow-400">
-            Confirm Password
-          </label>
-          <p *ngIf="resetForm.errors?.['mismatch'] && resetForm.controls['confirmPassword'].touched"
-            class="text-red-400 text-xs mt-1">
-            Passwords do not match
-          </p>
-        </div>
+      <!-- Forgot Password View -->
+      <ng-container *ngIf="viewMode === 'forgot'">
+        <form [formGroup]="forgotForm" (ngSubmit)="onForgotSubmit()" class="space-y-5">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Email Address</label>
+            <input type="email" formControlName="email"
+              class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-900 focus:bg-white focus:border-[#0b1120] focus:ring-2 focus:ring-[#0b1120]/20 outline-none transition-all"
+              placeholder="name@example.com" required />
+            <p *ngIf="forgotForm.controls['email'].invalid && forgotForm.controls['email'].touched"
+              class="text-red-500 text-xs mt-1">
+              Valid email is required
+            </p>
+          </div>
 
-        <button type="submit" [disabled]="resetForm.invalid"
-          class="w-full bg-gradient-to-r from-red-600 to-orange-500 text-white py-2 rounded-xl font-semibold hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-xl disabled:opacity-70">
-          Reset Password
-        </button>
-      </form>
-    </ng-container>
+          <button type="submit" [disabled]="forgotForm.invalid"
+            class="w-full bg-[#0b1120] text-white py-3.5 rounded-xl font-bold hover:bg-gray-900 transition-all shadow-lg hover:shadow-xl disabled:opacity-50">
+            Send Recovery OTP
+          </button>
+        </form>
+        <p class="text-center text-gray-600 text-sm mt-8 font-medium">
+          Remember your password? <a href="javascript:void(0)" (click)="switchView('login')"
+            class="text-[#0b1120] font-bold hover:underline">Back to Login</a>
+        </p>
+      </ng-container>
 
+      <!-- Verify OTP View -->
+      <ng-container *ngIf="viewMode === 'otp'">
+        <form [formGroup]="otpForm" (ngSubmit)="onOtpSubmit()" class="space-y-5">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">One-Time Password (OTP)</label>
+            <input type="text" formControlName="otp"
+              class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-900 focus:bg-white focus:border-[#0b1120] focus:ring-2 focus:ring-[#0b1120]/20 outline-none transition-all tracking-widest font-mono text-center text-xl"
+              placeholder="••••" required />
+            <p *ngIf="otpForm.controls['otp'].invalid && otpForm.controls['otp'].touched"
+              class="text-red-500 text-xs mt-1 text-center">
+              Valid OTP required
+            </p>
+          </div>
+
+          <button type="submit" [disabled]="otpForm.invalid"
+            class="w-full bg-[#0b1120] text-white py-3.5 rounded-xl font-bold hover:bg-gray-900 transition-all shadow-lg hover:shadow-xl disabled:opacity-50">
+            Verify & Continue
+          </button>
+        </form>
+      </ng-container>
+
+      <!-- Reset Password View -->
+      <ng-container *ngIf="viewMode === 'reset'">
+        <form [formGroup]="resetForm" (ngSubmit)="onResetSubmit()" class="space-y-5">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">New Password</label>
+            <input type="password" formControlName="newPassword"
+              class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-900 focus:bg-white focus:border-[#0b1120] focus:ring-2 focus:ring-[#0b1120]/20 outline-none transition-all"
+              placeholder="••••••••" required />
+            <p *ngIf="resetForm.controls['newPassword'].invalid && resetForm.controls['newPassword'].touched"
+              class="text-red-500 text-xs mt-1">
+              Strong password required
+            </p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Confirm Password</label>
+            <input type="password" formControlName="confirmPassword"
+              class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-900 focus:bg-white focus:border-[#0b1120] focus:ring-2 focus:ring-[#0b1120]/20 outline-none transition-all"
+              placeholder="••••••••" required />
+            <p *ngIf="resetForm.errors?.['mismatch'] && resetForm.controls['confirmPassword'].touched"
+              class="text-red-500 text-xs mt-1">
+              Passwords do not match
+            </p>
+          </div>
+
+          <button type="submit" [disabled]="resetForm.invalid"
+            class="w-full bg-[#0b1120] text-white py-3.5 rounded-xl font-bold hover:bg-gray-900 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 mt-2">
+            Update Password
+          </button>
+        </form>
+      </ng-container>
+
+    </div>
+  </div>
+
+  <!-- Right Side: Video Section -->
+  <div class="hidden lg:block lg:w-1/2 relative bg-[#0b1120] overflow-hidden shadow-2xl">
+    <div
+      class="absolute inset-0 bg-gradient-to-t from-[#0b1120]/80 via-[#0b1120]/30 to-[#0b1120]/60 z-10 transition-opacity">
+    </div>
+    <div
+      class="absolute inset-x-0 bottom-20 z-20 flex flex-col justify-end items-center text-white p-12 text-center pointer-events-none">
+      <h2 class="text-5xl font-black mb-4 uppercase tracking-tighter drop-shadow-2xl">Stay Optimized.</h2>
+      <p class="text-lg text-gray-200 max-w-md font-medium leading-relaxed drop-shadow-md">Experience a seamless
+        shopping journey with the most exclusive drops globally.</p>
+    </div>
+    <video autoplay loop muted playsinline class="absolute top-0 left-0 w-full h-full object-cover">
+      <source src="assets/video/vdo4.mp4" type="video/mp4" />
+    </video>
   </div>
 </div>
