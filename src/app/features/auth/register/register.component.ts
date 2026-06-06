@@ -14,6 +14,9 @@ export class RegisterComponent implements OnInit {
 
   registerForm!: FormGroup;
 
+  hidePassword = true;
+  togglePassword() { this.hidePassword = !this.hidePassword; }
+
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,

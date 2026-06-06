@@ -16,4 +16,6 @@ export interface Product {
   gender: string;
   genderId?: number;
   isActive?: boolean;
+  averageRating?: number;
+  totalReviews?: number;
 }

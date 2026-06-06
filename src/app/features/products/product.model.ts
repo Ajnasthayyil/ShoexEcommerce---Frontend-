@@ -6,4 +6,6 @@ export interface Product {
   price: number;
   gender?: string;
   image?: string;
+  averageRating?: number;
+  totalReviews?: number;
 }

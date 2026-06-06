@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastrModule } from 'ngx-toastr';
+import { FormsModule } from '@angular/forms';
 
 import { OrdersRoutingModule } from './orders-routing.module';
 import { userOrdersComponent } from './user-orders.component';
@@ -13,7 +14,8 @@ import { userOrdersComponent } from './user-orders.component';
   imports: [
     CommonModule,
     OrdersRoutingModule,
-    ToastrModule
+    ToastrModule,
+    FormsModule
   ]
 })
 export class OrdersModule { }

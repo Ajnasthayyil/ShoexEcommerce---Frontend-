@@ -98,9 +98,19 @@
 
         <!-- Details -->
         <div class="relative px-2">
-          <h3 class="text-xl font-black text-gray-900 mb-2 truncate group-hover:text-red-600 transition-colors">
+          <h3 class="text-xl font-black text-gray-900 mb-1 truncate group-hover:text-red-600 transition-colors">
             {{ item.name }}
           </h3>
+
+          <!-- Star Rating -->
+          <div class="flex items-center gap-1 mb-3">
+            <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+              <i class="fa-solid fa-star text-[11px]"
+                [ngClass]="star <= (item.averageRating || 0) ? 'text-orange-500' : 'text-gray-200'"></i>
+            </ng-container>
+            <span class="text-xs font-bold text-gray-400 ml-1">({{ item.totalReviews || 0 }})</span>
+          </div>
+
           <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-6">{{ item.gender }} Collection
           </p>
 

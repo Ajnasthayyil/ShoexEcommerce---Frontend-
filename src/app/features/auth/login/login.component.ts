@@ -20,6 +20,12 @@ export class LoginComponent implements OnInit {
   resetEmail: string = '';
   resetToken: string = '';
 
+  hidePassword = true;
+  hideConfirmPassword = true;
+
+  togglePassword() { this.hidePassword = !this.hidePassword; }
+  toggleConfirmPassword() { this.hideConfirmPassword = !this.hideConfirmPassword; }
+
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,

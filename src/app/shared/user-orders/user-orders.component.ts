@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OrdersService } from 'src/app/core/services/order.service';
+import { ReviewService } from 'src/app/core/services/review.service';
 import { ToastrService } from 'ngx-toastr';
 
 interface OrderStep {
@@ -25,7 +26,11 @@ export class userOrdersComponent implements OnInit {
     { name: 'Cancelled', key: 'cancelled' },
   ];
 
-  constructor(private ordersService: OrdersService, private toastr: ToastrService) { }
+  constructor(
+    private ordersService: OrdersService, 
+    private reviewService: ReviewService,
+    private toastr: ToastrService
+  ) { }
 
   ngOnInit() {
     this.loadOrders();
@@ -95,6 +100,48 @@ export class userOrdersComponent implements OnInit {
         }
       });
     }
+  }
+
+  // Review System
+  reviewModalOpen = false;
+  selectedProductForReview: any = null;
+  ratingValue = 0;
+  reviewText = '';
+
+  openReviewModal(item: any) {
+    this.selectedProductForReview = item;
+    this.ratingValue = 0;
+    this.reviewText = '';
+    this.reviewModalOpen = true;
+  }
+
+  closeReviewModal() {
+    this.reviewModalOpen = false;
+    this.selectedProductForReview = null;
+  }
+
+  setRating(stars: number) {
+    this.ratingValue = stars;
+  }
+
+  submitReview() {
+    if (!this.selectedProductForReview || this.ratingValue === 0) return;
+
+    this.reviewService.addReview({
+      productId: this.selectedProductForReview.productId,
+      rating: this.ratingValue,
+      reviewText: this.reviewText
+    }).subscribe({
+      next: (res) => {
+        this.toastr.success('Review submitted successfully!', 'Thank you!');
+        this.closeReviewModal();
+        this.loadOrders(); // Optional: Reload to update UI if we want to hide the button
+      },
+      error: (err) => {
+        const msg = err.error?.message || 'Failed to submit review.';
+        this.toastr.error(msg, 'Error');
+      }
+    });
   }
 
 }

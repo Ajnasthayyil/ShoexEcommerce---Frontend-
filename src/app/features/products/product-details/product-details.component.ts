@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { ProductService } from 'src/app/core/services/product.service';
 import { WishlistService } from 'src/app/core/services/wishlist.service';
+import { ReviewService, ProductReviewDto } from 'src/app/core/services/review.service';
 
 import { SizeService, Size } from 'src/app/core/services/size.service';
 
@@ -18,6 +19,8 @@ export class ProductDetailsComponent implements OnInit {
   product: Product | undefined;
   mainImage: string = '';
   sizesLookup: Map<number, string> = new Map();
+  reviews: ProductReviewDto[] = [];
+  isLoadingReviews = false;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -26,11 +29,27 @@ export class ProductDetailsComponent implements OnInit {
     private toastrService: ToastrService,
     private productService: ProductService,
     private wishlistService: WishlistService,
-    private sizeService: SizeService) { }
+    private sizeService: SizeService,
+    private reviewService: ReviewService) { }
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.loadProduct(id);
+    this.loadReviews(id);
+  }
+
+  private loadReviews(id: number) {
+    this.isLoadingReviews = true;
+    this.reviewService.getReviewsByProductId(id).subscribe({
+      next: (res: any) => {
+        this.reviews = res?.data ? res.data : (Array.isArray(res) ? res : []);
+        this.isLoadingReviews = false;
+      },
+      error: (err) => {
+        console.error('Failed to load reviews', err);
+        this.isLoadingReviews = false;
+      }
+    });
   }
 
   private loadProduct(id: number) {

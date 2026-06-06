@@ -20,7 +20,11 @@ export class AuthService {
   private performLogin(credentials: { username: string; password: string }): Observable<any> {
     const opts = { withCredentials: true };
 
-    return this.http.post<any>(`${this.apiUrl}/Auth/login`, credentials, opts).pipe(
+    const formData = new FormData();
+    formData.append('username', credentials.username);
+    formData.append('password', credentials.password);
+
+    return this.http.post<any>(`${this.apiUrl}/Auth/login`, formData, opts).pipe(
       switchMap(res => {
         if (!res?.isSuccess) {
           return throwError(() => new Error(res?.message || 'Login failed'));
@@ -95,7 +99,14 @@ export class AuthService {
   }
 
   register(userData: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/Auth/register`, userData).pipe(
+    const formData = new FormData();
+    Object.keys(userData).forEach(key => {
+      if (userData[key] !== null && userData[key] !== undefined) {
+        formData.append(key, userData[key]);
+      }
+    });
+
+    return this.http.post<any>(`${this.apiUrl}/Auth/register`, formData).pipe(
       map(res => {
         if (!res.isSuccess) {
           throw new Error(res.message || 'Registration failed');

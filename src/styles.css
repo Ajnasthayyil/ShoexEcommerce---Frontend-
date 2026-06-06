@@ -118,51 +118,94 @@ section {
   animation: scroll 20s linear infinite;
 }
 
-/* Modern Toastr Styles */
-#toast-container>.toast {
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
-  border-radius: 8px !important;
-  padding: 10px 16px 10px 45px !important;
+/* Premium Glassmorphism Toastr Styles (Theme Aligned) */
+#toast-container > .ngx-toastr {
+  width: 500px !important;
+  max-width: 90vw !important;
+  background-color: #000000 !important; /* Solid Black */
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1) inset !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 18px 24px 18px 60px !important;
   font-family: 'Inter', sans-serif !important;
-  font-weight: 500 !important;
-  border-left: 5px solid transparent !important;
+  color: #f3f4f6 !important; /* Light text on dark bg */
   background-image: none !important;
-  opacity: 1 !important;
-  color: #1a1a1a !important;
-  background-color: #ffffff !important;
-  transition: all 0.3s ease !important;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  overflow: hidden !important;
 }
 
-#toast-container>.toast:hover {
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15) !important;
-  transform: translateY(-2px);
+#toast-container > .ngx-toastr:hover {
+  box-shadow: 0 15px 50px -10px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.2) inset !important;
+  transform: translateY(-4px) scale(1.02) !important;
 }
 
-.toast-top-right {
-  top: 20px !important;
-  right: 20px !important;
-  z-index: 9999 !important;
+/* Base icon styling using pseudo-elements */
+#toast-container > .ngx-toastr::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
-/* Customize Toastr Colors (Modern Variations) */
+/* Title text styling */
+#toast-container > .ngx-toastr .toast-title {
+  font-weight: 700 !important;
+  font-size: 15px !important;
+  margin-bottom: 4px !important;
+  color: #ffffff !important;
+}
+
+/* Message text styling */
+#toast-container > .ngx-toastr .toast-message {
+  font-weight: 400 !important;
+  font-size: 14px !important;
+  color: #d1d5db !important;
+}
+
+/* Themed Variations with left border accent and custom SVG icons */
+/* Success uses the brand accent #eb3333 */
 .toast-success {
-  border-left-color: #22c55e !important;
-  /* Green Accent */
+  border-left: 6px solid #eb3333 !important;
+}
+.toast-success::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23eb3333'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'%3E%3C/path%3E%3C/svg%3E");
 }
 
 .toast-error {
-  border-left-color: #ef4444 !important;
-  /* Red Accent */
+  border-left: 6px solid #ef4444 !important;
+}
+.toast-error::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ef4444'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'%3E%3C/path%3E%3C/svg%3E");
 }
 
 .toast-info {
-  border-left-color: #3b82f6 !important;
-  /* Blue Accent */
+  border-left: 6px solid #3b82f6 !important;
+}
+.toast-info::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%233b82f6'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'%3E%3C/path%3E%3C/svg%3E");
 }
 
 .toast-warning {
-  border-left-color: #f59e0b !important;
-  /* Amber Accent */
+  border-left: 6px solid #f97316 !important;
+}
+.toast-warning::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23f97316'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'%3E%3C/path%3E%3C/svg%3E");
+}
+
+/* Toast Progress Bar Customization */
+#toast-container > .ngx-toastr .toast-progress {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  bottom: 0 !important;
+  height: 4px !important;
+  border-bottom-right-radius: 12px !important;
 }
 
 /* Premium Animation Set */
