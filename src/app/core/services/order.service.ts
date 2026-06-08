@@ -16,7 +16,7 @@ export class OrdersService {
   getOrders(): Observable<any[]> {
     if (!this.authService.isLoggedIn()) return of([]);
 
-    return this.http.get<any>(`${this.apiUrl}/my-orders`).pipe(
+    return this.http.get<any>(`${this.apiUrl}/my`).pipe(
       map(res => {
         const items = res.data || res;
         return Array.isArray(items) ? items : [];
@@ -31,24 +31,15 @@ export class OrdersService {
   placeCartOrder(addressId: number, paymentMethod: string): Observable<any> {
     if (!this.authService.isLoggedIn()) return throwError(() => new Error('User is not logged in'));
 
-    const formData = new FormData();
-    formData.append('AddressId', addressId.toString());
-    formData.append('PaymentMethod', paymentMethod);
-
-    return this.http.post<any>(`${this.apiUrl}/cart`, formData);
+    const payload = { addressId, paymentMethod };
+    return this.http.post<any>(`${this.apiUrl}`, payload);
   }
 
   placeBuyNowOrder(productId: number, sizeId: number, quantity: number, addressId: number, paymentMethod: string): Observable<any> {
     if (!this.authService.isLoggedIn()) return throwError(() => new Error('User is not logged in'));
 
-    const formData = new FormData();
-    formData.append('ProductId', productId.toString());
-    formData.append('SizeId', sizeId.toString());
-    formData.append('Quantity', quantity.toString());
-    formData.append('AddressId', addressId.toString());
-    formData.append('PaymentMethod', paymentMethod);
-
-    return this.http.post<any>(`${this.apiUrl}/buy-now`, formData);
+    const payload = { productId, sizeId, quantity, addressId, paymentMethod };
+    return this.http.post<any>(`${this.apiUrl}/buy-now`, payload);
   }
 
   cancelOrder(order: any): Observable<any> {

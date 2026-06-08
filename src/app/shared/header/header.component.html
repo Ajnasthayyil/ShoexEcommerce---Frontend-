@@ -106,6 +106,13 @@
         </div>
         My Dossier
       </a>
+      <a *ngIf="isLoggedIn" routerLink="/orders" (click)="toggleMenu()"
+        class="flex items-center gap-4 text-xl font-black text-gray-900 uppercase tracking-tight">
+        <div class="w-10 h-10 bg-gray-900 rounded-xl flex items-center justify-center text-white">
+          <i class="fa-solid fa-box-open text-sm"></i>
+        </div>
+        My Orders
+      </a>
       <button *ngIf="isLoggedIn" (click)="logout(); toggleMenu()"
         class="flex items-center gap-4 text-xl font-black text-red-600 uppercase tracking-tight">
         <div class="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center">

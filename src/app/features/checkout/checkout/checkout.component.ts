@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { OrdersService } from 'src/app/core/services/order.service';
 import { AddressService, AddressDto } from 'src/app/core/services/address.service';
 import { ToastrService } from 'ngx-toastr';
+import { PaymentService } from 'src/app/core/services/payment.service';
+declare var window: any;
 
 @Component({
   selector: 'app-checkout',
@@ -35,7 +37,8 @@ export class checkoutComponent implements OnInit, OnDestroy {
     private router: Router,
     private orderService: OrdersService,
     private addressService: AddressService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+      private paymentService: PaymentService
   ) { }
 
   ngOnDestroy() {
@@ -153,21 +156,71 @@ export class checkoutComponent implements OnInit, OnDestroy {
         this.address.id,
         this.paymentMethod
       ).subscribe({
-        next: (res) => {
-          this.handleSuccessResponse();
-          localStorage.removeItem('buyNowProduct');
-        },
+        next: (res) => this.handleOrderResponse(res, () => localStorage.removeItem('buyNowProduct')),
         error: (err) => this.handleErrorResponse(err)
       });
     } else {
       this.orderService.placeCartOrder(this.address.id, this.paymentMethod).subscribe({
-        next: (res) => {
-          this.handleSuccessResponse();
-          this.cartService.clearCart();
-        },
+        next: (res) => this.handleOrderResponse(res, () => this.cartService.clearCart()),
         error: (err) => this.handleErrorResponse(err)
       });
     }
+  }
+
+  private handleOrderResponse(res: any, onSuccess: () => void) {
+    if (this.paymentMethod === 'COD') {
+      onSuccess();
+      this.handleSuccessResponse();
+    } else {
+      const data = res.data || res;
+      this.openRazorpayModal(data, onSuccess);
+    }
+  }
+
+  private openRazorpayModal(data: any, onSuccess: () => void) {
+    const options = {
+      key: data.key,
+      amount: data.amount * 100, // Razorpay works in subunits
+      currency: 'INR',
+      name: 'SheoxEcommerce',
+      description: 'Order Payment',
+      order_id: data.razorpayOrderId,
+      handler: (response: any) => {
+        const verifyData = {
+          orderId: data.orderId,
+          razorpayOrderId: response.razorpay_order_id,
+          razorpayPaymentId: response.razorpay_payment_id,
+          razorpaySignature: response.razorpay_signature
+        };
+
+        this.paymentService.verifyPayment(verifyData).subscribe({
+          next: (verifyRes) => {
+            onSuccess();
+            this.handleSuccessResponse();
+          },
+          error: (verifyErr) => {
+            this.toastrService.error('Payment verification failed.');
+            this.isPlacingOrder = false;
+          }
+        });
+      },
+      prefill: {
+        name: this.address?.fullName || 'Customer',
+        contact: this.address?.phoneNumber || ''
+      },
+      theme: {
+        color: '#3399cc'
+      },
+      modal: {
+        ondismiss: () => {
+          this.toastrService.warning('Payment cancelled.');
+          this.isPlacingOrder = false;
+        }
+      }
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open();
   }
 
   private handleSuccessResponse() {

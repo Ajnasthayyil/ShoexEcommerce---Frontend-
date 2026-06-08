@@ -354,3 +354,18 @@ body {
 }
 
 * {}
+
+@keyframes slideInDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slideInDown {
+  animation: slideInDown 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
