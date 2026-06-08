@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { OrdersService } from 'src/app/core/services/order.service';
 import { ReviewService } from 'src/app/core/services/review.service';
 import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute, Router } from '@angular/router';
 
 interface OrderStep {
   name: string;
@@ -29,7 +30,9 @@ export class userOrdersComponent implements OnInit {
   constructor(
     private ordersService: OrdersService, 
     private reviewService: ReviewService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -42,6 +45,24 @@ export class userOrdersComponent implements OnInit {
       next: (res: any) => {
         this.orders = res.data || res;
         this.isLoading = false;
+
+        // Auto open review if redirected from checkout success
+        this.route.queryParams.subscribe(params => {
+          if (params['rateRecent'] && this.orders.length > 0) {
+            const recentOrder = this.orders[0];
+            if (recentOrder.items && recentOrder.items.length > 0 && recentOrder.status?.toLowerCase() !== 'cancelled') {
+              const itemToReview = recentOrder.items[0];
+              this.openReviewModal(itemToReview);
+
+              // Clear query parameters from URL
+              this.router.navigate([], {
+                relativeTo: this.route,
+                queryParams: { rateRecent: null },
+                queryParamsHandling: 'merge'
+              });
+            }
+          }
+        });
       },
       error: (err) => {
         this.toastr.error('Failed to load orders', 'Error');
@@ -138,7 +159,10 @@ export class userOrdersComponent implements OnInit {
         this.loadOrders(); // Optional: Reload to update UI if we want to hide the button
       },
       error: (err) => {
-        const msg = err.error?.message || 'Failed to submit review.';
+        console.error('Review submission error:', err);
+        // ErrorInterceptor converts HttpErrorResponse to Error object,
+        // so err.message holds the actual backend message
+        const msg = err?.message || err?.error?.message || 'Failed to submit review.';
         this.toastr.error(msg, 'Error');
       }
     });

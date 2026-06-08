@@ -100,23 +100,23 @@
         class="text-2xl font-black text-gray-900 uppercase tracking-tighter hover:text-red-600 transition-colors">Connect</a>
       <div class="h-px bg-gray-100 w-full"></div>
       <a *ngIf="isLoggedIn" routerLink="/profile" (click)="toggleMenu()"
-        class="flex items-center gap-4 text-xl font-black text-gray-900 uppercase tracking-tight">
-        <div class="w-10 h-10 bg-gray-900 rounded-xl flex items-center justify-center text-white">
-          <i class="fa-solid fa-user text-sm"></i>
+        class="group flex items-center gap-3 text-sm font-black text-gray-900 uppercase tracking-wider hover:text-red-600 transition-colors">
+        <div class="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center text-gray-600 group-hover:bg-red-50 group-hover:text-red-600 transition-all">
+          <i class="fa-solid fa-user text-xs"></i>
         </div>
         My Dossier
       </a>
       <a *ngIf="isLoggedIn" routerLink="/orders" (click)="toggleMenu()"
-        class="flex items-center gap-4 text-xl font-black text-gray-900 uppercase tracking-tight">
-        <div class="w-10 h-10 bg-gray-900 rounded-xl flex items-center justify-center text-white">
-          <i class="fa-solid fa-box-open text-sm"></i>
+        class="group flex items-center gap-3 text-sm font-black text-gray-900 uppercase tracking-wider hover:text-red-600 transition-colors">
+        <div class="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center text-gray-600 group-hover:bg-red-50 group-hover:text-red-600 transition-all">
+          <i class="fa-solid fa-box-open text-xs"></i>
         </div>
         My Orders
       </a>
       <button *ngIf="isLoggedIn" (click)="logout(); toggleMenu()"
-        class="flex items-center gap-4 text-xl font-black text-red-600 uppercase tracking-tight">
-        <div class="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center">
-          <i class="fa-solid fa-power-off text-sm"></i>
+        class="group flex items-center gap-3 text-sm font-black text-red-600 uppercase tracking-wider hover:text-red-700 transition-colors">
+        <div class="w-9 h-9 bg-red-50 rounded-xl flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-all">
+          <i class="fa-solid fa-power-off text-xs"></i>
         </div>
         Terminate Session
       </button>

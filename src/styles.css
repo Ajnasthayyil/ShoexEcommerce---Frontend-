@@ -120,7 +120,7 @@ section {
 
 /* Premium Glassmorphism Toastr Styles (Theme Aligned) */
 #toast-container > .ngx-toastr {
-  width: 500px !important;
+  width: 400px !important;
   max-width: 90vw !important;
   background-color: #000000 !important; /* Solid Black */
   backdrop-filter: blur(16px) saturate(180%) !important;
@@ -170,13 +170,12 @@ section {
   color: #d1d5db !important;
 }
 
-/* Themed Variations with left border accent and custom SVG icons */
-/* Success uses the brand accent #eb3333 */
+/* Success uses a premium green accent #10b981 */
 .toast-success {
-  border-left: 6px solid #eb3333 !important;
+  border-left: 6px solid #10b981 !important;
 }
 .toast-success::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23eb3333'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'%3E%3C/path%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2310b981'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'%3E%3C/path%3E%3C/svg%3E");
 }
 
 .toast-error {

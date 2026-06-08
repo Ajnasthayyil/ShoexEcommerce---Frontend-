@@ -54,4 +54,24 @@ export class WishlistComponent implements OnInit, OnDestroy {
   viewProduct(item: Product) {
     this.router.navigate(['/products', item.id]);
   }
+
+  getWishlistTotal(): number {
+    return this.wishlist.reduce((sum, item) => sum + item.price, 0);
+  }
+
+  moveAllToCart() {
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/auth/login']);
+      return;
+    }
+    const items = [...this.wishlist];
+    items.forEach(item => {
+      this.cartService.addToCart(item).subscribe({
+        next: () => {
+          this.wishlistService.removeFromWishlist(item.id);
+        }
+      });
+    });
+    this.toastr.success('All items moved to cart!');
+  }
 }

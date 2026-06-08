@@ -226,7 +226,7 @@ export class checkoutComponent implements OnInit, OnDestroy {
   private handleSuccessResponse() {
     this.toastrService.success('Order Placed Successfully!', 'Success');
     this.isPlacingOrder = false;
-    this.router.navigate(['/orders']); // Navigate to Purchase History
+    this.router.navigate(['/orders'], { queryParams: { rateRecent: true } }); // Navigate to Purchase History
   }
 
   private handleErrorResponse(err: any) {

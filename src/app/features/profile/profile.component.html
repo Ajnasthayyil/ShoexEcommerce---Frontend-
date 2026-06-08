@@ -2,7 +2,7 @@
 
   <ng-container *ngIf="user; else noUser">
     <div
-      class="w-full max-w-2xl bg-white rounded-[3rem] shadow-2xl shadow-gray-200/50 border-2 border-gray-200 p-10 md:p-16 relative overflow-hidden animate-slideInUp">
+      class="w-full max-w-[95%] md:max-w-[88%] lg:max-w-[82%] bg-white rounded-[3rem] shadow-2xl shadow-gray-200/50 border-2 border-gray-200 p-10 md:p-16 relative overflow-hidden animate-slideInUp">
 
       <!-- Decorative Background Elements -->
       <div
@@ -56,74 +56,88 @@
 
       <!-- READ-ONLY MODE (High-Fidelity View) -->
       <ng-container *ngIf="!isEditing">
-        <!-- Info Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-          <div
-            class="bg-gray-50/50 p-6 rounded-3xl border border-gray-100 hover:border-red-100 transition-colors group">
-            <span
-              class="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-1 group-hover:text-red-400">Username</span>
-            <p class="text-gray-900 font-bold text-lg">@{{ user.username }}</p>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+          
+          <!-- Left Column: Info Grid -->
+          <div class="lg:col-span-7 space-y-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div
+                class="bg-gray-50/50 p-6 rounded-3xl border border-gray-100 hover:border-red-100 transition-colors group">
+                <span
+                  class="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-1 group-hover:text-red-400">Username</span>
+                <p class="text-gray-900 font-bold text-lg">@{{ user.username }}</p>
+              </div>
+              <div
+                class="bg-gray-50/50 p-6 rounded-3xl border border-gray-100 hover:border-red-100 transition-colors group">
+                <span
+                  class="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-1 group-hover:text-red-400">Email
+                  Address</span>
+                <p class="text-gray-900 font-bold text-lg overflow-hidden text-ellipsis">{{ user.email }}</p>
+              </div>
+              <div
+                class="bg-gray-50/50 p-6 rounded-3xl border border-gray-100 hover:border-red-100 transition-colors group col-span-1 sm:col-span-2 flex items-center justify-between">
+                <div>
+                  <span
+                    class="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-1 group-hover:text-red-400">Primary
+                    Contact</span>
+                  <p class="text-gray-900 font-bold text-lg">{{ user.mobileNumber || user.phone || 'Not provided' }}</p>
+                </div>
+                <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-gray-400 shadow-sm shrink-0">
+                  <i class="fa-solid fa-phone-volume"></i>
+                </div>
+              </div>
+            </div>
+            
+            <button (click)="logout()"
+              class="w-full bg-red-50/30 hover:bg-red-600 text-red-500 hover:text-white py-6 rounded-[2rem] font-black uppercase tracking-[0.2em] text-[11px] border border-red-100/40 hover:border-red-600 shadow-sm hover:shadow-xl hover:shadow-red-500/10 active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-3">
+              <i class="fa-solid fa-power-off text-sm"></i> Sign Out
+            </button>
           </div>
-          <div
-            class="bg-gray-50/50 p-6 rounded-3xl border border-gray-100 hover:border-red-100 transition-colors group">
-            <span
-              class="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-1 group-hover:text-red-400">Email
-              Address</span>
-            <p class="text-gray-900 font-bold text-lg overflow-hidden text-ellipsis">{{ user.email }}</p>
+
+          <!-- Right Column: Navigation Actions -->
+          <div class="lg:col-span-5 space-y-4 border-t lg:border-t-0 lg:border-l border-gray-100 pt-8 lg:pt-0 lg:pl-10 flex flex-col justify-center">
+            <h3 class="text-xs font-black text-gray-400 uppercase tracking-[0.2em] mb-4 pl-1">Quick Actions</h3>
+            
+            <!-- Orders -->
+            <button (click)="goToOrders()"
+              class="w-full flex items-center gap-4 p-4.5 bg-gray-50/50 border border-gray-100 hover:border-red-200 hover:bg-white rounded-2xl shadow-sm hover:shadow-xl hover:shadow-red-500/5 transition-all duration-300 group text-left">
+              <div class="w-11 h-11 bg-red-50 rounded-xl flex items-center justify-center group-hover:bg-red-600 transition-colors shrink-0">
+                <i class="fa-solid fa-box-open text-red-600 group-hover:text-white transition-colors"></i>
+              </div>
+              <div class="flex-grow">
+                <h4 class="text-[13px] font-black text-gray-900 uppercase tracking-wider">My Orders</h4>
+                <p class="text-[10px] font-semibold text-gray-400 mt-0.5">Track and view history</p>
+              </div>
+              <i class="fa-solid fa-chevron-right text-gray-300 group-hover:text-red-600 transition-colors pr-1 text-xs"></i>
+            </button>
+
+            <!-- Cart -->
+            <button (click)="goToAddToCart()"
+              class="w-full flex items-center gap-4 p-4.5 bg-gray-50/50 border border-gray-100 hover:border-orange-200 hover:bg-white rounded-2xl shadow-sm hover:shadow-xl hover:shadow-red-500/5 transition-all duration-300 group text-left">
+              <div class="w-11 h-11 bg-orange-50 rounded-xl flex items-center justify-center group-hover:bg-orange-500 transition-colors shrink-0">
+                <i class="fa-solid fa-cart-shopping text-orange-600 group-hover:text-white transition-colors"></i>
+              </div>
+              <div class="flex-grow">
+                <h4 class="text-[13px] font-black text-gray-900 uppercase tracking-wider">Shopping Cart</h4>
+                <p class="text-[10px] font-semibold text-gray-400 mt-0.5">Check your cart items</p>
+              </div>
+              <i class="fa-solid fa-chevron-right text-gray-300 group-hover:text-orange-500 transition-colors pr-1 text-xs"></i>
+            </button>
+
+            <!-- Favorites -->
+            <button (click)="goToWishlist()"
+              class="w-full flex items-center gap-4 p-4.5 bg-gray-50/50 border border-gray-100 hover:border-red-200 hover:bg-white rounded-2xl shadow-sm hover:shadow-xl hover:shadow-red-500/5 transition-all duration-300 group text-left">
+              <div class="w-11 h-11 bg-red-50 rounded-xl flex items-center justify-center group-hover:bg-red-600 transition-colors shrink-0">
+                <i class="fa-solid fa-heart text-red-600 group-hover:text-white transition-colors"></i>
+              </div>
+              <div class="flex-grow">
+                <h4 class="text-[13px] font-black text-gray-900 uppercase tracking-wider">Favorites</h4>
+                <p class="text-[10px] font-semibold text-gray-400 mt-0.5">Browse saved items</p>
+              </div>
+              <i class="fa-solid fa-chevron-right text-gray-300 group-hover:text-red-600 transition-colors pr-1 text-xs"></i>
+            </button>
           </div>
-          <div
-            class="bg-gray-50/50 p-6 rounded-3xl border border-gray-100 hover:border-red-100 transition-colors group col-span-1 md:col-span-2 flex items-center justify-between">
-            <div>
-              <span
-                class="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-1 group-hover:text-red-400">Primary
-                Contact</span>
-              <p class="text-gray-900 font-bold text-lg">{{ user.mobileNumber || user.phone || 'Not provided' }}</p>
-            </div>
-            <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-gray-400 shadow-sm">
-              <i class="fa-solid fa-phone-volume"></i>
-            </div>
-          </div>
-        </div>
 
-        <!-- Action Grid -->
-        <div class="grid grid-cols-3 gap-4 mb-8">
-          <button (click)="goToOrders()"
-            class="flex flex-col items-center justify-center p-6 bg-white border border-gray-100 rounded-[2.5rem] shadow-sm hover:shadow-xl hover:shadow-red-500/5 hover:-translate-y-1 transition-all duration-300 group">
-            <div
-              class="w-12 h-12 bg-red-50 rounded-2xl flex items-center justify-center mb-3 group-hover:bg-red-600 transition-colors">
-              <i class="fa-solid fa-box-open text-red-600 group-hover:text-white transition-colors"></i>
-            </div>
-            <span
-              class="text-[10px] font-black uppercase tracking-widest text-gray-400 group-hover:text-gray-900">Orders</span>
-          </button>
-
-          <button (click)="goToAddToCart()"
-            class="flex flex-col items-center justify-center p-6 bg-white border border-gray-100 rounded-[2.5rem] shadow-sm hover:shadow-xl hover:shadow-red-500/5 hover:-translate-y-1 transition-all duration-300 group">
-            <div
-              class="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center mb-3 group-hover:bg-orange-500 transition-colors">
-              <i class="fa-solid fa-cart-shopping text-orange-600 group-hover:text-white transition-colors"></i>
-            </div>
-            <span
-              class="text-[10px] font-black uppercase tracking-widest text-gray-400 group-hover:text-gray-900">Cart</span>
-          </button>
-
-          <button (click)="goToWishlist()"
-            class="flex flex-col items-center justify-center p-6 bg-white border border-gray-100 rounded-[2.5rem] shadow-sm hover:shadow-xl hover:shadow-red-500/5 hover:-translate-y-1 transition-all duration-300 group">
-            <div
-              class="w-12 h-12 bg-red-50 rounded-2xl flex items-center justify-center mb-3 group-hover:bg-red-600 transition-colors">
-              <i class="fa-solid fa-heart text-red-600 group-hover:text-white transition-colors"></i>
-            </div>
-            <span
-              class="text-[10px] font-black uppercase tracking-widest text-gray-400 group-hover:text-gray-900">Favorites</span>
-          </button>
-        </div>
-
-        <!-- Footer Actions -->
-        <div class="flex gap-4">
-          <button (click)="logout()"
-            class="flex-1 bg-gray-50 hover:bg-red-50 text-gray-400 hover:text-red-600 py-5 rounded-3xl font-black uppercase tracking-widest text-[11px] transition-all flex items-center justify-center gap-2 border border-transparent hover:border-red-100">
-            <i class="fa-solid fa-power-off"></i> Sign Out
-          </button>
         </div>
       </ng-container>
 

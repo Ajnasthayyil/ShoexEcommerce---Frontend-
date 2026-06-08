@@ -35,7 +35,9 @@ export class ProductService {
           sizeIds: p.sizeIds || [],
           gender: p.genderName || p.gender || '',
           genderId: p.genderId,
-          isActive: p.isActive
+          isActive: p.isActive,
+          averageRating: p.averageRating,
+          totalReviews: p.totalReviews
         }));
       })
     );
@@ -67,7 +69,9 @@ export class ProductService {
           sizes: p.sizes || [],
           gender: p.genderName || p.gender || '',
           genderId: p.genderId,
-          isActive: p.isActive
+          isActive: p.isActive,
+          averageRating: p.averageRating,
+          totalReviews: p.totalReviews
         }));
       })
     );
@@ -93,7 +97,9 @@ export class ProductService {
           gender: p.genderName || p.gender || '',
           genderId: p.genderId,
           isActive: p.isActive,
-          sizes: p.sizes || []
+          sizes: p.sizes || [],
+          averageRating: p.averageRating,
+          totalReviews: p.totalReviews
         };
       })
     );

@@ -1,7 +1,7 @@
 <div class="min-h-screen bg-gray-50/50 pt-32 pb-16 px-6 animate-fadeIn">
 
   <!-- Page Header -->
-  <div class="max-w-4xl mx-auto text-center mb-12">
+  <div class="max-w-7xl mx-auto text-center mb-12">
     <h2 class="text-4xl font-extrabold text-gray-900 mb-2">
       Order History <span class="text-red-600 ml-1">#</span>
     </h2>
@@ -18,7 +18,7 @@
   <ng-container *ngIf="!isLoading">
 
     <!-- Orders Available View -->
-    <div *ngIf="orders.length > 0; else noOrders" class="max-w-4xl mx-auto space-y-10">
+    <div *ngIf="orders.length > 0; else noOrders" class="max-w-7xl mx-auto space-y-10">
 
       <!-- Individual Order Card -->
       <div *ngFor="let order of orders"
@@ -60,40 +60,85 @@
         <!-- Order Items List -->
         <div class="grid grid-cols-1 gap-6 mb-10">
           <div *ngFor="let item of order.items"
-            class="flex items-center gap-6 p-4 rounded-2xl hover:bg-gray-50/80 transition-colors border border-transparent hover:border-gray-100 group/item">
-            <div class="relative overflow-hidden rounded-2xl shadow-sm border border-gray-100">
-              <img [src]="item.productImageUrl" alt="{{ item.productName }}"
-                class="w-24 h-24 object-cover transform transition-transform duration-500 group-hover/item:scale-110" />
-              <div
-                class="absolute top-1 right-1 bg-white/90 backdrop-blur-sm shadow-sm px-2 py-0.5 rounded-lg text-[10px] font-bold text-red-600">
-                x{{ item.quantity }}
+            class="flex flex-col p-4 rounded-[2rem] hover:bg-gray-50/50 transition-colors border border-transparent hover:border-gray-100 group/item">
+            
+            <div class="flex items-center gap-6 w-full">
+              <div class="relative overflow-hidden rounded-2xl shadow-sm border border-gray-100 shrink-0">
+                <img [src]="item.productImageUrl" alt="{{ item.productName }}"
+                  class="w-24 h-24 object-cover transform transition-transform duration-500 group-hover/item:scale-110" />
+                <div
+                  class="absolute top-1 right-1 bg-white/90 backdrop-blur-sm shadow-sm px-2 py-0.5 rounded-lg text-[10px] font-bold text-red-600">
+                  x{{ item.quantity }}
+                </div>
+              </div>
+
+              <div class="flex-grow min-w-0">
+                <h4
+                  class="font-black text-gray-900 text-lg decoration-red-500 decoration-2 group-hover/item:underline underline-offset-4 transition-all truncate">
+                  {{ item.productName }}</h4>
+                <div class="flex items-center gap-4 mt-2">
+                  <span class="flex items-center gap-1.5 text-xs font-bold text-gray-400 uppercase tracking-wider">
+                    Size <span class="bg-gray-900 text-white px-2 py-0.5 rounded-md text-[10px]">{{ item.sizeName
+                      }}</span>
+                  </span>
+                  <span class="w-1.5 h-1.5 bg-gray-200 rounded-full"></span>
+                  <span class="text-sm font-bold text-gray-600">₹{{ item.unitPrice }}</span>
+                </div>
+                <div class="mt-3 flex gap-2" *ngIf="order.status?.toLowerCase() !== 'cancelled'">
+                  <button *ngIf="selectedProductForReview !== item" (click)="openReviewModal(item)"
+                    class="group/rate flex items-center gap-1.5 text-[10px] font-black text-orange-500 hover:text-white uppercase tracking-widest border border-orange-200 bg-orange-50 hover:bg-orange-500 px-3 py-1.5 rounded-lg transition-all duration-300">
+                    <i class="fa-solid fa-star group-hover/rate:scale-110 transition-transform"></i>
+                    Rate Product
+                  </button>
+                </div>
+              </div>
+
+              <div class="text-right hidden sm:block shrink-0">
+                <p class="text-xl font-black text-gray-900">₹{{ item.totalPrice }}</p>
               </div>
             </div>
 
-            <div class="flex-1">
-              <h4
-                class="font-bold text-gray-900 text-lg decoration-red-500 decoration-2 group-hover/item:underline underline-offset-4 transition-all">
-                {{ item.productName }}</h4>
-              <div class="flex items-center gap-4 mt-2">
-                <span class="flex items-center gap-1.5 text-xs font-bold text-gray-400 uppercase tracking-wider">
-                  Size <span class="bg-gray-900 text-white px-2 py-0.5 rounded-md text-[10px]">{{ item.sizeName
-                    }}</span>
-                </span>
-                <span class="w-1 h-1 bg-gray-200 rounded-full"></span>
-                <span class="text-sm font-bold text-gray-600">₹{{ item.unitPrice }}</span>
-              </div>
-              <div class="mt-3" *ngIf="order.status?.toLowerCase() === 'delivered'">
-                <button (click)="openReviewModal(item)"
-                  class="group/rate flex items-center gap-1.5 text-[10px] font-black text-orange-500 hover:text-white uppercase tracking-widest border border-orange-200 bg-orange-50 hover:bg-orange-500 px-3 py-1.5 rounded-lg transition-all duration-300">
-                  <i class="fa-solid fa-star group-hover/rate:scale-110 transition-transform"></i>
-                  Rate Product
-                </button>
+            <!-- Inline Rating Form -->
+            <div *ngIf="selectedProductForReview === item" 
+              class="mt-4 p-6 bg-gray-50 rounded-2xl border border-gray-100 animate-fadeIn space-y-4 w-full">
+              <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                <!-- Stars Selector -->
+                <div class="flex flex-col shrink-0">
+                  <span class="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1.5">Rate this product</span>
+                  <div class="flex items-center gap-1 group/stars">
+                    <button *ngFor="let star of [1, 2, 3, 4, 5]" (click)="setRating(star)"
+                      class="text-2xl transition-all duration-200 focus:outline-none"
+                      [ngClass]="star <= ratingValue ? 'text-orange-500 scale-110' : 'text-gray-200 hover:text-orange-300'">
+                      <i class="fa-solid fa-star drop-shadow-sm"></i>
+                    </button>
+                  </div>
+                  <span class="text-[9px] font-black uppercase tracking-widest mt-1 text-orange-500" *ngIf="ratingValue > 0">
+                    {{ ratingValue }} Star{{ ratingValue > 1 ? 's' : '' }} Selected
+                  </span>
+                </div>
+
+                <!-- Textarea -->
+                <div class="flex-grow">
+                  <span class="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] block mb-1.5">Write a Review (Optional)</span>
+                  <textarea [(ngModel)]="reviewText" rows="2"
+                    class="w-full px-4 py-3 bg-white border border-gray-200 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 rounded-xl text-xs text-gray-900 font-semibold placeholder-gray-300 outline-none transition-all resize-none shadow-sm"
+                    placeholder="Describe your experience with this shoe..."></textarea>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center gap-3 shrink-0 self-end lg:self-center">
+                  <button (click)="closeReviewModal()"
+                    class="px-4 py-2.5 bg-white hover:bg-gray-50 text-gray-500 hover:text-gray-700 font-black rounded-xl transition-all uppercase text-[9px] tracking-widest border border-gray-200">
+                    Cancel
+                  </button>
+                  <button (click)="submitReview()" [disabled]="ratingValue === 0"
+                    class="px-5 py-2.5 bg-gray-900 hover:bg-orange-500 disabled:bg-gray-100 disabled:text-gray-300 text-white font-black rounded-xl transition-all uppercase text-[9px] tracking-widest shadow-md active:scale-95">
+                    Submit Review
+                  </button>
+                </div>
               </div>
             </div>
 
-            <div class="text-right hidden sm:block">
-              <p class="text-xl font-black text-gray-900">₹{{ item.totalPrice }}</p>
-            </div>
           </div>
         </div>
 
@@ -233,54 +278,6 @@
     </div>
   </div>
 
-  <!-- Product Review Modal -->
-  <div *ngIf="reviewModalOpen"
-    class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-gray-900/80 backdrop-blur-md transition-all duration-300">
-    <div
-      class="bg-white rounded-[2.5rem] shadow-2xl max-w-lg w-full p-10 transform scale-100 opacity-100 border border-white/20 animate-slideInUp relative">
-      
-      <!-- Close Button -->
-      <button (click)="closeReviewModal()"
-        class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-gray-50 text-gray-400 hover:text-gray-900 hover:bg-gray-200 transition-colors">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
 
-      <div class="flex items-center gap-4 mb-8 pb-6 border-b border-gray-100">
-        <div class="w-16 h-16 rounded-2xl overflow-hidden border border-gray-200 shrink-0">
-          <img [src]="selectedProductForReview?.productImageUrl" class="w-full h-full object-cover" />
-        </div>
-        <div>
-          <h3 class="text-xl font-black text-gray-900 tracking-tight leading-tight">{{ selectedProductForReview?.productName }}</h3>
-          <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mt-1">Rate your experience</p>
-        </div>
-      </div>
-
-      <div class="flex flex-col items-center justify-center mb-8">
-        <div class="flex items-center gap-2 group/stars">
-          <button *ngFor="let star of [1, 2, 3, 4, 5]" (click)="setRating(star)"
-            class="text-4xl transition-all duration-200 focus:outline-none"
-            [ngClass]="star <= ratingValue ? 'text-orange-500 scale-110' : 'text-gray-200 hover:text-orange-300'">
-            <i class="fa-solid fa-star drop-shadow-sm"></i>
-          </button>
-        </div>
-        <p class="text-[10px] font-black uppercase tracking-widest mt-4 text-orange-500" *ngIf="ratingValue > 0">
-          {{ ratingValue }} Star{{ ratingValue > 1 ? 's' : '' }} Selected
-        </p>
-      </div>
-
-      <div class="mb-8">
-        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Add a written review (optional)</label>
-        <textarea [(ngModel)]="reviewText" rows="4"
-          class="w-full px-5 py-4 bg-gray-50 border-2 border-transparent focus:border-orange-500 focus:bg-white rounded-2xl text-gray-900 font-medium placeholder-gray-300 outline-none transition-all resize-none"
-          placeholder="What did you like or dislike about this product?"></textarea>
-      </div>
-
-      <button (click)="submitReview()" [disabled]="ratingValue === 0"
-        class="w-full py-5 bg-gray-900 hover:bg-orange-500 disabled:bg-gray-100 disabled:text-gray-300 text-white font-black rounded-[2rem] shadow-xl disabled:shadow-none transition-all uppercase text-[11px] tracking-[0.2em] flex justify-center items-center gap-2">
-        <i class="fa-solid fa-paper-plane"></i> Submit Review
-      </button>
-
-    </div>
-  </div>
 
 </div>
