@@ -17,6 +17,7 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { ProfileComponent } from './features/profile/profile.component';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
+import { AiChatComponent } from './features/chatbot/ai-chat/ai-chat.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { NotFoundComponent } from './shared/not-found/not-found.component';
     CommonModule,
     CartModule,
     ReactiveFormsModule,
+    AiChatComponent,
     ToastrModule.forRoot({
       timeOut: 1500,
       positionClass: 'toast-top-right',

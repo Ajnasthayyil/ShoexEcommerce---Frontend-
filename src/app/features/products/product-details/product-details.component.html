@@ -1,5 +1,5 @@
-<div class="min-h-screen bg-gray-50/30 py-8 px-6 animate-fadeIn pt-32">
-  <div class="max-w-4xl mx-auto" *ngIf="product">
+<div class="min-h-screen bg-gray-50/30 py-8 px-4 animate-fadeIn pt-32">
+  <div class="max-w-6xl mx-auto" *ngIf="product">
 
     <!-- Breadcrumbs / Back Link -->
     <div class="mb-8 animate-fadeIn" style="animation-delay: 0.1s">
@@ -10,7 +10,7 @@
       </a>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
 
       <!-- Product Image Gallery (lg:col-span-6) -->
       <div class="lg:col-span-6 space-y-6 animate-fadeIn" style="animation-delay: 0.2s">
@@ -179,7 +179,7 @@
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 pb-4 border-b border-gray-50">
             <div class="flex items-center gap-3.5">
               <div class="w-11 h-11 rounded-full bg-gray-950 flex items-center justify-center text-white font-black text-sm uppercase tracking-wider">
-                {{ (review.userName?.charAt(0) || 'U') }}
+                {{ (review.userName.charAt(0) || 'U') }}
               </div>
               <div>
                 <p class="font-black text-gray-900 text-sm tracking-wide">{{ review.userName || 'Anonymous User' }}</p>
