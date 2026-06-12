@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CartService, CartItem } from 'src/app/core/services/cart.service';
 import { Router } from '@angular/router';
@@ -38,7 +38,8 @@ export class checkoutComponent implements OnInit, OnDestroy {
     private orderService: OrdersService,
     private addressService: AddressService,
     private toastrService: ToastrService,
-      private paymentService: PaymentService
+    private paymentService: PaymentService,
+    private ngZone: NgZone
   ) { }
 
   ngOnDestroy() {
@@ -208,12 +209,16 @@ export class checkoutComponent implements OnInit, OnDestroy {
 
         this.paymentService.verifyPayment(verifyData).subscribe({
           next: (verifyRes) => {
-            onSuccess();
-            this.handleSuccessResponse();
+            this.ngZone.run(() => {
+              onSuccess();
+              this.handleSuccessResponse();
+            });
           },
           error: (verifyErr) => {
-            this.toastrService.error('Payment verification failed.');
-            this.isPlacingOrder = false;
+            this.ngZone.run(() => {
+              this.toastrService.error('Payment verification failed.');
+              this.isPlacingOrder = false;
+            });
           }
         });
       },
@@ -226,8 +231,10 @@ export class checkoutComponent implements OnInit, OnDestroy {
       },
       modal: {
         ondismiss: () => {
-          this.toastrService.warning('Payment cancelled.');
-          this.isPlacingOrder = false;
+          this.ngZone.run(() => {
+            this.toastrService.warning('Payment cancelled.');
+            this.isPlacingOrder = false;
+          });
         }
       }
     };
