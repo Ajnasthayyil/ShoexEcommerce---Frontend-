@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://localhost:7282/api'
+  apiUrl: 'https://shoex-api.azurewebsites.net/api'
 };
