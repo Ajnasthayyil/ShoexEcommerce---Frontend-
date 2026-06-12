@@ -20,10 +20,6 @@ export class OrdersService {
       map(res => {
         const items = res.data || res;
         return Array.isArray(items) ? items : [];
-      }),
-      catchError(err => {
-        console.error('Failed to load orders', err);
-        return of([]);
       })
     );
   }

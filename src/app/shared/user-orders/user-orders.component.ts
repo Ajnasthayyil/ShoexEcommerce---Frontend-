@@ -65,7 +65,8 @@ export class userOrdersComponent implements OnInit {
         });
       },
       error: (err) => {
-        this.toastr.error('Failed to load orders', 'Error');
+        const msg = err?.error?.message || err?.message || 'Failed to load orders';
+        this.toastr.error(msg, 'Error');
         this.isLoading = false;
       }
     });

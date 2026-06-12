@@ -1,86 +1,86 @@
-<header class="fixed top-6 left-1/2 -translate-x-1/2 w-[95%] md:w-[88%] lg:w-[82%]
+<header class="fixed top-3 left-1/2 -translate-x-1/2 w-[95%] md:w-[88%] lg:w-[82%]
          bg-white/80 backdrop-blur-xl border border-white/40
-         shadow-[0_8px_32px_rgba(0,0,0,0.08)] rounded-[2.5rem] z-50 transition-all duration-500 overflow-hidden"
-  [class.py-2]="true">
-  <div class="flex items-center justify-between px-8 py-3 md:px-12">
+         shadow-[0_8px_32px_rgba(0,0,0,0.08)] rounded-full z-50 transition-all duration-500 overflow-hidden"
+  [class.py-0.5]="true">
+  <div class="flex items-center justify-between px-8 py-1.5 md:px-12">
 
     <!-- Logo Section -->
     <a routerLink="/home"
-      class="text-2xl font-black tracking-tight bg-gradient-to-r from-red-600 to-orange-500 bg-clip-text text-transparent hover:scale-105 transition-transform duration-300">
+      class="text-xl font-black tracking-tight bg-gradient-to-r from-red-600 to-orange-500 bg-clip-text text-transparent hover:scale-105 transition-transform duration-300">
       ShoeX
     </a>
 
     <!-- Architectural Navigation -->
-    <nav class="hidden lg:flex items-center bg-gray-50/50 rounded-full px-8 py-2 border border-gray-100/50">
-      <div class="flex items-center space-x-10">
+    <nav class="hidden lg:flex items-center bg-gray-50/50 rounded-full px-6 py-1.5 border border-gray-100/50">
+      <div class="flex items-center space-x-8">
         <a routerLink="/home" routerLinkActive="text-red-600 font-black" [routerLinkActiveOptions]="{exact: true}"
-          class="text-[11px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-red-600 transition-all duration-300 relative py-1">
+          class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-red-600 transition-all duration-300 relative py-0.5">
           Home
         </a>
         <a routerLink="/products" routerLinkActive="text-red-600 font-black"
-          class="text-[11px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-red-600 transition-all duration-300 relative py-1">
+          class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-red-600 transition-all duration-300 relative py-0.5">
           Catalog
         </a>
         <a routerLink="/about" routerLinkActive="text-red-600 font-black"
-          class="text-[11px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-red-600 transition-all duration-300 relative py-1">
+          class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-red-600 transition-all duration-300 relative py-0.5">
           Legacy
         </a>
         <a routerLink="/contact" routerLinkActive="text-red-600 font-black"
-          class="text-[11px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-red-600 transition-all duration-300 relative py-1">
+          class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-red-600 transition-all duration-300 relative py-0.5">
           Connect
         </a>
       </div>
     </nav>
 
     <!-- Interactive Action Hub -->
-    <div class="flex items-center gap-2 md:gap-4">
+    <div class="flex items-center gap-2 md:gap-3">
 
       <!-- Wishlist Action -->
       <button (click)="onWishlistClick()"
-        class="relative w-11 h-11 flex items-center justify-center rounded-2xl bg-gray-50 hover:bg-white hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-500 group">
+        class="relative w-9 h-9 flex items-center justify-center rounded-xl bg-gray-50 hover:bg-white hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-500 group">
         <i
-          class="fa-solid fa-heart text-[16px] text-gray-400 group-hover:text-red-600 transition-all duration-300 group-hover:scale-110"></i>
+          class="fa-solid fa-heart text-[14px] text-gray-400 group-hover:text-red-600 transition-all duration-300 group-hover:scale-110"></i>
         <span *ngIf="wishlistItemCount > 0"
-          class="absolute -top-1 -right-1 w-5 h-5 bg-red-600 text-white text-[9px] font-black flex items-center justify-center rounded-full border-2 border-white animate-bounce-short">
+          class="absolute -top-1 -right-1 w-4 h-4 bg-red-600 text-white text-[8px] font-black flex items-center justify-center rounded-full border border-white animate-bounce-short">
           {{ wishlistItemCount }}
         </span>
       </button>
 
       <!-- Cart Action -->
       <button (click)="onCartClick()"
-        class="relative w-11 h-11 flex items-center justify-center rounded-2xl bg-gray-50 hover:bg-white hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-500 group">
+        class="relative w-9 h-9 flex items-center justify-center rounded-xl bg-gray-50 hover:bg-white hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-500 group">
         <i
-          class="fa-solid fa-bag-shopping text-[16px] text-gray-400 group-hover:text-gray-900 transition-all duration-300 group-hover:scale-110"></i>
+          class="fa-solid fa-bag-shopping text-[14px] text-gray-400 group-hover:text-gray-900 transition-all duration-300 group-hover:scale-110"></i>
         <span *ngIf="cartItemCount > 0"
-          class="absolute -top-1 -right-1 w-5 h-5 bg-gray-900 text-white text-[9px] font-black flex items-center justify-center rounded-full border-2 border-white">
+          class="absolute -top-1 -right-1 w-4 h-4 bg-gray-900 text-white text-[8px] font-black flex items-center justify-center rounded-full border border-white">
           {{ cartItemCount }}
         </span>
       </button>
 
-      <span class="w-px h-6 bg-gray-100 hidden md:block"></span>
+      <span class="w-px h-5 bg-gray-100 hidden md:block"></span>
 
       <!-- User Authentication Flow -->
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2">
         <a *ngIf="isLoggedIn" routerLink="/profile"
-          class="w-11 h-11 hidden md:flex items-center justify-center rounded-2xl bg-gray-900 text-white hover:bg-red-600 hover:shadow-xl hover:shadow-red-500/20 transition-all duration-500 shadow-lg">
-          <i class="fa-solid fa-user-ninja text-[16px]"></i>
+          class="w-9 h-9 hidden md:flex items-center justify-center rounded-xl bg-gray-900 text-white hover:bg-red-600 hover:shadow-xl hover:shadow-red-500/20 transition-all duration-500 shadow-lg">
+          <i class="fa-solid fa-user-ninja text-[14px]"></i>
         </a>
 
         <a *ngIf="!isLoggedIn" routerLink="/auth/login"
-          class="px-6 py-2.5 bg-gray-900 text-white text-[11px] font-black uppercase tracking-widest rounded-2xl hover:bg-red-600 transition-all duration-500 shadow-lg hover:shadow-red-500/20 active:scale-95">
+          class="px-5 py-2 bg-gray-900 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-red-600 transition-all duration-500 shadow-lg hover:shadow-red-500/20 active:scale-95">
           Login
         </a>
 
         <button *ngIf="isLoggedIn" (click)="logout()"
-          class="p-2.5 text-red-500 hover:text-red-700 hover:scale-110 transition-all hidden md:block"
+          class="p-2 text-red-500 hover:text-red-700 hover:scale-110 transition-all hidden md:block"
           title="Logout Session">
-          <i class="fa-solid fa-power-off text-lg"></i>
+          <i class="fa-solid fa-power-off text-md"></i>
         </button>
       </div>
 
       <!-- Mobile Menu Trigger -->
       <button (click)="toggleMenu()"
-        class="lg:hidden w-11 h-11 flex items-center justify-center rounded-2xl bg-gray-50 text-gray-900 hover:bg-white transition-all shadow-sm">
+        class="lg:hidden w-9 h-9 flex items-center justify-center rounded-xl bg-gray-50 text-gray-900 hover:bg-white transition-all shadow-sm">
         <i class="fa-solid" [class.fa-bars-staggered]="!isMenuOpen" [class.fa-xmark]="isMenuOpen"></i>
       </button>
     </div>
