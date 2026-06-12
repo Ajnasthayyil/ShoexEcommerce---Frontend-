@@ -177,7 +177,20 @@ export class checkoutComponent implements OnInit, OnDestroy {
     }
   }
 
-  private openRazorpayModal(data: any, onSuccess: () => void) {
+  private async openRazorpayModal(data: any, onSuccess: () => void) {
+    try {
+      const loaded = await this.paymentService.loadRazorpayScript();
+      if (!loaded) {
+        this.toastrService.error('Failed to load Razorpay SDK. Please check your internet connection.');
+        this.isPlacingOrder = false;
+        return;
+      }
+    } catch (err) {
+      this.toastrService.error('Failed to load Razorpay SDK. Please check your internet connection.');
+      this.isPlacingOrder = false;
+      return;
+    }
+
     const options = {
       key: data.key,
       amount: data.amount * 100, // Razorpay works in subunits
