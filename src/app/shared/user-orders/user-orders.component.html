@@ -22,7 +22,7 @@
 
       <!-- Individual Order Card -->
       <div *ngFor="let order of orders"
-        class="group bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8 hover:shadow-xl hover:shadow-red-500/5 transition-all duration-500 relative overflow-hidden">
+        class="group bg-white rounded-[1.5rem] sm:rounded-[2rem] shadow-sm border border-gray-100 p-5 sm:p-8 hover:shadow-xl hover:shadow-red-500/5 transition-all duration-500 relative overflow-hidden">
 
         <!-- Decorative accent -->
         <div
@@ -83,6 +83,8 @@
                   </span>
                   <span class="w-1.5 h-1.5 bg-gray-200 rounded-full"></span>
                   <span class="text-sm font-bold text-gray-600">₹{{ item.unitPrice }}</span>
+                  <span class="w-1.5 h-1.5 bg-gray-200 rounded-full sm:hidden"></span>
+                  <span class="sm:hidden text-sm font-black text-gray-900">Total: ₹{{ item.totalPrice }}</span>
                 </div>
                 <div class="mt-3 flex gap-2" *ngIf="order.status?.toLowerCase() !== 'cancelled'">
                   <button *ngIf="selectedProductForReview !== item" (click)="openReviewModal(item)"
@@ -143,7 +145,7 @@
         </div>
 
         <!-- Modern Status Tracker -->
-        <div class="bg-gray-50/80 rounded-[2rem] p-8 border border-gray-100 shadow-inner relative overflow-hidden">
+        <div class="bg-gray-50/80 rounded-[1.5rem] sm:rounded-[2rem] p-5 sm:p-8 border border-gray-100 shadow-inner relative overflow-hidden">
 
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
             <p class="text-xs font-black text-gray-400 uppercase tracking-[0.2em]">Fulfillment Progress</p>
@@ -222,7 +224,7 @@
   <!-- Empty State -->
   <ng-template #noOrders>
     <div
-      class="flex flex-col items-center justify-center py-32 text-center bg-white rounded-[3rem] shadow-sm border border-gray-100 p-16 max-w-2xl mx-auto animate-fadeIn relative overflow-hidden">
+      class="flex flex-col items-center justify-center py-32 text-center bg-white rounded-[2rem] sm:rounded-[3rem] shadow-sm border border-gray-100 p-6 sm:p-16 max-w-2xl mx-auto animate-fadeIn relative overflow-hidden">
 
       <div
         class="absolute top-0 right-0 w-64 h-64 bg-red-50 rounded-full blur-3xl opacity-20 -translate-y-1/2 translate-x-1/2">
@@ -252,7 +254,7 @@
   <div *ngIf="orderToCancel"
     class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-gray-900/80 backdrop-blur-md transition-all duration-300">
     <div
-      class="bg-white rounded-[2.5rem] shadow-2xl max-w-md w-full p-10 transform scale-100 opacity-100 border border-white/20 animate-slideInUp">
+      class="bg-white rounded-[2rem] sm:rounded-[2.5rem] shadow-2xl max-w-md w-full p-6 sm:p-10 transform scale-100 opacity-100 border border-white/20 animate-slideInUp">
 
       <div class="flex items-center justify-center w-20 h-20 rounded-full bg-red-50 mx-auto mb-8 animate-pulse">
         <i class="fa-solid fa-triangle-exclamation text-red-500 text-3xl"></i>
