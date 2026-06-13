@@ -89,36 +89,51 @@
   </div>
 
   <!-- Designer Mobile Menu -->
-  <div *ngIf="isMenuOpen" class="lg:hidden bg-white px-8 py-6 space-y-5 animate-slideInDown border-t border-gray-50">
-    <nav class="flex flex-col items-end space-y-4">
+  <div *ngIf="isMenuOpen" class="lg:hidden bg-white px-6 py-2 animate-slideInDown border-t border-gray-100">
+    <nav class="flex flex-col w-full">
       <a routerLink="/home" (click)="toggleMenu()"
-        class="text-lg font-black text-gray-900 uppercase tracking-wider hover:text-red-600 transition-colors">Home</a>
+        class="w-full py-3.5 flex items-center justify-between text-[14px] font-semibold text-gray-800 hover:text-red-600 border-b border-gray-100 transition-colors">
+        <span>Home</span>
+        <i class="fa-solid fa-chevron-right text-[10px] text-gray-300"></i>
+      </a>
       <a routerLink="/products" (click)="toggleMenu()"
-        class="text-lg font-black text-gray-900 uppercase tracking-wider hover:text-red-600 transition-colors">Selection</a>
+        class="w-full py-3.5 flex items-center justify-between text-[14px] font-semibold text-gray-800 hover:text-red-600 border-b border-gray-100 transition-colors">
+        <span>Selection</span>
+        <i class="fa-solid fa-chevron-right text-[10px] text-gray-300"></i>
+      </a>
       <a routerLink="/about" (click)="toggleMenu()"
-        class="text-lg font-black text-gray-900 uppercase tracking-wider hover:text-red-600 transition-colors">The Brand</a>
+        class="w-full py-3.5 flex items-center justify-between text-[14px] font-semibold text-gray-800 hover:text-red-600 border-b border-gray-100 transition-colors">
+        <span>The Brand</span>
+        <i class="fa-solid fa-chevron-right text-[10px] text-gray-300"></i>
+      </a>
       <a routerLink="/contact" (click)="toggleMenu()"
-        class="text-lg font-black text-gray-900 uppercase tracking-wider hover:text-red-600 transition-colors">Connect</a>
-      <div class="h-px bg-gray-100 w-full my-1"></div>
+        class="w-full py-3.5 flex items-center justify-between text-[14px] font-semibold text-gray-800 hover:text-red-600 border-b border-gray-100 transition-colors">
+        <span>Connect</span>
+        <i class="fa-solid fa-chevron-right text-[10px] text-gray-300"></i>
+      </a>
+
+      <!-- Logged-in User Section -->
       <a *ngIf="isLoggedIn" routerLink="/profile" (click)="toggleMenu()"
-        class="group flex items-center justify-end gap-3 text-xs font-black text-gray-900 uppercase tracking-wider hover:text-red-600 transition-colors w-full">
-        My Dossier
-        <div class="w-8 h-8 bg-gray-100 rounded-xl flex items-center justify-center text-gray-600 group-hover:bg-red-50 group-hover:text-red-600 transition-all">
-          <i class="fa-solid fa-user text-xs"></i>
+        class="group w-full py-3.5 flex items-center justify-between text-[14px] font-semibold text-gray-800 hover:text-red-600 border-b border-gray-100 transition-colors">
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-user text-[13px] text-gray-400 group-hover:text-red-600 transition-colors"></i>
+          <span>My Dossier</span>
         </div>
+        <i class="fa-solid fa-chevron-right text-[10px] text-gray-300"></i>
       </a>
       <a *ngIf="isLoggedIn" routerLink="/orders" (click)="toggleMenu()"
-        class="group flex items-center justify-end gap-3 text-xs font-black text-gray-900 uppercase tracking-wider hover:text-red-600 transition-colors w-full">
-        My Orders
-        <div class="w-8 h-8 bg-gray-100 rounded-xl flex items-center justify-center text-gray-600 group-hover:bg-red-50 group-hover:text-red-600 transition-all">
-          <i class="fa-solid fa-box-open text-xs"></i>
+        class="group w-full py-3.5 flex items-center justify-between text-[14px] font-semibold text-gray-800 hover:text-red-600 border-b border-gray-100 transition-colors">
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-box-open text-[13px] text-gray-400 group-hover:text-red-600 transition-colors"></i>
+          <span>My Orders</span>
         </div>
+        <i class="fa-solid fa-chevron-right text-[10px] text-gray-300"></i>
       </a>
       <button *ngIf="isLoggedIn" (click)="logout(); toggleMenu()"
-        class="group flex items-center justify-end gap-3 text-xs font-black text-red-600 uppercase tracking-wider hover:text-red-700 transition-colors w-full text-right">
-        Terminate Session
-        <div class="w-8 h-8 bg-red-50 rounded-xl flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-all">
-          <i class="fa-solid fa-power-off text-xs"></i>
+        class="group w-full py-3.5 flex items-center justify-between text-[14px] font-semibold text-red-600 hover:text-red-700 border-b border-gray-100 transition-colors text-left">
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-power-off text-[13px] text-red-500 group-hover:text-red-600 transition-colors"></i>
+          <span>Terminate Session</span>
         </div>
       </button>
     </nav>
