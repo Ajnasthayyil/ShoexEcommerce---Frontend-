@@ -38,7 +38,7 @@
     <div class="flex items-center gap-2 md:gap-3">
 
       <!-- Wishlist Action -->
-      <button (click)="onWishlistClick()"
+      <button *ngIf="isLoggedIn" (click)="onWishlistClick()"
         class="relative w-9 h-9 flex items-center justify-center rounded-xl bg-gray-50 hover:bg-white hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-500 group">
         <i
           class="fa-solid fa-heart text-[14px] text-gray-400 group-hover:text-red-600 transition-all duration-300 group-hover:scale-110"></i>
@@ -49,7 +49,7 @@
       </button>
 
       <!-- Cart Action -->
-      <button (click)="onCartClick()"
+      <button *ngIf="isLoggedIn" (click)="onCartClick()"
         class="relative w-9 h-9 flex items-center justify-center rounded-xl bg-gray-50 hover:bg-white hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-500 group">
         <i
           class="fa-solid fa-bag-shopping text-[14px] text-gray-400 group-hover:text-gray-900 transition-all duration-300 group-hover:scale-110"></i>
