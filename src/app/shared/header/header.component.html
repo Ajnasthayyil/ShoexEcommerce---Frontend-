@@ -1,6 +1,8 @@
 <header class="fixed top-6 left-1/2 -translate-x-1/2 w-[95%] md:w-[88%] lg:w-[82%]
          bg-white/80 backdrop-blur-xl border border-white/40
-         shadow-[0_8px_32px_rgba(0,0,0,0.08)] rounded-full z-50 transition-all duration-500 overflow-hidden"
+         shadow-[0_8px_32px_rgba(0,0,0,0.08)] z-50 transition-all duration-500 overflow-hidden"
+  [class.rounded-full]="!isMenuOpen"
+  [class.rounded-[2rem]]="isMenuOpen"
   [class.py-1]="true">
   <div class="flex items-center justify-between px-8 py-2.5 md:px-12">
 
@@ -87,38 +89,37 @@
   </div>
 
   <!-- Designer Mobile Menu -->
-  <div *ngIf="isMenuOpen" class="lg:hidden bg-white px-8 py-10 space-y-8 animate-slideInDown border-t border-gray-50">
-    <nav class="flex flex-col space-y-6">
+  <div *ngIf="isMenuOpen" class="lg:hidden bg-white px-8 py-6 space-y-5 animate-slideInDown border-t border-gray-50">
+    <nav class="flex flex-col items-end space-y-4">
       <a routerLink="/home" (click)="toggleMenu()"
-        class="text-2xl font-black text-gray-900 uppercase tracking-tighter hover:text-red-600 transition-colors">Home</a>
+        class="text-lg font-black text-gray-900 uppercase tracking-wider hover:text-red-600 transition-colors">Home</a>
       <a routerLink="/products" (click)="toggleMenu()"
-        class="text-2xl font-black text-gray-900 uppercase tracking-tighter hover:text-red-600 transition-colors">Selection</a>
+        class="text-lg font-black text-gray-900 uppercase tracking-wider hover:text-red-600 transition-colors">Selection</a>
       <a routerLink="/about" (click)="toggleMenu()"
-        class="text-2xl font-black text-gray-900 uppercase tracking-tighter hover:text-red-600 transition-colors">The
-        Brand</a>
+        class="text-lg font-black text-gray-900 uppercase tracking-wider hover:text-red-600 transition-colors">The Brand</a>
       <a routerLink="/contact" (click)="toggleMenu()"
-        class="text-2xl font-black text-gray-900 uppercase tracking-tighter hover:text-red-600 transition-colors">Connect</a>
-      <div class="h-px bg-gray-100 w-full"></div>
+        class="text-lg font-black text-gray-900 uppercase tracking-wider hover:text-red-600 transition-colors">Connect</a>
+      <div class="h-px bg-gray-100 w-full my-1"></div>
       <a *ngIf="isLoggedIn" routerLink="/profile" (click)="toggleMenu()"
-        class="group flex items-center gap-3 text-sm font-black text-gray-900 uppercase tracking-wider hover:text-red-600 transition-colors">
-        <div class="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center text-gray-600 group-hover:bg-red-50 group-hover:text-red-600 transition-all">
+        class="group flex items-center justify-end gap-3 text-xs font-black text-gray-900 uppercase tracking-wider hover:text-red-600 transition-colors w-full">
+        My Dossier
+        <div class="w-8 h-8 bg-gray-100 rounded-xl flex items-center justify-center text-gray-600 group-hover:bg-red-50 group-hover:text-red-600 transition-all">
           <i class="fa-solid fa-user text-xs"></i>
         </div>
-        My Dossier
       </a>
       <a *ngIf="isLoggedIn" routerLink="/orders" (click)="toggleMenu()"
-        class="group flex items-center gap-3 text-sm font-black text-gray-900 uppercase tracking-wider hover:text-red-600 transition-colors">
-        <div class="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center text-gray-600 group-hover:bg-red-50 group-hover:text-red-600 transition-all">
+        class="group flex items-center justify-end gap-3 text-xs font-black text-gray-900 uppercase tracking-wider hover:text-red-600 transition-colors w-full">
+        My Orders
+        <div class="w-8 h-8 bg-gray-100 rounded-xl flex items-center justify-center text-gray-600 group-hover:bg-red-50 group-hover:text-red-600 transition-all">
           <i class="fa-solid fa-box-open text-xs"></i>
         </div>
-        My Orders
       </a>
       <button *ngIf="isLoggedIn" (click)="logout(); toggleMenu()"
-        class="group flex items-center gap-3 text-sm font-black text-red-600 uppercase tracking-wider hover:text-red-700 transition-colors">
-        <div class="w-9 h-9 bg-red-50 rounded-xl flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-all">
+        class="group flex items-center justify-end gap-3 text-xs font-black text-red-600 uppercase tracking-wider hover:text-red-700 transition-colors w-full text-right">
+        Terminate Session
+        <div class="w-8 h-8 bg-red-50 rounded-xl flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-all">
           <i class="fa-solid fa-power-off text-xs"></i>
         </div>
-        Terminate Session
       </button>
     </nav>
   </div>
